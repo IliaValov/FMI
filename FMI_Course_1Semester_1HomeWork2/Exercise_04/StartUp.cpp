@@ -6,7 +6,9 @@ int getTextLenght(char*);
 
 int GetAllSmallestWords(char*);
 
-int TEXT_MAX_LENGHT = pow(2, 10);
+bool IsCharValid(char);
+
+const int TEXT_MAX_LENGHT = pow(2, 10);
 
 int main() {
 	char* inputText = new char[TEXT_MAX_LENGHT]();
@@ -28,27 +30,33 @@ int GetAllSmallestWords(char* text) {
 
 	int currentWordLenght = 0;
 
+	bool isWordValid = true;
+
 	for (int i = 0; i < textSize; i++)
 	{
 		if (i + 1 == textSize - 1) 
 			currentWordLenght++;
-			
 		
-
-		if (text[i] == ' ') {
-			if (currentWordLenght < smallestWordLenght) {
-				smallestWordLenght = currentWordLenght;
-				smallestWordCount = 1;
-			}
-			else if (currentWordLenght == smallestWordLenght) {
-				smallestWordCount++;
-			}
-
-			currentWordLenght = 0;
+		if (!IsCharValid(text[i])) {
+			isWordValid = false;
 			continue;
 		}
 
 		currentWordLenght++;
+	
+		if (text[i + 1] == ' ' || text[i + 1] == (int)'\t' || text[i + 1] == (int)'\n' || i + 1 == textSize) {
+			if (currentWordLenght < smallestWordLenght && isWordValid && text[i] != ' ') {
+				smallestWordLenght = currentWordLenght;
+				smallestWordCount = 1;
+			}
+			else if (currentWordLenght == smallestWordLenght && text[i] != ' ') {
+				smallestWordCount++;
+			}
+
+			currentWordLenght = 0;
+			isWordValid = true;
+			continue;
+		}
 
 		if (i + 1 == textSize - 1 && currentWordLenght == smallestWordLenght) {
 			smallestWordCount++;
@@ -56,6 +64,16 @@ int GetAllSmallestWords(char* text) {
 	}
 
 	return smallestWordCount;
+}
+
+bool IsCharValid(char symbol) {
+	if (symbol < 'A' || (symbol > 'Z' && symbol < 'a') || symbol > 'z') {
+		if (symbol != '_' && symbol != '-') {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 int getTextLenght(char* text) {
