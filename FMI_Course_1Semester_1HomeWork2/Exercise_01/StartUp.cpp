@@ -1,12 +1,14 @@
 #include <iostream>
 using namespace std;
 
+int TEXT_MAX_LENGHT = 4;
+
 int main() {
 	const int SUBSTACT_SYMBOLBY_A = 'A' - 1;
 
 	char* symbols = new char[4]();
 
-	cout << "Enter symbol "; cin >> symbols;
+	cout << "Enter symbol "; cin.getline(symbols, TEXT_MAX_LENGHT);
 
 	int firstSymbolInInt = symbols[0] - SUBSTACT_SYMBOLBY_A ;
 
