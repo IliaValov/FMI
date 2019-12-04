@@ -4,9 +4,9 @@ using namespace std;
 
 int swapElements(int elIndex1, int elIndex2);
 
-void heapPermutation(int a[], int size, int n);
+bool HeapPermutation(int** a, int size, int n);
 
-void printArr(int a[], int n);
+bool IsTheDiagonalValid(int** a, int n);
 
 int main() {
 	int matrixSize = 0;
@@ -27,18 +27,16 @@ int main() {
 		}
 	}
 
-	/*
+	HeapPermutation(matrix, matrixSize, matrixSize);
+	cout << "\n";
 	for (int i = 0; i < matrixSize; i++)
 	{
 		for (int j = 0; j < matrixSize; j++)
 		{
-			cout << matrix[i][j];
+			cout << matrix[i][j] << " ";
 		}
 		cout << "\n";
-	}*/
-
-
-	heapPermutation(matrix[0], matrixSize, matrixSize);
+	}
 
 	for (int i = 0; i < matrixSize; i++)
 	{
@@ -49,20 +47,21 @@ int main() {
 }
 
 
-void heapPermutation(int a[], int size, int n)
+bool HeapPermutation(int** a, int size, int n)
 {
 	// if size becomes 1 then prints the obtained 
 	// permutation 
 	if (size == 1)
 	{
-		printArr(a, n);
-		return;
+		
+		return IsTheDiagonalValid(a, n);
 	}
 
 
 	for (int i = 0; i < size; i++)
 	{
-		heapPermutation(a, size - 1, n);
+		if (HeapPermutation(a, size - 1, n))
+			return true;
 
 		// if size is odd, swap first and last 
 		// element 
@@ -74,12 +73,18 @@ void heapPermutation(int a[], int size, int n)
 		else
 			swap(a[i], a[size - 1]);
 	}
+
+	return false;
+
 }
 
-void printArr(int a[], int n)
+bool IsTheDiagonalValid(int** matrix, int size)
 {
-	for (int i = 0; i < n; i++)
-		cout << a[i] << " ";
-	printf("\n");
+	for (int i = 0; i < size ; i++) {
+		if (matrix[i][i + 1] > matrix[i + 1][i + 2])
+			return false;
+	}
+
+	return true;
 }
 
