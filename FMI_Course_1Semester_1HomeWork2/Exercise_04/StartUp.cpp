@@ -1,5 +1,7 @@
 #include<iostream>
 
+#include <regex>
+
 using namespace std;
 
 int getTextLenght(char*);
@@ -23,47 +25,16 @@ int main() {
 }
 
 int GetAllSmallestWords(char* text) {
-	int textSize = getTextLenght(text);
+	char a[] = { 'a','b' };
+	regex reg("(?<=\\s|^)([A-Za-z]+[-]*[_]*[A-Za-z]*)(?=\\s|$)");
+	smatch matches;
 
-	int smallestWordLenght = (int)pow(2, 30);
-	int smallestWordCount = 0;
-
-	int currentWordLenght = 0;
-
-	bool isWordValid = true;
-
-	for (int i = 0; i < textSize; i++)
-	{
-		if (i + 1 == textSize - 1) 
-			currentWordLenght++;
-		
-		if (!IsCharValid(text[i])) {
-			isWordValid = false;
-			continue;
-		}
-
-		currentWordLenght++;
-	
-		if (text[i + 1] == ' ' || text[i + 1] == (int)'\t' || text[i + 1] == (int)'\n' || i + 1 == textSize) {
-			if (currentWordLenght < smallestWordLenght && isWordValid && text[i] != ' ') {
-				smallestWordLenght = currentWordLenght;
-				smallestWordCount = 1;
-			}
-			else if (currentWordLenght == smallestWordLenght && text[i] != ' ') {
-				smallestWordCount++;
-			}
-
-			currentWordLenght = 0;
-			isWordValid = true;
-			continue;
-		}
-
-		if (i + 1 == textSize - 1 && currentWordLenght == smallestWordLenght) {
-			smallestWordCount++;
-		}
+	while (regex_search(text, reg)) {
+		cout << matches.ready() << "\r\n";
 	}
 
-	return smallestWordCount;
+
+	return 0;
 }
 
 bool IsCharValid(char symbol) {
