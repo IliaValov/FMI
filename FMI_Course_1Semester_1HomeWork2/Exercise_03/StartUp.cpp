@@ -15,9 +15,28 @@ int main() {
 	char* firstText = new char[TEXT_MAX_LENGHT]();
 	char* secondText = new char[TEXT_MAX_LENGHT]();
 
-	cout << "First text: ";  cin.getline(firstText, TEXT_MAX_LENGHT);
-	cout << "Second text: ";  cin.getline(secondText, TEXT_MAX_LENGHT);
+	bool isStarted = true;
 
+	while (isStarted) {
+		cout << "First text: ";  cin.getline(firstText, TEXT_MAX_LENGHT);
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			continue;
+		}
+
+		cout << "Second text: ";  cin.getline(secondText, TEXT_MAX_LENGHT);
+
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			continue;
+		}
+
+		isStarted = false;
+	}
 	PrintTheSmallestArray(firstText, secondText);
 
 	delete[] firstText;
@@ -43,7 +62,7 @@ void PrintTheArrayUntilReachesTheLeght(char* text, int size) {
 
 	for (int i = 0; i < size; i++)
 	{
-	
+
 		cout << text[i % textSize];
 	}
 	cout << "\n";

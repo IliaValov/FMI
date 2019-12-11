@@ -2,15 +2,17 @@
 
 using namespace std;
 
-void EncryptText(char*, int, int);
 int getTextLenght(char*);
 
+void GetTextInput(char*);
+void EncryptText(char*, int, int);
+void GetOtherArgInput(int&, int&);
+
+bool IsInputValid();
 bool IsTextValid(char*);
 bool IsTheSymbolLiteral(char);
 
 int TEXT_MAX_LENGHT = 100;
-
-//TODO VALIDATION OF THE SYMBOLS 32-126
 
 int main() {
 
@@ -19,15 +21,8 @@ int main() {
 	int stepsToMoveTheCharToRight = 0;
 	int encrypticKey = 0;
 
-	bool isStarted = true;
-	do {
-		cout << "Input the text: "; cin.getline(inputText, TEXT_MAX_LENGHT);
-
-		cout << "M = "; cin >> encrypticKey;
-		cout << "L = "; cin >> stepsToMoveTheCharToRight;
-
-		isStarted = false;
-	} while (isStarted);
+	GetTextInput(inputText);
+	GetOtherArgInput(encrypticKey, stepsToMoveTheCharToRight);
 
 	EncryptText(inputText, encrypticKey, stepsToMoveTheCharToRight);
 
@@ -62,6 +57,52 @@ void EncryptText(char* text, int encrypticKey, int stepsToMoveTheCharToRight) {
 	newText[textLenght - 1] = '\0';
 
 	delete[] newText;
+}
+
+void GetTextInput(char* inputText) {
+	bool isStarted = true;
+
+	while (isStarted) {
+		cout << "Input the text: "; cin.getline(inputText, TEXT_MAX_LENGHT);
+
+		if (!IsInputValid()) {
+			continue;
+		}
+
+		isStarted = false;
+	}
+}
+
+void GetOtherArgInput(int& encrypticKey, int& stepsToMoveTheCharToRight) {
+	bool isStarted = true;
+
+	while (isStarted) {
+
+		cout << "M = "; cin >> encrypticKey;
+		if (!IsInputValid() || encrypticKey < 0) {
+			cout << "Invalid argument for M! \r\n";
+			continue;
+		}
+
+		cout << "L = "; cin >> stepsToMoveTheCharToRight;
+		if (!IsInputValid() || 0 > stepsToMoveTheCharToRight) {
+			cout << "Invalid argument for L! \r\n";
+			continue;
+		}
+
+		isStarted = false;
+	}
+}
+
+bool IsInputValid() {
+	if (cin.fail())
+	{
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		return false;
+	}
+
+	return true;
 }
 
 bool IsTextValid(char* text) {

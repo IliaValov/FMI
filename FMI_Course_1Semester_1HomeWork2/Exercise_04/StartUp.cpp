@@ -1,9 +1,5 @@
 #include<iostream>
-
-#include <regex>
-
 using namespace std;
-
 int getTextLenght(char*);
 
 int GetAllSmallestWords(char*);
@@ -15,7 +11,20 @@ const int TEXT_MAX_LENGHT = pow(2, 10);
 int main() {
 	char* inputText = new char[TEXT_MAX_LENGHT]();
 
-	cout << "Input text: ";  cin.getline(inputText, TEXT_MAX_LENGHT);
+	bool isStarted = true;
+
+	while (isStarted) {
+		cout << "Input text: ";  cin.getline(inputText, TEXT_MAX_LENGHT);
+
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			continue;
+		}
+
+		isStarted = false;
+	}
 
 	cout << GetAllSmallestWords(inputText);
 
@@ -25,19 +34,48 @@ int main() {
 }
 
 int GetAllSmallestWords(char* text) {
-	char a[] = { 'a','b' };
-	regex reg("(^|\s)([A-Za-z]+[-]*[_]*[A-Za-z]*)(\s|$)");
-	cmatch matches;
+	int textSize = getTextLenght(text);
+	int smallestWordLenght = (int)pow(2, 30);
+	int smallestWordCount = 0;
 
-	while (regex_search(text,matches, reg)) {
-		cout<<"Is there a match " << matches.ready() << "\r\n";
-		cout <<"Are there no matches " <<matches.empty() << "\r\n";
-		cout << "Number of matches " << matches.size() << "\r\n";
-		cout << "Number of matches " << matches.str(1) << "\r\n";
+	int currentWordLenght = 0;
+
+	bool isWordValid = true;
+
+	for (int i = 0; i < textSize; i++)
+	{
+		if (i + 1 == textSize - 1)
+			currentWordLenght++;
+
+
+		if (!IsCharValid(text[i])) {
+			isWordValid = false;
+			continue;
+		}
+
+		currentWordLenght++;
+
+		if (text[i + 1] == ' ' || text[i + 1] == (int)'\t' || text[i + 1] == (int)'\n' || i + 1 == textSize) {
+			if (currentWordLenght < smallestWordLenght && isWordValid && text[i] != ' ') {
+				smallestWordLenght = currentWordLenght;
+				smallestWordCount = 1;
+			}
+			else if (currentWordLenght == smallestWordLenght && text[i] != ' ') {
+				smallestWordCount++;
+			}
+
+			currentWordLenght = 0;
+			isWordValid = true;
+			continue;
+
+		}
+
+		if (i + 1 == textSize - 1 && currentWordLenght == smallestWordLenght) {
+			smallestWordCount++;
+		}
+
 	}
-
-
-	return 0;
+	return smallestWordCount;
 }
 
 bool IsCharValid(char symbol) {
@@ -58,6 +96,5 @@ int getTextLenght(char* text) {
 			break;
 		lenght++;
 	}
-
 	return lenght;
 }
