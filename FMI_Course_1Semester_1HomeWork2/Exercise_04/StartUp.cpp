@@ -26,11 +26,14 @@ int main() {
 
 int GetAllSmallestWords(char* text) {
 	char a[] = { 'a','b' };
-	regex reg("(?<=\\s|^)([A-Za-z]+[-]*[_]*[A-Za-z]*)(?=\\s|$)");
-	smatch matches;
+	regex reg("(^|\s)([A-Za-z]+[-]*[_]*[A-Za-z]*)(\s|$)");
+	cmatch matches;
 
-	while (regex_search(text, reg)) {
-		cout << matches.ready() << "\r\n";
+	while (regex_search(text,matches, reg)) {
+		cout<<"Is there a match " << matches.ready() << "\r\n";
+		cout <<"Are there no matches " <<matches.empty() << "\r\n";
+		cout << "Number of matches " << matches.size() << "\r\n";
+		cout << "Number of matches " << matches.str(1) << "\r\n";
 	}
 
 

@@ -2,39 +2,40 @@
 
 using namespace std;
 
+void GetInputForMatrix(int**, int);
+void GetInput(int& arg);
 void PrintMatrix(int**, int);
+void DeleteMatrix(int**, int);
+void swapMatrixRows(int**, int, int);
+void OverwriteMatrixes(int**, int**, int);
+void SortMatrixByRowAndFirstCol(int**, int);
+
+bool IsInputValid();
 bool IsThereValidDiagonal(int**, int, int);
 
 int main() {
 	int matrixSize = 0;
 
-	cout << "Enter matrix size: "; cin >> matrixSize;
+	GetInput(matrixSize);
 
 	int** matrix = new int* [matrixSize];
 
-	for (int row = 0; row < matrixSize; row++)
-	{
-		matrix[row] = new int[matrixSize];
-		for (int col = 0; col < matrixSize; col++)
-		{
-			int element = 0;
-			cin >> element;
+	GetInputForMatrix(matrix, matrixSize);
 
-			matrix[row][col] = element;
-		}
+	int** tempMatrix = new int* [matrixSize];
+	OverwriteMatrixes(matrix, tempMatrix, matrixSize);
+
+	SortMatrixByRowAndFirstCol(matrix, matrixSize);
+
+	if (IsThereValidDiagonal(matrix, matrixSize, 0)) {
+		PrintMatrix(matrix, matrixSize);
 	}
-	IsThereValidDiagonal(matrix, matrixSize, 0);
-
-	PrintMatrix(matrix, matrixSize);
-
-	for (int i = 0; i < matrixSize; i++)
-	{
-
-		delete[] matrix[i];
-
+	else {
+		PrintMatrix(tempMatrix, matrixSize);
 	}
 
-	delete[] matrix;
+	DeleteMatrix(matrix, matrixSize);
+	DeleteMatrix(tempMatrix, matrixSize);
 
 	return 0;
 }
@@ -46,25 +47,132 @@ bool IsThereValidDiagonal(int** matrix, int size, int startFrom) {
 
 	int col = startFrom;
 
-	for (int i = startFrom; i < size - 1; i++)
+	for (int i = startFrom; i < size; i++)
 	{
-		int currentDiagonalElement = matrix[i][col];
+		if (startFrom == 0) {
 
-		int nextDiagonalElement = matrix[i + 1][col + 1];
-
-		if (currentDiagonalElement <= nextDiagonalElement) {
-			swap(matrix[startFrom], matrix[i ]);
+			swapMatrixRows(matrix, startFrom, i);
 			IsTheDiagonalValid = IsThereValidDiagonal(matrix, size, startFrom + 1);
 			if (IsTheDiagonalValid) {
 				return IsTheDiagonalValid;
 			}
 			else {
-				swap(matrix[startFrom], matrix[i ]);
+				swapMatrixRows(matrix, startFrom, i);
 			}
+
+		}
+		else if (startFrom > 0) {
+
+			int currentDiagonalElement = matrix[i][col];
+			int previousDiagonalElement = matrix[startFrom - 1][col - 1];
+
+			if (currentDiagonalElement >= previousDiagonalElement) {
+
+
+				swapMatrixRows(matrix, startFrom, i);
+				IsTheDiagonalValid = IsThereValidDiagonal(matrix, size, startFrom + 1);
+				if (IsTheDiagonalValid) {
+					return IsTheDiagonalValid;
+				}
+				else {
+					swapMatrixRows(matrix, startFrom, i);
+				}
+			}
+		}
+
+		if (i >= size - 1) {
+			IsTheDiagonalValid = false;
 		}
 	}
 
 	return IsTheDiagonalValid;
+}
+
+void SortMatrixByRowAndFirstCol(int** matrix, int size) {
+	for (int i = 0; i < size; i++)
+	{
+		int smallestElementInIndex = i;
+		for (int j = i; j < size; j++)
+		{
+			if (matrix[smallestElementInIndex][0] > matrix[j][0]) {
+				smallestElementInIndex = j;
+			}
+		}
+		swapMatrixRows(matrix, i, smallestElementInIndex);
+	}
+}
+
+void OverwriteMatrixes(int** firstMatrix, int** secondMatrix, int size) {
+	for (int row = 0; row < size; row++)
+	{
+		secondMatrix[row] = new int[size];
+		for (int col = 0; col < size; col++)
+		{
+			secondMatrix[row][col] = firstMatrix[row][col];
+		}
+	}
+}
+
+void GetInputForMatrix(int** matrix, int size) {
+	bool isStarted = true;
+
+	while (isStarted) {
+		bool isInputValid = true;
+		cout << "Enter " << size * size << " elements for the matrix \r\n";
+		for (int row = 0; row < size; row++)
+		{
+			matrix[row] = new int[size];
+			for (int col = 0; col < size; col++)
+			{
+				int element = 0;
+				cin >> element;
+				isInputValid = IsInputValid();
+				if (!isInputValid)
+					break;
+
+
+				matrix[row][col] = element;
+			}
+			if (!isInputValid)
+				break;
+
+		}
+
+		if (!isInputValid) {
+			cout << "Invalid input for matrix \r\n";
+			continue;
+		}
+
+		isStarted = false;
+	}
+}
+
+void GetInput(int& arg) {
+	bool isStarted = true;
+
+	while (isStarted) {
+		bool isInputValid = true;
+		cout << "Enter size for the matrix \"Size can be < or = 10: ";
+		cin >> arg;
+
+		if (!IsInputValid() || arg > 10) {
+			cout << "\r\nInvalid input for size \r\n";
+			continue;
+		}
+
+		isStarted = false;
+	}
+}
+
+bool IsInputValid() {
+	if (cin.fail())
+	{
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		return false;
+	}
+
+	return true;
 }
 
 void PrintMatrix(int** matrix, int size) {
@@ -79,3 +187,17 @@ void PrintMatrix(int** matrix, int size) {
 	}
 }
 
+void DeleteMatrix(int** matrix, int size) {
+	for (int i = 0; i < size; i++)
+	{
+		delete[] matrix[i];
+	}
+
+	delete[] matrix;
+}
+
+void swapMatrixRows(int** matrix, int firstRow, int secondRow) {
+	int* tempValue = matrix[firstRow];
+	matrix[firstRow] = matrix[secondRow];
+	matrix[secondRow] = tempValue;
+}

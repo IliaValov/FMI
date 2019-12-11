@@ -29,6 +29,7 @@ bool IsTheInputValid(char* symbols) {
 	while (symbols[index] != '\0') {
 		if (symbols[index] < 'A' || symbols[index] > 'Z')
 			return false;
+		index++;
 	}
 
 	return true;
@@ -39,12 +40,18 @@ int StartProgram() {
 
 	bool isStarted = true;
 	
-	//try {
 		do {
 			cout << "Enter symbol "; cin.getline(symbols, TEXT_MAX_LENGHT);
 
-			if (!IsTheInputValid) {
+			if (!IsTheInputValid(symbols)) {
 				cout << "The input is invalid! \r\n";
+				continue;
+			}
+
+			if (cin.fail())
+			{
+				cin.clear();
+				cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				continue;
 			}
 			cout << CalculateExcelCol(symbols);
@@ -52,10 +59,6 @@ int StartProgram() {
 
 			isStarted = false;
 		} while (isStarted);
-	//}
-	//catch (exception e) {
-	//	return -1;
-	//}
 
 	delete[] symbols;
 

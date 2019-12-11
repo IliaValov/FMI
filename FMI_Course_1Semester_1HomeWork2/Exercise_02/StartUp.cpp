@@ -19,10 +19,15 @@ int main() {
 	int stepsToMoveTheCharToRight = 0;
 	int encrypticKey = 0;
 
-	cout << "Input the text: "; cin.getline(inputText, TEXT_MAX_LENGHT);
+	bool isStarted = true;
+	do {
+		cout << "Input the text: "; cin.getline(inputText, TEXT_MAX_LENGHT);
 
-	cout << "M = "; cin >> encrypticKey;
-	cout << "L = "; cin >> stepsToMoveTheCharToRight;
+		cout << "M = "; cin >> encrypticKey;
+		cout << "L = "; cin >> stepsToMoveTheCharToRight;
+
+		isStarted = false;
+	} while (isStarted);
 
 	EncryptText(inputText, encrypticKey, stepsToMoveTheCharToRight);
 
