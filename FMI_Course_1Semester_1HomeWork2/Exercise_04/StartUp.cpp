@@ -1,8 +1,24 @@
+/**
+*
+* Solution to homework assignment 2
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2019/2020
+*
+* @author Iliya Vladislavov Valov
+* @idnumber 62483
+* @task 04
+* @compiler VC
+*
+*/
+
 #include<iostream>
 using namespace std;
 int getTextLenght(char*);
 
 int GetAllSmallestWords(char*);
+
+bool IsCharLiteral(char);
 
 bool IsCharValid(char);
 
@@ -33,7 +49,10 @@ int main() {
 	return 0;
 }
 
+
 int GetAllSmallestWords(char* text) {
+
+
 	int textSize = getTextLenght(text);
 	int smallestWordLenght = (int)pow(2, 30);
 	int smallestWordCount = 0;
@@ -48,15 +67,21 @@ int GetAllSmallestWords(char* text) {
 			currentWordLenght++;
 
 
+		//Checks if the char is valid if is not ht word is invalid.
 		if (!IsCharValid(text[i])) {
 			isWordValid = false;
 			continue;
 		}
 
+
 		currentWordLenght++;
 
-		if (text[i + 1] == ' ' || text[i + 1] == (int)'\t' || text[i + 1] == (int)'\n' || i + 1 == textSize) {
-			if (currentWordLenght < smallestWordLenght && isWordValid && text[i] != ' ') {
+		//Checks if the symbol is space \t \n  or is end of the word if is it we are taking the lenght of the symbols before.
+		if (text[i + 1] == ' ' || IsCharLiteral(text[i + 1]) || i + 1 == textSize) {
+
+			//If currentWordLenght is smaller than the smallest to now the current will be the smallest.
+			//If currentWordLenght is equal to the smallest words the cout for the smallest word will increase.
+			if (currentWordLenght < smallestWordLenght && isWordValid && !IsCharLiteral(text[i])) {
 				smallestWordLenght = currentWordLenght;
 				smallestWordCount = 1;
 			}
@@ -70,12 +95,30 @@ int GetAllSmallestWords(char* text) {
 
 		}
 
+		//Checks the last word.
 		if (i + 1 == textSize - 1 && currentWordLenght == smallestWordLenght) {
 			smallestWordCount++;
 		}
 
 	}
 	return smallestWordCount;
+}
+
+bool IsCharLiteral(char symbol) {
+	switch (symbol) {
+	case '\t':
+		return true;
+	case '\r':
+		return true;
+	case '\n':
+		return true;
+	case '\a':
+		return true;
+	case '\b':
+		return true;
+	default:
+		return false;
+	}
 }
 
 bool IsCharValid(char symbol) {
