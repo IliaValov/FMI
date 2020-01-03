@@ -2,78 +2,306 @@
 
 using namespace std;
 
-void RecursiveAddingRemainder(char* number, int remainder, int index);
+struct Number {
+	char* number;
+	bool isPositive = true;
+};
+
+void ShiftNumberToRight(char* number, int lenght);
+void ShiftNumberToLeft(char* number, int numLenght);
+
+bool GetInputForNumber(char& op, Number& number1, Number& number2);
 
 char ConvertDecimalToSymbol(int num);
 
 int ConvertSymbolToDecimal(char num);
 int StrLenght(char* firstArr);
 
-int MinLenght(char* firstArr, char* secondArr);
-int MaxLenght(char* firstArr, char* secondArr);
+Number SubstactBigNumber(Number, Number);
+Number GatherBigNumbers(Number, Number);
 
-char* GatherTwoBigNumber(char* firstNum, char* secondNum);
+Number MultiplyBigNumbers(Number biggerNum, Number smallerNum);
 
 int main() {
 	char inputOperator = ' ';
 
-	char* inputNumber1 = new char[101];
+	Number inputNum1;
+	Number inputNum2;
+	Number resultNum;
 
-	char* inputNumber2 = new char[101];
+	while (true) {
+		if (!GetInputForNumber(inputOperator, inputNum1, inputNum2)) {
+			cout << "Invalid input";
+			continue;
+		}
 
-	cin >> inputOperator;
-	cin >> inputNumber1;
-	cin >> inputNumber2;
+		switch (inputOperator)
+		{
+		case '+':
+			resultNum = GatherBigNumbers(inputNum1, inputNum2);
+			break;
+		case '-':
+			if (inputNum2.isPositive)
+				inputNum2.isPositive = false;
+			resultNum = SubstactBigNumber(inputNum1, inputNum2);
+			break;
+		case '*':
+			resultNum = MultiplyBigNumbers(inputNum1, inputNum2);
+			break;
+		default:
+			cout << "Invalid operator";
+			continue;
+		}
 
-	char* resultNum = GatherTwoBigNumber(inputNumber1, inputNumber2);
+		break;
+	}
+	if (!inputNum1.isPositive)
+	{
+		cout << '-';
+	}
 
-	cout << resultNum;
-	
+	cout << inputNum1.number;
+	cout << "\r\n";
+	if (!inputNum2.isPositive)
+	{
+		cout << '-';
+	}
+	cout << inputNum2.number;
 
+	cout << "\r\n";
+
+	if (!resultNum.isPositive) {
+		cout << '-';
+	}
+
+	cout << resultNum.number;
+	cout << StrLenght(resultNum.number);
 }
 
-char* GatherTwoBigNumber(char* firstNum, char* secondNum) {
-	int remainder = 0;
+Number SubstactBigNumber(Number firstNum, Number secondNum) {
+	Number resultNum;
 
-	char* resultNum = new char[(MaxLenght(firstNum, secondNum) + 2)];
+	if (!firstNum.isPositive && !secondNum.isPositive) {
+		resultNum = GatherBigNumbers(firstNum, secondNum);
+		resultNum.isPositive = false;
+		return resultNum;
+	}
 
-	for (int i = 0; i < MinLenght(firstNum, secondNum); i++)
+	int firstNumLenght = StrLenght(firstNum.number);
+	int secondNumLenght = StrLenght(secondNum.number);
+
+	int biggerNumLenght = firstNumLenght;
+	int smallerNumLenght = secondNumLenght;
+
+	resultNum.isPositive = firstNum.isPositive;
+
+	bool needToBeSwapped = false;
+
+	if (firstNumLenght == secondNumLenght) {
+		for (int i = firstNumLenght - 1; i >= 0; i--)
+		{
+			if (firstNum.number[i] < secondNum.number[i])
+				needToBeSwapped = true;
+			else if (firstNum.number[i] > secondNum.number[i])
+				needToBeSwapped = false;
+		}
+	}
+
+	if (firstNumLenght < smallerNumLenght || needToBeSwapped) {
+		biggerNumLenght = secondNumLenght;
+		smallerNumLenght = firstNumLenght;
+		swap(firstNum, secondNum);
+		resultNum.isPositive = firstNum.isPositive;
+	}
+
+
+
+	resultNum.number = new char[biggerNumLenght + 2];
+
+	int smallerNumIndex = smallerNumLenght - 1;
+
+	for (int i = biggerNumLenght - 1; i >= 0; i--)
 	{
-		int result = ConvertSymbolToDecimal(firstNum[i]) + ConvertSymbolToDecimal(secondNum[i]);
+		int digitFromBiggerNum = ConvertSymbolToDecimal(firstNum.number[i]);
 
-		if (remainder > 0) {
-			result += remainder;
-			remainder = 0;
+		int result = digitFromBiggerNum;
+
+		if (smallerNumIndex >= 0) {
+			int digitFromSmallerNum = ConvertSymbolToDecimal(secondNum.number[smallerNumIndex--]);
+
+			if (result - digitFromSmallerNum < 0 && i > 0) {
+
+				result = (result + 10) - digitFromSmallerNum;
+
+				for (int j = i - 1; j >= 0; j--)
+				{
+					if (firstNum.number[j] > '0') {
+						firstNum.number[j]--;
+						break;
+					}
+					else {
+						firstNum.number[j] = '9';
+					}
+				}
+			}
+			else {
+				result = abs(result - digitFromSmallerNum);
+			}
 		}
 
-		if (result > 9) {
-			result -= 9;
-			remainder++;
+		resultNum.number[i] = ConvertDecimalToSymbol(result);
+
+	}
+
+	resultNum.number[biggerNumLenght] = '\0';
+
+	for (int i = 0; i < biggerNumLenght; i++)
+	{
+		if (resultNum.number[i + 1] == '\0') {
+			break;
 		}
 
-		resultNum[i] = ConvertDecimalToSymbol(result);
+		if (resultNum.number[i] == '0') {
+			ShiftNumberToLeft(resultNum.number, biggerNumLenght);
+		}
+		else if (resultNum.number[i] > '0') {
+			break;
+		}
 	}
-
-	if (remainder > 0) {
-		RecursiveAddingRemainder(resultNum, remainder, MinLenght(firstNum, secondNum));
-	}
-
-	resultNum[MaxLenght(firstNum, secondNum) + 1] = '\0';
 
 	return resultNum;
 }
 
-void RecursiveAddingRemainder(char* number, int remainder, int index) {
-	int currentNum = ConvertSymbolToDecimal(number[index]) + remainder;
+Number GatherBigNumbers(Number firstNum, Number secondNum) {
+	Number resultNum;
 
-	if (currentNum > 9) {
-		currentNum -= 9;
-		number[index] = currentNum;
-		RecursiveAddingRemainder(number, remainder, index + 1);
+	if (!firstNum.isPositive && secondNum.isPositive || firstNum.isPositive && !secondNum.isPositive) {
+		return SubstactBigNumber(firstNum, secondNum);
+	}
+
+	int firstNumLenght = StrLenght(firstNum.number);
+	int secondNumLenght = StrLenght(secondNum.number);
+
+	int biggerNumLenght = firstNumLenght;
+	int smallerNumLenght = secondNumLenght;
+
+	if (firstNumLenght < secondNumLenght) {
+		swap(firstNum, secondNum);
+		swap(firstNumLenght, secondNumLenght);
+
+		biggerNumLenght = firstNumLenght;
+		smallerNumLenght = secondNumLenght;
+	}
+
+	resultNum.number = new char[biggerNumLenght + 2];
+
+	int remainder = 0;
+
+	int end = biggerNumLenght - smallerNumLenght;
+	int smallerNumIndex = smallerNumLenght - 1;
+
+	for (int i = biggerNumLenght - 1; i >= 0; i--)
+	{
+		int digitFromBigNum = ConvertSymbolToDecimal(firstNum.number[i]);
+
+
+		int result = digitFromBigNum + remainder;
+
+		if (smallerNumIndex >= 0) {
+			int digitFromSmallerNum = ConvertSymbolToDecimal(secondNum.number[smallerNumIndex--]);
+
+			result += digitFromSmallerNum;
+		}
+
+		if (remainder > 0) {
+			remainder = 0;
+		}
+
+		if (result > 9) {
+			result -= 10;
+			remainder++;
+		}
+
+		resultNum.number[i] = ConvertDecimalToSymbol(result);
+	}
+
+	if (remainder > 0) {
+		ShiftNumberToRight(resultNum.number, biggerNumLenght);
+		resultNum.number[0] = ConvertDecimalToSymbol(remainder);
 	}
 	else {
-		number[index] = currentNum;
+		resultNum.number[biggerNumLenght] = '\0';
 	}
+
+	return resultNum;
+}
+
+Number MultiplyBigNumbers(Number firstNum, Number secondNum) {
+	Number resultNum;
+
+	int firstNumLenght = StrLenght(firstNum.number);
+	int secondNumLenght = StrLenght(secondNum.number);
+
+	int resultNumLenght = firstNumLenght + secondNumLenght;
+
+	resultNum.number = new char[resultNumLenght + 1];
+
+	resultNum.number[0] = '0';
+	resultNum.number[1] = '\0';
+
+	for (int f = firstNumLenght - 1; f >= 0; f--)
+	{
+		for (int s = secondNumLenght - 1; s >= 0; s--)
+		{
+			Number currentNum;
+			currentNum.number = new char[3 + firstNumLenght];
+			int currentNumLenght = 0;
+
+			int multiplyNumFromBothNums =
+				ConvertSymbolToDecimal(firstNum.number[f]) * ConvertSymbolToDecimal(secondNum.number[s]);
+
+			if (multiplyNumFromBothNums >= 10)
+			{
+				for (int i = 1; i >= 0; i--)
+				{
+					currentNum.number[i] = ConvertDecimalToSymbol(multiplyNumFromBothNums % 10);
+					multiplyNumFromBothNums /= 10;
+				}
+				currentNum.number[2] = '\0';
+				currentNumLenght = 2;
+			}
+			else {
+				currentNum.number[0] = ConvertDecimalToSymbol(multiplyNumFromBothNums);
+				currentNum.number[1] = '\0';
+				currentNumLenght = 1;
+			}
+
+			int index = currentNumLenght;
+
+			for (int i = 0; i < (secondNumLenght - 1 - s); i++)
+			{
+				currentNum.number[index++] = '0';
+			}
+
+			currentNum.number[index] = '\0';
+
+			for (int i = 0; i < (firstNumLenght - 1 - f); i++)
+			{
+				currentNum.number[index++] = '0';
+			}
+
+			currentNum.number[index] = '\0';
+
+			resultNum = GatherBigNumbers(resultNum, currentNum);
+
+			delete[] currentNum.number;
+		}
+	}
+
+	if ((!firstNum.isPositive && secondNum.isPositive) || (firstNum.isPositive && !secondNum.isPositive))
+		resultNum.isPositive = false;
+
+	return resultNum;
 }
 
 int ConvertSymbolToDecimal(char num) {
@@ -84,24 +312,91 @@ char ConvertDecimalToSymbol(int num) {
 	return num + '0';
 }
 
-int MinLenght(char* firstArr, char* secondArr) {
-	int firstArrLenght = StrLenght(firstArr);
-	int secondArrLenght = StrLenght(secondArr);
+bool GetInputForNumber(char& op, Number& number1, Number& number2) {
+	char* input = new char[408];
+	number1.number = new char[102];
 
-	if (firstArrLenght < secondArrLenght)
-		return firstArrLenght;
+	number2.number = new char[102];
+	
+	cin.getline(input, 408); 
 
-	return secondArrLenght;
-}
+	if (input[0] != '<' || input[1] != '<')
+		return false;
 
-int MaxLenght(char* firstArr, char* secondArr) {
-	int firstArrLenght = StrLenght(firstArr);
-	int secondArrLenght = StrLenght(secondArr);
+	int inputLenght = StrLenght(input);
 
-	if (firstArrLenght > secondArrLenght)
-		return firstArrLenght;
+	int startFrom = 0;
 
-	return secondArrLenght;
+	if ((input[2] != '+' && input[2] != '-' && input[2] != '*') || input[3] != ' ' || input[3] == '\0')
+		return false;
+
+
+	op = input[2];
+
+	if (input[4] == ' ' || '\0')
+		return false;
+
+	int removeIndex = 0;
+
+	for (int i = 4; i < inputLenght; i++)
+	{
+		if (input[i] == ' ') {
+			startFrom = i + 1;
+			number1.number[i - (2 + removeIndex + 2)] = '\0';
+			break;
+		}
+
+		if (input[i] < '0' || input[i] > '9')
+			return false;
+
+		//TODO ADD VALIDATION;
+		if (input[i] == '-') {
+			number1.isPositive = false;
+			removeIndex++;
+			continue;
+		}
+
+		
+		number1.number[i - (2 + removeIndex + 2)] = input[i];
+
+	}
+
+	if (input[startFrom - 1] != ' ' || input[startFrom - 1] == '\0')
+		return false;
+
+	removeIndex = 0;
+
+
+	for (int i = startFrom; i < inputLenght; i++)
+	{
+		if (i + 1 == inputLenght) {
+			return false;
+		}
+
+		if (input[i] == '>' && i > startFrom) {
+			if (input[i + 1] != '>') {
+				return false;
+			}
+			break;
+		}
+
+		if (input[i] < '0' || input[i] > '9')
+			return false;
+
+		//TODO ADD VALIDATION;
+		if (input[i] == '-') {
+			number2.isPositive = false;
+			removeIndex++;
+			continue;
+		}
+
+		number2.number[i - (startFrom + removeIndex)] = input[i];
+	}
+
+	number2.number[inputLenght - (startFrom + removeIndex + 2)] = '\0';
+
+	return true;
+
 }
 
 int StrLenght(char* firstArr) {
@@ -110,4 +405,26 @@ int StrLenght(char* firstArr) {
 	while (firstArr[index++] != '\0');
 
 	return index - 1;
+}
+
+void ShiftNumberToLeft(char* number, int numLenght) {
+
+	int counter = 0;
+	for (int i = 1; i < numLenght; i++)
+	{
+		number[i - 1] = number[i];
+		counter++;
+	}
+
+	number[counter] = '\0';
+}
+
+void ShiftNumberToRight(char* number, int lenght) {
+
+	for (int i = lenght - 1; i >= 0; i--)
+	{
+		number[i + 1] = number[i];
+	}
+	number[lenght + 1] = '\0';
+
 }
