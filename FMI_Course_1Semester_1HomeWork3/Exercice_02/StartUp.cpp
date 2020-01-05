@@ -3,7 +3,7 @@
 using namespace std;
 
 struct Number {
-	char* number;
+	char* number = new char[1];
 	bool isPositive = true;
 };
 
@@ -15,7 +15,7 @@ bool GetInputForNumber(char& op, Number& number1, Number& number2);
 char ConvertDecimalToSymbol(int num);
 
 int ConvertSymbolToDecimal(char num);
-int StrLenght(char* firstArr);
+size_t StrLenght(char* firstArr);
 
 Number SubstactBigNumber(Number, Number);
 Number GatherBigNumbers(Number, Number);
@@ -55,27 +55,12 @@ int main() {
 
 		break;
 	}
-	if (!inputNum1.isPositive)
-	{
-		cout << '-';
-	}
-
-	cout << inputNum1.number;
-	cout << "\r\n";
-	if (!inputNum2.isPositive)
-	{
-		cout << '-';
-	}
-	cout << inputNum2.number;
-
-	cout << "\r\n";
 
 	if (!resultNum.isPositive) {
 		cout << '-';
 	}
 
 	cout << resultNum.number;
-	cout << StrLenght(resultNum.number);
 }
 
 Number SubstactBigNumber(Number firstNum, Number secondNum) {
@@ -87,8 +72,8 @@ Number SubstactBigNumber(Number firstNum, Number secondNum) {
 		return resultNum;
 	}
 
-	int firstNumLenght = StrLenght(firstNum.number);
-	int secondNumLenght = StrLenght(secondNum.number);
+	int firstNumLenght = (int)StrLenght(firstNum.number);
+	int secondNumLenght = (int)StrLenght(secondNum.number);
 
 	int biggerNumLenght = firstNumLenght;
 	int smallerNumLenght = secondNumLenght;
@@ -113,8 +98,6 @@ Number SubstactBigNumber(Number firstNum, Number secondNum) {
 		swap(firstNum, secondNum);
 		resultNum.isPositive = firstNum.isPositive;
 	}
-
-
 
 	resultNum.number = new char[biggerNumLenght + 2];
 
@@ -179,8 +162,8 @@ Number GatherBigNumbers(Number firstNum, Number secondNum) {
 		return SubstactBigNumber(firstNum, secondNum);
 	}
 
-	int firstNumLenght = StrLenght(firstNum.number);
-	int secondNumLenght = StrLenght(secondNum.number);
+	int firstNumLenght = (int)StrLenght(firstNum.number);
+	int secondNumLenght = (int)StrLenght(secondNum.number);
 
 	int biggerNumLenght = firstNumLenght;
 	int smallerNumLenght = secondNumLenght;
@@ -239,8 +222,8 @@ Number GatherBigNumbers(Number firstNum, Number secondNum) {
 Number MultiplyBigNumbers(Number firstNum, Number secondNum) {
 	Number resultNum;
 
-	int firstNumLenght = StrLenght(firstNum.number);
-	int secondNumLenght = StrLenght(secondNum.number);
+	int firstNumLenght = (int)StrLenght(firstNum.number);
+	int secondNumLenght = (int)StrLenght(secondNum.number);
 
 	int resultNumLenght = firstNumLenght + secondNumLenght;
 
@@ -251,10 +234,11 @@ Number MultiplyBigNumbers(Number firstNum, Number secondNum) {
 
 	for (int f = firstNumLenght - 1; f >= 0; f--)
 	{
+		
 		for (int s = secondNumLenght - 1; s >= 0; s--)
 		{
 			Number currentNum;
-			currentNum.number = new char[3 + firstNumLenght];
+			currentNum.number = new char[(3) + (firstNumLenght + secondNumLenght)];
 			int currentNumLenght = 0;
 
 			int multiplyNumFromBothNums =
@@ -281,6 +265,7 @@ Number MultiplyBigNumbers(Number firstNum, Number secondNum) {
 			for (int i = 0; i < (secondNumLenght - 1 - s); i++)
 			{
 				currentNum.number[index++] = '0';
+				
 			}
 
 			currentNum.number[index] = '\0';
@@ -293,8 +278,7 @@ Number MultiplyBigNumbers(Number firstNum, Number secondNum) {
 			currentNum.number[index] = '\0';
 
 			resultNum = GatherBigNumbers(resultNum, currentNum);
-
-			delete[] currentNum.number;
+			//CANT DELETE  CURRENTNUM
 		}
 	}
 
@@ -317,13 +301,13 @@ bool GetInputForNumber(char& op, Number& number1, Number& number2) {
 	number1.number = new char[102];
 
 	number2.number = new char[102];
-	
-	cin.getline(input, 408); 
+
+	cin.getline(input, 408);
 
 	if (input[0] != '<' || input[1] != '<')
 		return false;
 
-	int inputLenght = StrLenght(input);
+	int inputLenght = (int)StrLenght(input);
 
 	int startFrom = 0;
 
@@ -346,17 +330,19 @@ bool GetInputForNumber(char& op, Number& number1, Number& number2) {
 			break;
 		}
 
-		if (input[i] < '0' || input[i] > '9')
-			return false;
-
-		//TODO ADD VALIDATION;
 		if (input[i] == '-') {
 			number1.isPositive = false;
 			removeIndex++;
 			continue;
 		}
 
-		
+		if (input[i] < '0' || input[i] > '9')
+			return false;
+
+		//TODO ADD VALIDATION;
+
+
+
 		number1.number[i - (2 + removeIndex + 2)] = input[i];
 
 	}
@@ -399,8 +385,8 @@ bool GetInputForNumber(char& op, Number& number1, Number& number2) {
 
 }
 
-int StrLenght(char* firstArr) {
-	int index = 0;
+size_t StrLenght(char* firstArr) {
+	size_t index = 0;
 
 	while (firstArr[index++] != '\0');
 

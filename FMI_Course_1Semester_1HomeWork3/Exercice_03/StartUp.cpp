@@ -2,40 +2,66 @@
 
 using namespace std;
 
-void GetLeftSightOfIndex(char* word, char* result, int index);
-void GetRightSightOfIndex(char* word, char* result, int index);
+void DeleteElement(char* arr, int deleteIndex, int numLenght);
 
 bool IsWord(char* word);
+bool IsAABWord(char* word);
+bool IsDWord(char* word, int IndexOfTheDSymbol);
+bool IsCWord(char* word, int IndexOfTheCSymbol);
 
-bool HasDWord(char* word, int indexOfTheDSymbol);
-bool IsValidDWord(char* leftSideOfTheD, char* rightSideOfTheD);
 
-bool HasCWord(char* word, int IndexOfTheCSymbol);
+char* CoppyString(char* arr, int startFrom, int end);
 
-int StrLenght(char* firstArr);
-
+size_t StrLenght(char* firstArr);
 
 int main() {
-	char* inputWord = new char[255];
+	const int INPUT_WORD_SIZE = 255;
+	int size = 0;
 
-	cin.getline(inputWord, 255);
+	cout << "Enter size: "; cin >> size;
 
-	cout << IsWord(inputWord);
+	bool* isWords = new bool[size];
+	char* inputWord = new char[INPUT_WORD_SIZE];
 
+	
+
+	cout << "Enter words: \r\n";
+	cin.ignore();
+	for (int i = 0; i < size; i++)
+	{
+
+		cin.getline(inputWord, INPUT_WORD_SIZE);
+		isWords[i] = IsWord(inputWord);
+
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		cout << isWords[i] << "\r\n";
+	}
 
 	return 0;
 }
 
 bool IsWord(char* word) {
-	for (int i = 0; i < StrLenght(word); i++)
+	int wordLenght = StrLenght(word);
+
+	if (word[0] == '\0')
+		return true;
+
+	for (int i = 0; i < wordLenght; i++)
 	{
-		if (word[i] == 'D') {
-			if (HasDWord(word, i))
+
+		if (word[i] == 'A' && word[wordLenght - 1] == 'B') {
+			if (IsAABWord(word))
 				return true;
 		}
-		if (word[i] == 'C')
-		{
-			if (HasCWord(word, i))
+		else if (word[i] == 'D') {
+			if (IsDWord(word, i))
+				return true;
+		}
+		else if (word[i] == 'C') {
+			if (IsCWord(word, i))
 				return true;
 		}
 	}
@@ -43,76 +69,111 @@ bool IsWord(char* word) {
 	return false;
 }
 
-bool HasCWord(char* word, int IndexOfTheCSymbol) {
-	int leftSightOfTheCLenght = IndexOfTheCSymbol;
-	int rightSightOfTheCLenght = (StrLenght(word) - 1) - IndexOfTheCSymbol;
+bool IsCWord(char* word, int IndexOfTheCSymbol) {
+	int wordLenght = StrLenght(word);
 
+	char* leftSide = CoppyString(word, 0, IndexOfTheCSymbol);
+	char* rightSide = CoppyString(word, IndexOfTheCSymbol + 1, wordLenght);
 
-	if (leftSightOfTheCLenght == 0 || rightSightOfTheCLenght == 0 || leftSightOfTheCLenght + rightSightOfTheCLenght > 64) {
+	bool isLeftSideValid = IsWord(leftSide);
+	bool isRightSideValid = IsWord(rightSide);
+
+	if (!isLeftSideValid || !isRightSideValid)
 		return false;
-	}
 
+
+	delete[] leftSide;
+	delete[] rightSide;
 	return true;
 }
 
-bool HasDWord(char* word, int indexOfTheDSymbol) {
-	int leftSightOfTheDLenght = indexOfTheDSymbol + 1;
-	int rightSightOfTheDLenght = StrLenght(word) - indexOfTheDSymbol;
+bool IsDWord(char* word, int IndexOfTheDSymbol) {
 
-	char* leftSightOfTheD = new char[leftSightOfTheDLenght];
-	char* rightSightOfTheD = new char[rightSightOfTheDLenght];
+	int wordLenght = StrLenght(word);
+	int leftSideLenght = IndexOfTheDSymbol;
+	int rightSideLenght = wordLenght - (IndexOfTheDSymbol + 1);
 
-	rightSightOfTheD[rightSightOfTheDLenght - 1] = '\0';
-	leftSightOfTheD[leftSightOfTheDLenght - 1] = '\0';
+	char* leftSide = CoppyString(word, 0, IndexOfTheDSymbol);
+	char* rightSide = CoppyString(word, IndexOfTheDSymbol + 1, wordLenght);
 
-	if (leftSightOfTheDLenght == 0 || rightSightOfTheDLenght == 0 || rightSightOfTheDLenght * 2 > 64) {
-		return false;
-	}
+	bool isLeftSideValid = IsWord(leftSide);
+	bool isRightSideValid = IsWord(rightSide);
 
-	GetLeftSightOfIndex(word, leftSightOfTheD, indexOfTheDSymbol - 1);
-	GetRightSightOfIndex(word, rightSightOfTheD, indexOfTheDSymbol + 1);
-
-	if (!IsValidDWord(leftSightOfTheD, rightSightOfTheD))
+	if ((!isLeftSideValid || !isRightSideValid) || (leftSideLenght != rightSideLenght))
 		return false;
 
-	return true;
-}
 
-bool IsValidDWord(char* leftSideOfTheD, char* rightSideOfTheD) {
-	int leftSightLenght = StrLenght(leftSideOfTheD);
-	int rightSightLenght = StrLenght(rightSideOfTheD);
-
-	if (leftSightLenght != rightSightLenght)
-		return false;
-
-	for (int i = 0; i < leftSightLenght; i++)
+	for (int i = 0; i < leftSideLenght; i++)
 	{
-		if (leftSideOfTheD[i] != rightSideOfTheD[i]) {
+		if (leftSide[i] != rightSide[i]) {
 			return false;
 		}
 	}
 
+	delete[] leftSide;
+	delete[] rightSide;
 	return true;
 }
 
-void GetRightSightOfIndex(char* word, char* result, int index) {
-	for (int i = index; i < StrLenght(word); i++)
-	{
-		result[i - index] = word[i];
-	}
+bool IsAABWord(char* word) {
+	int wordLenght = StrLenght(word);
+
+	if (word[1] != 'A' || word[wordLenght - 1] != 'B')
+		return false;
+
+
+	char* tempWord = CoppyString(word, 0, wordLenght);
+	DeleteElement(tempWord, 0, wordLenght);
+	DeleteElement(tempWord, 0, wordLenght);
+	DeleteElement(tempWord, wordLenght - 3, wordLenght);
+
+	if (!IsWord(tempWord))
+		return false;
+
+
+	delete[] tempWord;
+	return true;
 }
 
-void GetLeftSightOfIndex(char* word, char* result, int index) {
-	for (int i = index; i >= 0; i--)
-	{
-		result[i] = word[i];
-	}
-}
 
-int StrLenght(char* firstArr) {
-	int index = 0;
+size_t StrLenght(char* firstArr) {
+	size_t index = 0;
 
 	while (firstArr[index++] != '\0');
 
 	return index - 1;
+}
+
+char* CoppyString(char* arr, int startFrom, int end) {
+	char* result = new char[end + 1];
+
+	if (end - 1 < 0 || startFrom > end - 1) {
+		result[0] = '\0';
+		return result;
+	}
+
+	if (startFrom == end - 1) {
+		result[startFrom] = arr[end];
+	}
+
+	for (int i = 0; i < end; i++)
+	{
+		result[i] = arr[i + startFrom];
+	}
+
+	result[end] = '\0';
+
+	return result;
+}
+
+void DeleteElement(char* arr, int deleteIndex, int numLenght) {
+
+	int counter = deleteIndex;
+	for (int i = deleteIndex + 1; i < numLenght; i++)
+	{
+		arr[i - 1] = arr[i];
+		counter++;
+	}
+
+	arr[counter] = '\0';
 }

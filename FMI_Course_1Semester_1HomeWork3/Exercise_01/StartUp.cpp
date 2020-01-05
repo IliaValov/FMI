@@ -1,14 +1,15 @@
 #include <iostream>
 #include <time.h>
 using namespace std;
+
 struct Answer {
-	const char* answer;
+	const char* answer = new char[1];
 
 	bool isTheRightOne = false;
 };
 
 struct Question {
-	const char* question;
+	const char* question = new char[1];
 
 	int answersLenght = 4;
 
@@ -24,6 +25,9 @@ struct Player {
 
 	Question* questions = new Question[10];
 };
+
+
+
 
 void StartEngine(bool);
 
