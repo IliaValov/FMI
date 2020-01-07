@@ -138,18 +138,9 @@ Number SubstactBigNumber(Number firstNum, Number secondNum) {
 
 	resultNum.number[biggerNumLenght] = '\0';
 
-	for (int i = 0; i < biggerNumLenght; i++)
-	{
-		if (resultNum.number[i + 1] == '\0') {
-			break;
-		}
+	while (resultNum.number[0] == '0' && resultNum.number[1] != '\0') {
 
-		if (resultNum.number[i] == '0') {
-			ShiftNumberToLeft(resultNum.number, biggerNumLenght);
-		}
-		else if (resultNum.number[i] > '0') {
-			break;
-		}
+		ShiftNumberToLeft(resultNum.number, biggerNumLenght);
 	}
 
 	return resultNum;
@@ -216,6 +207,11 @@ Number GatherBigNumbers(Number firstNum, Number secondNum) {
 		resultNum.number[biggerNumLenght] = '\0';
 	}
 
+	while (resultNum.number[0] == '0' && resultNum.number[1] != '\0') {
+
+		ShiftNumberToLeft(resultNum.number, biggerNumLenght);
+	}
+
 	return resultNum;
 }
 
@@ -278,12 +274,19 @@ Number MultiplyBigNumbers(Number firstNum, Number secondNum) {
 			currentNum.number[index] = '\0';
 
 			resultNum = GatherBigNumbers(resultNum, currentNum);
+
+			delete[] currentNum.number;
 			//CANT DELETE  CURRENTNUM
 		}
 	}
 
 	if ((!firstNum.isPositive && secondNum.isPositive) || (firstNum.isPositive && !secondNum.isPositive))
 		resultNum.isPositive = false;
+
+	while (resultNum.number[0] == '0' && resultNum.number[1] != '\0') {
+	
+		ShiftNumberToLeft(resultNum.number, resultNumLenght);
+	}
 
 	return resultNum;
 }

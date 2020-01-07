@@ -26,17 +26,21 @@ struct Player {
 	Question* questions = new Question[10];
 };
 
-
-
-
 void StartEngine(bool);
 
-void deleteQuestion(Player&, int);
 void GenerateQuestionsForPlayer(Player& player);
-void PrintAnswers(Player& player, int indexOfAnswer);
-void LeaveOneFakeAnswer(Player player, int questionIndex);
-void PrintQuestion(Player& player, int index, int numberOfQuestion);
-void deleteAnswer(Player& player, int questionIndex, int answerIndex);
+
+void ShuffleTheAnswersOfQuestion(Question& question);
+
+void PrintAnswers(Question question);
+void PrintQuestion(Player player, int index, int numberOfQuestion);
+
+void DeletePlayerQuestion(Player&, int);
+void DeletePlayerAnswer(Player& player, int questionIndex, int answerIndex);
+
+void LeaveOneFakeAnswer(Player& player, int questionIndex);
+
+void DeleteElement(char* arr, int deleteIndex, int numLenght);
 
 int StrLenght(const char*);
 
@@ -44,11 +48,15 @@ int main() {
 	char command = ' ';
 
 	while (true) {
+		system("CLS");
+
 		cout << "Type 'S' to start the game.\r\n";
 		cout << "Type 'E' to exit.\r\n";
 
 		cin >> command;
 
+		//Depends of the char which is entered will start the game or exit if the input is wrong will make you to enter new symbol.
+	
 		if (command == 'S') {
 			system("CLS");
 			StartEngine(true);
@@ -82,10 +90,10 @@ void StartEngine(bool isStarted) {
 
 		cout << "50/50: ";
 		if (player.isJokerUsed) {
-			cout << "true\r\n";
+			cout << "It's used\r\n";
 		}
 		else {
-			cout << "false\r\n";
+			cout << "It's not used\r\n";
 		}
 
 		if (!player.isJokerUsed) {
@@ -95,6 +103,10 @@ void StartEngine(bool isStarted) {
 		cout << "You can exit the game in any time by typing 'E'.\r\n";
 
 		cout << "Enter your choise: "; cin >> command;
+
+		//With A,B,C,D the player is chosing which answer is the right one if he enter wrong one the game will stop if the enter right one will continue.
+		//The player can exit with entering 'E' at any time if he wants to.
+		//The player with J can use 50/50 the purpose of the 50/50 is to remove 2 of the wrong answers.
 
 		switch (command) {
 		case 'A':
@@ -133,24 +145,28 @@ void StartEngine(bool isStarted) {
 			}
 			continue;
 		case'E':
-
 			system("CLS");
 
 			if (numberOfQustion > 1) {
 
-				cout << "Congrats you did " << numberOfQustion << " questions.";
+				cout << "Congrats you did " << numberOfQustion - 1 << " questions. \r\n";
+				system("PAUSE");
 				return;
 			}
 			else {
-				continue;
+				cout << "Wow you suck didn't complete 1 question for real ???? \r\n";
+				system("PAUSE");
+				return;
 			}
 		default:
 			system("CLS");
 			continue;
 		}
 
+		//If the player chose the wrong answer the game will stop. 
 		if (player.isLost) {
-			cout << "You lost better next time :)!";
+			cout << "You lost at question: " << numberOfQustion << " better luck next time :)!\r\n";
+			system("PAUSE");
 			return;
 		}
 
@@ -158,33 +174,37 @@ void StartEngine(bool isStarted) {
 
 		numberOfQustion++;
 
-		deleteQuestion(player, randomQuestion);
+		//After answering the current question, the question will be deleted so can't show again.
+		DeletePlayerQuestion(player, randomQuestion);
 
+		//If questions lenght hit 0 that means he answered every question and he won the game.
 		if (player.questionsLenght == 0) {
-			cout << "Congrats you won !!!!!\r\n";
+			cout << "Congrats you won !!!!!\r\n\r\n";
+			system("PAUSE");
 			return;
 		}
 
+		//Choosing new quesiton from the array of questions.
 		randomQuestion = rand() % player.questionsLenght;
 	}
 }
 
 
-void PrintQuestion(Player& player, int index, int numberOfQuestion) {
+void PrintQuestion(Player player, int index, int numberOfQuestion) {
 
 	cout << numberOfQuestion << ". " << player.questions[index].question << "\r\n\r\n";
 
-	PrintAnswers(player, index);
+	PrintAnswers(player.questions[index]);
 
 	cout << "\r\n\r\n";
 }
 
-void PrintAnswers(Player& player, int indexOfQuestion) {
+void PrintAnswers(Question question) {
 	char symbolOfAnswer = 'A';
 
-	for (int i = 0; i < player.questions[indexOfQuestion].answersLenght; i++)
+	for (int i = 0; i < question.answersLenght; i++)
 	{
-		cout << symbolOfAnswer << ". " << player.questions[indexOfQuestion].answers[i].answer;
+		cout << symbolOfAnswer << ". " << question.answers[i].answer;
 
 		if ((i + 1) % 2 == 0) {
 			cout << "\r\n";
@@ -197,19 +217,21 @@ void PrintAnswers(Player& player, int indexOfQuestion) {
 	}
 }
 
-void LeaveOneFakeAnswer(Player player, int questionIndex) {
+void LeaveOneFakeAnswer(Player& player, int questionIndex) {
 	Question& question = player.questions[questionIndex];
 
+	//Deleting answers until the lenght of the answers hit 2. in that case only the right one and one wrong will be left.
 	while (question.answersLenght > 2) {
 		int randAnswer = rand() % question.answersLenght;
 
+		//Deleting the answer only if is a wrong one
 		if (!question.answers[randAnswer].isTheRightOne) {
-			deleteAnswer(player, questionIndex, randAnswer);
+			DeletePlayerAnswer(player, questionIndex, randAnswer);
 		}
 	}
 }
 
-void deleteQuestion(Player& player, int index) {
+void DeletePlayerQuestion(Player& player, int index) {
 	for (int i = index; i < player.questionsLenght - 1; i++)
 	{
 		player.questions[i] = player.questions[i + 1];
@@ -218,7 +240,7 @@ void deleteQuestion(Player& player, int index) {
 	player.questionsLenght--;
 }
 
-void deleteAnswer(Player& player, int questionIndex, int answerIndex) {
+void DeletePlayerAnswer(Player& player, int questionIndex, int answerIndex) {
 	for (int i = answerIndex; i < player.questions[questionIndex].answersLenght - 1; i++)
 	{
 		player.questions[questionIndex].answers[i] = player.questions[questionIndex].answers[i + 1];
@@ -236,19 +258,26 @@ int StrLenght(const char* arr) {
 }
 
 void GenerateQuestionsForPlayer(Player& player) {
-	const char** questions = new const char* [10]{
-	"What is the original name given to the blood elves?"
-	, "Dalaran once rested in Silverpine Forest before being transported to Northrend"
-	,"The Four Horsemen consist of which four bosses during the Naxxramas raid?"
-	,"The curse of flesh was the cause behind the creation of the dwarves"
-	,"Onyxia used to spy on  Stormwind in  the guise of a chief advisor. What did she call herself while under her human form"
-	,"Which of the following is the only raid in world of warcraft where you can play a game of  chess?"
-	,"Doom is coming is it not?"
-	,"What was the purpose of the blood elven expedition in bloodmist isle?"
-	,"Which of these quotes is NOT spoken by Onyxia in the raid \'Onyxia\'s Lair\'"
-	,"The most annoying boss in the game because of the fact that he says quotes in an insane, whiny and nasal voice is most definately..." };
 
-	const char** answers = new const char* [40]{
+	const int ANSWERS_LENGHT = 4;
+	const int QUESTUONS_LENGHT = 10;
+
+	//Library for question and answers 
+	//Every 4 answers are for 1 question and they are sorted for every specific question from the questions array.
+
+	const char** questions = new const char* [QUESTUONS_LENGHT] {
+		"What is the original name given to the blood elves?"
+			, "Dalaran once rested in Silverpine Forest before being transported to Northrend"
+			, "The Four Horsemen consist of which four bosses during the Naxxramas raid?"
+			, "The curse of flesh was the cause behind the creation of the dwarves"
+			, "Onyxia used to spy on  Stormwind in  the guise of a chief advisor. What did she call herself while under her human form"
+			, "Which of the following is the only raid in world of warcraft where you can play a game of  chess?"
+			, "Doom is coming is it not?"
+			, "What was the purpose of the blood elven expedition in bloodmist isle?"
+			, "Which of these quotes is NOT spoken by Onyxia in the raid \'Onyxia\'s Lair\'"
+			, "The most annoying boss in the game because of the fact that he says quotes in an insane, whiny and nasal voice is most definately..." };
+
+	const char** answers = new const char* [ANSWERS_LENGHT * 10]{
 	"Sin\'dorei",
 	"Quil\'dorei",
 	"Kel\'dorei",
@@ -300,19 +329,43 @@ void GenerateQuestionsForPlayer(Player& player) {
 	"Your uncle who is an engineer",
 	};
 
-	for (int i = 0; i < 10; i++)
+
+	//Adding the questions with there answers to the player.
+	for (int i = 0; i < QUESTUONS_LENGHT; i++)
 	{
-		player.questions[i].question = questions[i];
-		player.questions[i].answers[0].answer = answers[i * 4];
-		player.questions[i].answers[0].isTheRightOne = true;
 
-		for (int j = 1; j < 4; j++)
+		//Every first answer for every question is the right one.
+		Question& currentQuestion = player.questions[i];
+		currentQuestion.question = questions[i];
+		currentQuestion.answers[0].answer = answers[i * ANSWERS_LENGHT];
+		currentQuestion.answers[0].isTheRightOne = true;
+
+		//Adding the false answers.
+		for (int j = 1; j < ANSWERS_LENGHT; j++)
 		{
-			int currentFakeAnswer = i * 4 + j;
+			int currentFakeAnswer = i * ANSWERS_LENGHT + j;
 
-			player.questions[i].answers[j].answer = answers[currentFakeAnswer];
+			currentQuestion.answers[j].answer = answers[currentFakeAnswer];
 		}
+
+		//Shuffle all answers.
+		ShuffleTheAnswersOfQuestion(currentQuestion);
 
 	}
 
+}
+
+void ShuffleTheAnswersOfQuestion(Question& question) {
+
+	const int ANSWERS_LENGHT = 4;
+
+	int howManyTimesToSwap = rand() % 10;
+
+	//Chosing random number for how many times to swap the answers
+	for (int i = 0; i < howManyTimesToSwap; i++)
+	{
+		//Chosing random index to swap the current answers with another.
+		int randSwap = rand() % (ANSWERS_LENGHT - 1);
+		swap(question.answers[i % (ANSWERS_LENGHT - 1)], question.answers[randSwap]);
+	}
 }
