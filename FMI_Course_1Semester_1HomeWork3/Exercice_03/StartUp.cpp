@@ -1,13 +1,27 @@
+/**
+*
+* Solution to homework assignment 3
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2019/2020
+*
+* @author Iliya Vladislavov Valov
+* @idnumber 62483
+* @task 03
+* @compiler VC
+*
+*/
+
 #include<iostream>
 
 using namespace std;
 
 void DeleteElement(char* arr, int deleteIndex, int numLenght);
 
-bool IsWord(char* word);
-bool IsAABWord(char* word);
-bool IsDWord(char* word, int IndexOfTheDSymbol);
-bool IsCWord(char* word, int IndexOfTheCSymbol);
+bool IsWord(char* word, int length);
+bool IsAABWord(char* word, int length);
+bool IsDWord(char* word, int IndexOfTheDSymbol, int length);
+bool IsCWord(char* word, int IndexOfTheCSymbol, int length);
 
 
 char* CoppyString(char* arr, int startFrom, int end);
@@ -23,7 +37,7 @@ int main() {
 	bool* isWords = new bool[size];
 	char* inputWord = new char[INPUT_WORD_SIZE];
 
-	
+
 
 	cout << "Enter words: \r\n";
 	cin.ignore();
@@ -31,7 +45,7 @@ int main() {
 	{
 
 		cin.getline(inputWord, INPUT_WORD_SIZE);
-		isWords[i] = IsWord(inputWord);
+		isWords[i] = IsWord(inputWord, StrLenght(inputWord));
 
 	}
 
@@ -43,25 +57,25 @@ int main() {
 	return 0;
 }
 
-bool IsWord(char* word) {
-	int wordLenght = StrLenght(word);
+bool IsWord(char* word, int wordLength) {
 
 	if (word[0] == '\0')
 		return true;
 
-	for (int i = 0; i < wordLenght; i++)
+	//Searching for specific symbols or combination of them
+	for (int i = 0; i < wordLength; i++)
 	{
 
-		if (word[i] == 'A' && word[wordLenght - 1] == 'B') {
-			if (IsAABWord(word))
+		if (word[i] == 'A' && word[wordLength - 1] == 'B') {
+			if (IsAABWord(word, wordLength))
 				return true;
 		}
 		else if (word[i] == 'D') {
-			if (IsDWord(word, i))
+			if (IsDWord(word, i, wordLength))
 				return true;
 		}
 		else if (word[i] == 'C') {
-			if (IsCWord(word, i))
+			if (IsCWord(word, i, wordLength))
 				return true;
 		}
 	}
@@ -69,14 +83,17 @@ bool IsWord(char* word) {
 	return false;
 }
 
-bool IsCWord(char* word, int IndexOfTheCSymbol) {
-	int wordLenght = StrLenght(word);
+bool IsCWord(char* word, int IndexOfTheCSymbol, int wordLength) {
+	//If we found C in the word we divide the string in 2 strings
+	//One from the start to the symbol 'C'
+	//And the other one from the 'C' + 1 to the end of the string.
 
 	char* leftSide = CoppyString(word, 0, IndexOfTheCSymbol);
-	char* rightSide = CoppyString(word, IndexOfTheCSymbol + 1, wordLenght);
+	char* rightSide = CoppyString(word, IndexOfTheCSymbol + 1, wordLength);
 
-	bool isLeftSideValid = IsWord(leftSide);
-	bool isRightSideValid = IsWord(rightSide);
+	//Checking with recursion if the left and right side are valid
+	bool isLeftSideValid = IsWord(leftSide, StrLenght(leftSide));
+	bool isRightSideValid = IsWord(rightSide, StrLenght(rightSide));
 
 	if (!isLeftSideValid || !isRightSideValid)
 		return false;
@@ -87,8 +104,10 @@ bool IsCWord(char* word, int IndexOfTheCSymbol) {
 	return true;
 }
 
-bool IsDWord(char* word, int IndexOfTheDSymbol) {
-
+bool IsDWord(char* word, int IndexOfTheDSymbol, int length) {
+	//If we found D in the word we divide the string in 2 strings
+	//One from the start to the symbol 'D'
+	//And the other one from the 'D' + 1 to the end of the string.
 	int wordLenght = StrLenght(word);
 	int leftSideLenght = IndexOfTheDSymbol;
 	int rightSideLenght = wordLenght - (IndexOfTheDSymbol + 1);
@@ -96,8 +115,9 @@ bool IsDWord(char* word, int IndexOfTheDSymbol) {
 	char* leftSide = CoppyString(word, 0, IndexOfTheDSymbol);
 	char* rightSide = CoppyString(word, IndexOfTheDSymbol + 1, wordLenght);
 
-	bool isLeftSideValid = IsWord(leftSide);
-	bool isRightSideValid = IsWord(rightSide);
+	//Checking with recursion if the left and right side are valid and if they are equal.
+	bool isLeftSideValid = IsWord(leftSide, StrLenght(leftSide));
+	bool isRightSideValid = IsWord(rightSide, StrLenght(rightSide));
 
 	if ((!isLeftSideValid || !isRightSideValid) || (leftSideLenght != rightSideLenght))
 		return false;
@@ -115,19 +135,20 @@ bool IsDWord(char* word, int IndexOfTheDSymbol) {
 	return true;
 }
 
-bool IsAABWord(char* word) {
-	int wordLenght = StrLenght(word);
+bool IsAABWord(char* word, int wordLength) {
+	//When we find AA.B in the word we delete AA and B from the string.
 
-	if (word[1] != 'A' || word[wordLenght - 1] != 'B')
+	if (word[1] != 'A' || word[wordLength - 1] != 'B')
 		return false;
 
 
-	char* tempWord = CoppyString(word, 0, wordLenght);
-	DeleteElement(tempWord, 0, wordLenght);
-	DeleteElement(tempWord, 0, wordLenght);
-	DeleteElement(tempWord, wordLenght - 3, wordLenght);
+	char* tempWord = CoppyString(word, 0, wordLength);
+	DeleteElement(tempWord, 0, wordLength);
+	DeleteElement(tempWord, 0, wordLength);
+	DeleteElement(tempWord, wordLength - 3, wordLength);
 
-	if (!IsWord(tempWord))
+	//After the deleting we are checking if the middle part is valid.
+	if (!IsWord(tempWord, StrLenght(tempWord)))
 		return false;
 
 

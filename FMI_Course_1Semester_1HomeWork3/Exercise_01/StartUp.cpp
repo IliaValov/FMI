@@ -1,3 +1,17 @@
+/**
+*
+* Solution to homework assignment 3
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2019/2020
+*
+* @author Iliya Vladislavov Valov
+* @idnumber 62483
+* @task 01
+* @compiler VC
+*
+*/
+
 #include <iostream>
 #include <time.h>
 using namespace std;
@@ -282,6 +296,7 @@ void PrintPlayerPoints(Player player) {
 	int jokerLenght = StrLenght(joker);
 	int balanceLenght = StrLenght(balance);
 
+	//Getting the of the Joker value ('yes' or 'no')
 	if (player.isJokerUsed) {
 		joker[jokerLenght] = 'N';
 		joker[jokerLenght + 1] = 'o';
@@ -296,15 +311,18 @@ void PrintPlayerPoints(Player player) {
 		jokerLenght = StrLenght(joker);
 	}
 
+	//Head of the rectangle
 	for (int i = 0; i < RECTANGLE_WIDTH; i++)
 	{
 		cout << "*";
 	}
-
+	
+	//First row
 	cout << "\r\n*";
 	PrintSymbol(' ', RECTANGLE_WIDTH - 2);
 	cout << "*\r\n";
 
+	//The header text
 	cout << "*  ";
 
 	int introLenght = StrLenght(intro);
@@ -316,9 +334,11 @@ void PrintPlayerPoints(Player player) {
 	PrintSymbol(' ', RECTANGLE_WIDTH - 4 - introLenght);
 	cout << "*\r\n";
 
+	//Middle part
 	for (int i = 2; i < RECTANGLE_HEIGHT - 2; i++)
 	{
 		if (i == (((RECTANGLE_HEIGHT - 2) / 2) - 1)) {
+			//Joker text
 			cout << "*  ";
 
 			for (int i = 0; i < jokerLenght; i++)
@@ -329,6 +349,7 @@ void PrintPlayerPoints(Player player) {
 			cout << "*\r\n";
 		}
 		else if (i == ((RECTANGLE_HEIGHT - 2) / 2) + 1) {
+			//Balance text
 			cout << "*  ";
 
 			for (int i = 0; i < balanceLenght; i++)
@@ -340,12 +361,14 @@ void PrintPlayerPoints(Player player) {
 			cout << "*\r\n";
 		}
 		else {
+			//The empty space
 			cout << "*";
 			PrintSymbol(' ', RECTANGLE_WIDTH - 2);
 			cout << "*\r\n";
 		}
 	}
 
+	//Bottom part ofthe rectangle
 	for (int i = 0; i < RECTANGLE_WIDTH; i++)
 	{
 		cout << "*";
@@ -369,7 +392,7 @@ void LeaveOneFakeAnswer(Player& player, int questionIndex) {
 
 void DeletePlayerQuestion(Player& player, int index) {
 	
-	delete[] player.questions->answers;
+	delete[] player.questions[index].answers;
 
 	for (int i = index; i < player.questionsLenght - 1; i++)
 	{
