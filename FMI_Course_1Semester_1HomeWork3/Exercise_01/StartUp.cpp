@@ -20,6 +20,9 @@ struct Player {
 	bool isJokerUsed = false;
 
 	bool isLost = false;
+	bool playerWon = false;
+
+	int nerdPoints = 0;
 
 	int questionsLenght = 10;
 
@@ -42,7 +45,17 @@ void LeaveOneFakeAnswer(Player& player, int questionIndex);
 
 void DeleteElement(char* arr, int deleteIndex, int numLenght);
 
+void PrintPlayerEndGameText(Player player);
+void PrintPlayerPoints(Player player);
+void PrintSymbol(char symbol, int times);
+
+void GarbageCollector(Player player);
+
+int StrLenght(const char* arr);
+
 int StrLenght(const char*);
+int NumberLenght(int number);
+
 
 int main() {
 	char command = ' ';
@@ -56,7 +69,7 @@ int main() {
 		cin >> command;
 
 		//Depends of the char which is entered will start the game or exit if the input is wrong will make you to enter new symbol.
-	
+
 		if (command == 'S') {
 			system("CLS");
 			StartEngine(true);
@@ -69,6 +82,7 @@ int main() {
 		}
 	}
 
+	
 	return 0;
 }
 
@@ -86,15 +100,17 @@ void StartEngine(bool isStarted) {
 	while (isStarted) {
 		char command = ' ';
 
-		PrintQuestion(player, randomQuestion, numberOfQustion);
+		if (player.isLost || player.playerWon) {
+			system("CLS");
+			PrintPlayerEndGameText(player);
+			system("PAUSE");
+			GarbageCollector(player);
+			return;
+		}
 
-		cout << "50/50: ";
-		if (player.isJokerUsed) {
-			cout << "It's used\r\n";
-		}
-		else {
-			cout << "It's not used\r\n";
-		}
+		PrintPlayerPoints(player);
+
+		PrintQuestion(player, randomQuestion, numberOfQustion);
 
 		if (!player.isJokerUsed) {
 			cout << "To use the joker type 'J'\r\n";
@@ -114,28 +130,28 @@ void StartEngine(bool isStarted) {
 				break;
 			else {
 				player.isLost = true;
-				break;
+				continue;
 			}
 		case'B':
 			if (player.questions[randomQuestion].answers[1].isTheRightOne)
 				break;
 			else {
 				player.isLost = true;
-				break;
+				continue;
 			}
 		case'C':
 			if (player.questions[randomQuestion].answers[2].isTheRightOne)
 				break;
 			else {
 				player.isLost = true;
-				break;
+				continue;
 			}
 		case 'D':
 			if (player.questions[randomQuestion].answers[3].isTheRightOne)
 				break;
 			else {
 				player.isLost = true;
-				break;
+				continue;
 			}
 		case'J':
 			system("CLS");
@@ -148,15 +164,15 @@ void StartEngine(bool isStarted) {
 			system("CLS");
 
 			if (numberOfQustion > 1) {
-
-				cout << "Congrats you did " << numberOfQustion - 1 << " questions. \r\n";
-				system("PAUSE");
-				return;
+				player.playerWon = true;
+				player.nerdPoints / 2;
+				continue;
 			}
 			else {
 				cout << "Wow you suck didn't complete 1 question for real ???? \r\n";
 				system("PAUSE");
-				return;
+				player.isLost = true;
+				continue;
 			}
 		default:
 			system("CLS");
@@ -164,11 +180,6 @@ void StartEngine(bool isStarted) {
 		}
 
 		//If the player chose the wrong answer the game will stop. 
-		if (player.isLost) {
-			cout << "You lost at question: " << numberOfQustion << " better luck next time :)!\r\n";
-			system("PAUSE");
-			return;
-		}
 
 		system("CLS");
 
@@ -179,16 +190,57 @@ void StartEngine(bool isStarted) {
 
 		//If questions lenght hit 0 that means he answered every question and he won the game.
 		if (player.questionsLenght == 0) {
-			cout << "Congrats you won !!!!!\r\n\r\n";
-			system("PAUSE");
-			return;
+			player.playerWon = true;
+			continue;
 		}
 
 		//Choosing new quesiton from the array of questions.
 		randomQuestion = rand() % player.questionsLenght;
+
+		if (numberOfQustion < 5) {
+			player.nerdPoints += 1000;
+		}
+		else if (numberOfQustion >= 5 && numberOfQustion < 10) {
+			player.nerdPoints += 2500;
+		}
+		else {
+			player.nerdPoints += 5000;
+		}
 	}
 }
 
+void PrintPlayerEndGameText(Player player) {
+	const int QUESTION_LENGHT = 10;
+
+	if (player.isLost) {
+		cout << "You stupid donkey!!!!\r\n";
+	}
+	else {
+		if (player.nerdPoints >= 3000 && player.nerdPoints < 5000) {
+			cout << "Congrats you are not stupid as i tought :)\r\n";
+		}
+		else if (player.nerdPoints >= 5000 && player.nerdPoints < 10000) {
+			cout << "Mhhh you are kinda neck beard\r\n";
+		}
+		else if (player.nerdPoints >= 10000) {
+			cout << "CONGRATUALITON YOU ARE ULTIMATE NECK BEARD\r\nFind some social life mate!\r\n";
+		}
+		else {
+			cout << "Wow you are little bit smarter than murloc!\r\n";
+		}
+
+		cout << "Nerd points: " << player.nerdPoints;
+
+		cout << "\r\n";
+	}
+	
+	int questionIndex = QUESTION_LENGHT - player.questionsLenght;
+
+	if (questionIndex > 0) {
+		cout << "You end at question " << questionIndex;
+	}
+	cout << "\r\n";
+}
 
 void PrintQuestion(Player player, int index, int numberOfQuestion) {
 
@@ -217,6 +269,90 @@ void PrintAnswers(Question question) {
 	}
 }
 
+void PrintPlayerPoints(Player player) {
+
+	const int JOKER_LENGHT = 13;
+	const int RECTANGLE_WIDTH = 50;
+	const int RECTANGLE_HEIGHT = 9;
+
+	char joker[JOKER_LENGHT] = { "Joker: " };
+	char intro[] = { "Welcome to \"BECOME A NERD\" !!!!" };
+	char balance[] = { "Nerd points: " };
+
+	int jokerLenght = StrLenght(joker);
+	int balanceLenght = StrLenght(balance);
+
+	if (player.isJokerUsed) {
+		joker[jokerLenght] = 'N';
+		joker[jokerLenght + 1] = 'o';
+		joker[jokerLenght + 2] = '\0';
+		jokerLenght = StrLenght(joker);
+	}
+	else {
+		joker[jokerLenght] = 'Y';
+		joker[jokerLenght + 1] = 'e';
+		joker[jokerLenght + 2] = 's';
+		joker[jokerLenght + 3] = '\0';
+		jokerLenght = StrLenght(joker);
+	}
+
+	for (int i = 0; i < RECTANGLE_WIDTH; i++)
+	{
+		cout << "*";
+	}
+
+	cout << "\r\n*";
+	PrintSymbol(' ', RECTANGLE_WIDTH - 2);
+	cout << "*\r\n";
+
+	cout << "*  ";
+
+	int introLenght = StrLenght(intro);
+
+	for (int i = 0; i < introLenght; i++)
+	{
+		cout << intro[i];
+	}
+	PrintSymbol(' ', RECTANGLE_WIDTH - 4 - introLenght);
+	cout << "*\r\n";
+
+	for (int i = 2; i < RECTANGLE_HEIGHT - 2; i++)
+	{
+		if (i == (((RECTANGLE_HEIGHT - 2) / 2) - 1)) {
+			cout << "*  ";
+
+			for (int i = 0; i < jokerLenght; i++)
+			{
+				cout << joker[i];
+			}
+			PrintSymbol(' ', RECTANGLE_WIDTH - 4 - jokerLenght);
+			cout << "*\r\n";
+		}
+		else if (i == ((RECTANGLE_HEIGHT - 2) / 2) + 1) {
+			cout << "*  ";
+
+			for (int i = 0; i < balanceLenght; i++)
+			{
+				cout << balance[i];
+			}
+			cout << player.nerdPoints;
+			PrintSymbol(' ', RECTANGLE_WIDTH - 5 - NumberLenght(player.nerdPoints) - balanceLenght);
+			cout << "*\r\n";
+		}
+		else {
+			cout << "*";
+			PrintSymbol(' ', RECTANGLE_WIDTH - 2);
+			cout << "*\r\n";
+		}
+	}
+
+	for (int i = 0; i < RECTANGLE_WIDTH; i++)
+	{
+		cout << "*";
+	}
+	cout << "\r\n";
+}
+
 void LeaveOneFakeAnswer(Player& player, int questionIndex) {
 	Question& question = player.questions[questionIndex];
 
@@ -232,6 +368,9 @@ void LeaveOneFakeAnswer(Player& player, int questionIndex) {
 }
 
 void DeletePlayerQuestion(Player& player, int index) {
+	
+	delete[] player.questions->answers;
+
 	for (int i = index; i < player.questionsLenght - 1; i++)
 	{
 		player.questions[i] = player.questions[i + 1];
@@ -255,6 +394,26 @@ int StrLenght(const char* arr) {
 	while (arr[index++] != '\0');
 
 	return index - 1;
+}
+
+int NumberLenght(int number) {
+
+	int counter = 0;
+
+	while (number != 0) {
+		counter++;
+		number /= 10;
+	}
+
+	return counter;
+}
+
+void PrintSymbol(char symbol, int times) {
+	for (int i = 0; i < times; i++)
+	{
+		cout << symbol;
+	}
+
 }
 
 void GenerateQuestionsForPlayer(Player& player) {
@@ -368,4 +527,13 @@ void ShuffleTheAnswersOfQuestion(Question& question) {
 		int randSwap = rand() % (ANSWERS_LENGHT - 1);
 		swap(question.answers[i % (ANSWERS_LENGHT - 1)], question.answers[randSwap]);
 	}
+}
+
+void GarbageCollector(Player player) {
+	for (int i = 0; i < player.questionsLenght; i++)
+	{
+		delete[] player.questions[i].answers;
+	}
+
+	delete[] player.questions;
 }
