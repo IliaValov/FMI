@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 class String
 {
 private:
@@ -6,7 +8,8 @@ private:
 
 public:
 	String();
-	String(String const& str);
+	String(const String& str);
+	String(const char* str);
 	~String();
 
 	int Get_Length();
@@ -14,13 +17,18 @@ public:
 	char* Get_String();
 
 	bool operator ==(const char* obj);
-	bool operator ==(String const* obj);
+	bool operator ==(const String& obj);
+
+	bool operator !=(const char* obj);
+	bool operator !=(const String& obj);
 
 	String operator =(const char* obj);
-	String operator =(String const& obj);
+	String operator =(const String& obj);
 
-	String operator +(char* const& obj);
-	String operator +(String const& obj);
+	String operator +(const char* obj);
+	String operator +(const String& obj);
+
+	friend std::ostream& operator<<(std::ostream& os, const String& obj);
 };
 
 int getStrLenth(const char* text);

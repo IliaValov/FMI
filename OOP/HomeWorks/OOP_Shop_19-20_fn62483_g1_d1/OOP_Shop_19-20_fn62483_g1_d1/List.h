@@ -1,4 +1,5 @@
 #pragma once
+
 template<typename T>
 class List
 {
@@ -30,6 +31,8 @@ public:
 	bool Add_ElementOnIndex(T element, int index);
 
 	bool Delete_Element(int index);
+
+	T operator[](int);
 };
 
 template<typename T>
@@ -162,5 +165,14 @@ bool List<T>::Delete_Element(int index)
 	this->length--;
 
 	return true;
+}
+
+template<typename T>
+inline T List<T>::operator[](int index)
+{
+	if (index >= size)
+		return T();
+
+	return this->elements[index];
 }
 

@@ -7,3 +7,4 @@ enum ProductType {
 	Software = 4,
 	Other = 5,
 };
+

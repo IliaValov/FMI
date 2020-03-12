@@ -1,5 +1,59 @@
 #include "Product.h"
 
+Product::Product() {
+
+}
+
+Product::Product(const Product& obj)
+{
+	this->name = obj.name;
+	this->description = obj.description;
+	this->brand = obj.brand;
+	this->price = obj.price;
+	this->quantity = obj.quantity;
+	this->discountInPercentige = obj.discountInPercentige;
+	this->productType = obj.productType;
+}
+
+Product::~Product() {
+}
+
+bool Product::Set_Name(const String& name)
+{
+	this->name = name;
+
+	return true;
+}
+
+String Product::Get_Name()
+{
+	return this->name;
+}
+
+bool Product::Set_Brand(const String& brand)
+{
+	this->brand = brand;
+
+	return true;
+}
+
+String Product::Get_Brand()
+{
+	return this->brand;
+}
+
+bool Product::Set_Description(const String& description)
+{
+	this->description = description;
+
+	return true;
+}
+
+String Product::Get_Description()
+{
+	return this->description;
+}
+
 bool Product::Set_Price(double price)
 {
 	if (price < 0) {
@@ -56,7 +110,7 @@ bool Product::Set_ProductType(ProductType type)
 {
 	this->productType = type;
 
-	return false;
+	return true;
 }
 
 ProductType Product::Get_ProductType()
@@ -64,47 +118,52 @@ ProductType Product::Get_ProductType()
 	return this->productType;
 }
 
-Product::Product() {
-	this->name = new char[41];
-	this->brand = new char[41];
-	this->description = new char[401];
-
-	this->price = 0;
-	this->quantity = 0;
-	this->discountInPercentige = 0;
-
-	this->productType = ProductType::None;
-}
-
-Product::~Product() {
-}
-
-bool Product::Set_Name(String* name)
+Product Product::operator=(const Product& obj)
 {
-	return false;
+	if (this != &obj) {
+		this->name = obj.name;
+		this->description = obj.description;
+		this->brand = obj.brand;
+		this->price = obj.price;
+		this->quantity = obj.quantity;
+		this->discountInPercentige = obj.discountInPercentige;
+		this->productType = obj.productType;
+	}
+
+	return *this;
 }
 
-String Product::Get_Name()
+bool Product::operator==(const Product& obj)
 {
-	return this->name;
+	if (this->name != obj.name) {
+		return false;
+	}
+	else if (this->description != obj.description)
+	{
+		return false;
+	}
+	else if (this->brand != obj.brand)
+	{
+		return false;
+	}
+	else if (this->price != obj.price)
+	{
+		return false;
+	}
+	else if (this->quantity != obj.quantity)
+	{
+		return false;
+	}
+	else if (this->discountInPercentige != obj.discountInPercentige)
+	{
+		return false;
+	}
+	else if (this->productType != obj.productType)
+	{
+		return false;
+	}
+	else
+		return true;
 }
 
-bool Product::Set_Brand(String* brand)
-{
-	return false;
-}
 
-String Product::Get_Brand()
-{
-	return String();
-}
-
-bool Product::Set_Description(String* description)
-{
-	return false;
-}
-
-String Product::Get_Description()
-{
-	return String();
-}
