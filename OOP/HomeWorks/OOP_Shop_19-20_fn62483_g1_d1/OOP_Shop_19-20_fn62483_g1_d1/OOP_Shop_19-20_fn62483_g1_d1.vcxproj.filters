@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Categories">
-      <UniqueIdentifier>{db35886a-203a-4579-8ffa-584a002ed065}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Categories">
-      <UniqueIdentifier>{2d54894a-010e-4228-9fc0-403075f800f0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="String.cpp">
@@ -36,17 +30,14 @@
     <ClCompile Include="Output.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FashionCategory.cpp">
-      <Filter>Source Files\Categories</Filter>
-    </ClCompile>
-    <ClCompile Include="ElectronicCategory.cpp">
-      <Filter>Source Files\Categories</Filter>
-    </ClCompile>
     <ClCompile Include="Category.cpp">
-      <Filter>Source Files\Categories</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SportCategory.cpp">
-      <Filter>Source Files\Categories</Filter>
+    <ClCompile Include="Cart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductCart.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +53,6 @@
     <ClInclude Include="Shop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProductType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,16 +60,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Category.h">
-      <Filter>Header Files\Categories</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ElectronicCategory.h">
-      <Filter>Header Files\Categories</Filter>
+    <ClInclude Include="Cart.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FashionCategory.h">
-      <Filter>Header Files\Categories</Filter>
-    </ClInclude>
-    <ClInclude Include="SportCategory.h">
-      <Filter>Header Files\Categories</Filter>
+    <ClInclude Include="ProductCart.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,7 +1,19 @@
 #include "Product.h"
 
 Product::Product() {
+	this->price = 0;
+	this->discountInPercentige = 0;
+	this->quantity = 0;
+}
 
+Product::Product(String name, String description, String brand, double price, int quantity, double discountInPercentige)
+{
+	this->name = name;
+	this->description = description;
+	this->brand = brand;
+	this->price = price;
+	this->quantity = quantity;
+	this->discountInPercentige = discountInPercentige;
 }
 
 Product::Product(const Product& obj)
@@ -12,7 +24,6 @@ Product::Product(const Product& obj)
 	this->price = obj.price;
 	this->quantity = obj.quantity;
 	this->discountInPercentige = obj.discountInPercentige;
-	this->productType = obj.productType;
 }
 
 Product::~Product() {
@@ -85,7 +96,7 @@ bool Product::Set_Quantity(int quantity)
 	return true;
 }
 
-int Product::Get_Quantity(int quantity)
+int Product::Get_Quantity()
 {
 	return this->quantity;
 }
@@ -106,17 +117,21 @@ double Product::Get_DiscountInPercentige()
 	return this->discountInPercentige;
 }
 
-bool Product::Set_ProductType(ProductType type)
+void Product::Print_Product()
 {
-	this->productType = type;
-
-	return true;
+	std::cout << "	-name: " << this->name << "\r\n"; 
+	std::cout << "	-brand: " << this->brand << "\r\n"; 
+	std::cout << "	-description: " << this->description << "\r\n"; 
+	std::cout << "	-price: " << this->price<< "\r\n"; 
+	std::cout << "	-quantity: " << this->quantity<< "\r\n"; 
+	std::cout << "	-discount: " << this->discountInPercentige<< "%\r\n"; 
 }
 
-ProductType Product::Get_ProductType()
+void Product::Print_Product_Name()
 {
-	return this->productType;
+	std::cout << "	-name: " << this->name << "\r\n";
 }
+
 
 Product Product::operator=(const Product& obj)
 {
@@ -127,7 +142,6 @@ Product Product::operator=(const Product& obj)
 		this->price = obj.price;
 		this->quantity = obj.quantity;
 		this->discountInPercentige = obj.discountInPercentige;
-		this->productType = obj.productType;
 	}
 
 	return *this;
@@ -158,10 +172,7 @@ bool Product::operator==(const Product& obj)
 	{
 		return false;
 	}
-	else if (this->productType != obj.productType)
-	{
-		return false;
-	}
+
 	else
 		return true;
 }

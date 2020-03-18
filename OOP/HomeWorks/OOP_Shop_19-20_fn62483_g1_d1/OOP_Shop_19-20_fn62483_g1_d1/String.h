@@ -22,13 +22,15 @@ public:
 	bool operator !=(const char* obj);
 	bool operator !=(const String& obj);
 
-	String operator =(const char* obj);
-	String operator =(const String& obj);
+	String& operator =(const char* obj);
+	String& operator =(const String& obj);
 
-	String operator +(const char* obj);
+	String operator +(char symbol);
+	String operator +(const char* symbols);
 	String operator +(const String& obj);
 
 	friend std::ostream& operator<<(std::ostream& os, const String& obj);
+	friend std::istream& operator>>(std::istream& is, String& obj);
 };
 
 int getStrLenth(const char* text);

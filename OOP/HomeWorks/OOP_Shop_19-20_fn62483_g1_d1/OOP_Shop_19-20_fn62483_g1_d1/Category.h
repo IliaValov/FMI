@@ -11,18 +11,32 @@ private:
 
 public:
 	Category();
+	Category(const Category& obj);
+	Category(const String name);
+	~Category();
 
-	virtual ~Category();
+	String Get_Name();
+	void Set_Name(const String name);
+	
+	int Get_Length();
+	int Get_Products_Length();
 
-	virtual void Set_Name(const String name);
-	virtual String Get_Name();
+	bool Add_Product(Product product);
 
-	virtual bool Add_Product(Product product);
-	virtual Product Get_Product_By_Index(int index);
-	virtual Product Get_Product_By_Name(String name);
-	virtual const List<Product> Get_Product_All_Products();
+	Product Get_Product_By_Index(int index);
+	Product Get_Product_By_Name(const String name);
 
-	virtual bool Any_Product_By_Name(String name);
+	const List<Product> Get_All_Products();
+
+	bool Any_Product_By_Name(const String name);
+
+	bool Delete_Product_By_Index(int index);
+
+	void Print_Category();
+	void Print_Category_Products();
+	void Print_Category_Products_Names();
+
+	Category operator =(const Category& obj);
 };
 
 

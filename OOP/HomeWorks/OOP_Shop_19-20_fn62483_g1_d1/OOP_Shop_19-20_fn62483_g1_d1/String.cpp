@@ -8,12 +8,12 @@ String::String()
 
 String::String(String const& str)
 {
-	this->text = concat(str.text,nullptr);
+	this->text = concat(str.text, nullptr);
 }
 
 String::String(const char* str)
 {
-	this->text = concat(str,nullptr);
+	this->text = concat(str, nullptr);
 }
 
 String::~String()
@@ -113,21 +113,21 @@ bool String::operator!=(const String& obj)
 	return !isEqual;
 }
 
-String String::operator=(const String& obj)
+String& String::operator=(const String& obj)
 {
 	if (this != &obj) {
 
 		delete[] this->text;
 
 		this->text = concat(obj.text, nullptr);
-
 	}
 
 	return *this;
 }
 
-String String::operator=(const char* obj)
+String& String::operator=(const char* obj)
 {
+
 	delete[] this->text;
 
 	this->text = concat(obj, nullptr);
@@ -135,11 +135,22 @@ String String::operator=(const char* obj)
 	return *this;
 }
 
-String String::operator+(const String &obj)
+String String::operator+(const String& obj)
 {
 	String result;
 
 	result.text = concat(this->text, obj.text);
+
+	return result;
+}
+
+String String::operator+(const char symbol)
+{
+	String result;
+
+	char temp[2]{ symbol, '\0' };
+
+	result.text = concat(this->text, temp);
 
 	return result;
 }
@@ -158,6 +169,18 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	os << obj.text;
 
 	return os;
+}
+
+std::istream& operator>>(std::istream& is, String& obj)
+{
+	char c;
+	while (std::cin.get(c) && c != '\n') {
+		String temp = (obj + c);
+	
+		obj = temp;
+	}
+
+	return is;
 }
 
 int getStrLenth(const char* text)

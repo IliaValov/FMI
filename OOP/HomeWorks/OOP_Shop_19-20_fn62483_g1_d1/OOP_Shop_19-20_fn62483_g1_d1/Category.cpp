@@ -4,6 +4,17 @@ Category::Category()
 {
 }
 
+Category::Category(const Category& obj)
+{
+	this->name = obj.name;
+	this->products = obj.products;
+}
+
+Category::Category(const String name)
+{
+	this->name = name;
+}
+
 Category::~Category()
 {
 }
@@ -13,6 +24,16 @@ void Category::Set_Name(const String name)
 	this->name = name;
 }
 
+int Category::Get_Length()
+{
+	return this->products.Get_Length();
+}
+
+int Category::Get_Products_Length()
+{
+	return this->products.Get_Length();
+}
+
 String Category::Get_Name()
 {
 	return this->name;
@@ -20,12 +41,15 @@ String Category::Get_Name()
 
 bool Category::Add_Product(Product product)
 {
+	if (this->Any_Product_By_Name(product.Get_Name()))
+		return false;
+
 	this->products.Add_Element(product);
 
 	return true;
 }
 
-Product Category::Get_Product_By_Index(int index)
+Product Category::Get_Product_By_Index(const int index)
 {
 	if (index >= this->products.Get_Length()) {
 		return Product();
@@ -34,7 +58,7 @@ Product Category::Get_Product_By_Index(int index)
 	return this->products[index];
 }
 
-Product Category::Get_Product_By_Name(String name)
+Product Category::Get_Product_By_Name(const String name)
 {
 	int length = this->products.Get_Length();
 
@@ -49,12 +73,12 @@ Product Category::Get_Product_By_Name(String name)
 	return Product();
 }
 
-const List<Product> Category::Get_Product_All_Products()
+const List<Product> Category::Get_All_Products()
 {
 	return this->products;
 }
 
-bool Category::Any_Product_By_Name(String name)
+bool Category::Any_Product_By_Name(const String name)
 {
 	int length = this->products.Get_Length();
 
@@ -67,5 +91,43 @@ bool Category::Any_Product_By_Name(String name)
 	}
 
 	return false;
+}
+
+bool Category::Delete_Product_By_Index(int index)
+{
+	return this->products.Delete_Element(index);
+}
+
+void Category::Print_Category()
+{
+	std::cout << "	-" << this->name << "\r\n";
+}
+
+void Category::Print_Category_Products()
+{
+	std::cout << "Category: " << this->name << "\r\n";
+	for (int i = 0; i < this->products.Get_Length(); i++)
+	{
+		this->products[i].Print_Product();
+	}
+}
+
+void Category::Print_Category_Products_Names()
+{
+	std::cout << "Category: " << this->name << "\r\n";
+	for (int i = 0; i < this->products.Get_Length(); i++)
+	{
+		this->products[i].Print_Product_Name();
+	}
+}
+
+Category Category::operator=(const Category& obj)
+{
+	if (this != &obj) {
+		this->name = obj.name;
+		this->products = obj.products;
+	}
+
+	return *this;
 }
 

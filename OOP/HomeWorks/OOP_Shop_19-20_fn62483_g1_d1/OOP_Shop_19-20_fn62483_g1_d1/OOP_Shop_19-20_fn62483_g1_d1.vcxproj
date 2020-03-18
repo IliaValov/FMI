@@ -139,27 +139,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cart.cpp" />
     <ClCompile Include="Category.cpp" />
-    <ClCompile Include="ElectronicCategory.cpp" />
-    <ClCompile Include="FashionCategory.cpp" />
     <ClCompile Include="Output.cpp" />
     <ClCompile Include="Product.cpp" />
+    <ClCompile Include="ProductCart.cpp" />
     <ClCompile Include="Shop.cpp" />
-    <ClCompile Include="SportCategory.cpp" />
     <ClCompile Include="StartUp.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cart.h" />
     <ClInclude Include="Category.h" />
-    <ClInclude Include="ElectronicCategory.h" />
-    <ClInclude Include="FashionCategory.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Output.h" />
     <ClInclude Include="Product.h" />
-    <ClInclude Include="ProductType.h" />
+    <ClInclude Include="ProductCart.h" />
     <ClInclude Include="Shop.h" />
-    <ClInclude Include="SportCategory.h" />
     <ClInclude Include="String.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

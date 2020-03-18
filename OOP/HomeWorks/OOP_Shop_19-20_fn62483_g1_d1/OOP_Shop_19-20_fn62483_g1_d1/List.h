@@ -19,7 +19,8 @@ private:
 
 public:
 	List();
-	List(T elements[], int size);
+	List(const T elements[], const int size);
+	List(const List& list);
 
 	int Get_Length();
 
@@ -32,8 +33,45 @@ public:
 
 	bool Delete_Element(int index);
 
+	bool Delete_All();
+
+	List<T> operator =(const List<T>& obj);
 	T operator[](int);
 };
+
+template<typename T>
+List<T>::List()
+{
+	this->elements = new T[0];
+}
+
+template<typename T>
+List<T>::List(const T elements[], const int size)
+{
+	this->elements = new T[size];
+
+	this->size = size;
+	this->length = size;
+
+	for (int i = 0; i < this->length; i++)
+	{
+		this->elements[i] = elements[i];
+	}
+}
+
+template<typename T>
+inline List<T>::List(const List& list)
+{
+	this->length = list.length;
+	this->size = list.size;
+
+	this->elements = new T[this->size];
+
+	for (int i = 0; i < list.length; i++)
+	{
+		this->elements[i] = list.elements[i];
+	}
+}
 
 template<typename T>
 void List<T>::Resize_Array() {
@@ -73,7 +111,7 @@ void List<T>::Shift_Array_To_Left(int index)
 		this->elements[i - 1] = this->elements[i];
 	}
 
-	this->elements[this->elements - 1] = T();
+	this->elements[this->length - 1] = T();
 }
 
 template<typename T>
@@ -84,26 +122,6 @@ bool List<T>::Need_Resize()
 	}
 
 	return false;
-}
-
-template<typename T>
-List<T>::List()
-{
-	this->elements = new T[0];
-}
-
-template<typename T>
-List<T>::List(T elements[], int size)
-{
-	this->elements = new T[size];
-
-	this->size = size;
-	this->length = size;
-
-	for (int i = 0; i < this->length; i++)
-	{
-		this->elements[i] = elements[i];
-	}
 }
 
 template<typename T>
@@ -165,6 +183,36 @@ bool List<T>::Delete_Element(int index)
 	this->length--;
 
 	return true;
+}
+
+template<typename T>
+inline bool List<T>::Delete_All()
+{
+	delete[] this->elements;
+
+	this->elements = new T[0];
+
+	return true;
+}
+
+template<typename T>
+inline List<T> List<T>::operator=(const List<T>& obj)
+{
+	if (this != &obj) {
+		this->length = obj.length;
+		this->size = obj.size;
+
+		delete[] this->elements;
+
+		this->elements = new T[this->size];
+
+		for (int i = 0; i < obj.length; i++)
+		{
+			this->elements[i] = obj.elements[i];
+		}
+	}
+
+	return *this;
 }
 
 template<typename T>
