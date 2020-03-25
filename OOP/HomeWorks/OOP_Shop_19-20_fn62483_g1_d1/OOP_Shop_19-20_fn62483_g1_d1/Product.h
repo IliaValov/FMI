@@ -1,9 +1,11 @@
 #pragma once
 #include "String.h"
+#include "ProductCart.h"
 
 class Product
 {
 private:
+	friend class ProductCart;
 
 	String name;
 
@@ -19,7 +21,7 @@ private:
 
 public:
 	Product();
-	Product(String name, String description, String brand, double price, int quantity, double discountInPercentige);
+	Product(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige);
 	Product(const Product& obj);
 	~Product();
 
@@ -32,13 +34,13 @@ public:
 	bool Set_Description(const String& description);
 	String Get_Description();
 
-	bool Set_Price(double price);
+	bool Set_Price(const double& price);
 	double Get_Price();
 
-	bool Set_Quantity(int quantity);
+	bool Set_Quantity(const int& quantity);
 	int Get_Quantity();
 
-	bool Set_DiscountInPercentige(double discount);
+	bool Set_DiscountInPercentige(const double& discount);
 	double Get_DiscountInPercentige();
 
 	void Print_Product();

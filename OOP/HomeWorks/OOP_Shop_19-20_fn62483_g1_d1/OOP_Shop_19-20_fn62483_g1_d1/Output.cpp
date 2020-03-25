@@ -10,12 +10,12 @@ bool Output::WriteLineOnConsole()
 	return false;
 }
 
-bool Output::WriteOnFile(String path, String fileName)
+bool Output::WriteOnFile(const String& path, const String& fileName)
 {
 	return false;
 }
 
-bool Output::WriteLineOnFile(String path, String fileName)
+bool Output::WriteLineOnFile(const String& path, const String& fileName)
 {
 	return false;
 }

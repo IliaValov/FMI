@@ -1,6 +1,6 @@
 #include "Cart.h"
 
-bool Cart::Add_Product_To_Cart(ProductCart product)
+bool Cart::Add_Product_To_Cart(const ProductCart& product)
 {
 	//TODO ADD VALIDATION
 
@@ -8,13 +8,13 @@ bool Cart::Add_Product_To_Cart(ProductCart product)
 
 }
 
-bool Cart::Delete_Product_From_Cart_By_Index(int index)
+bool Cart::Delete_Product_From_Cart_By_Index(const int& index)
 {
 	return this->productsInCart.Delete_Element(index);
 
 }
 
-bool Cart::Delete_Product_From_Cart_By_Name(String name)
+bool Cart::Delete_Product_From_Cart_By_Name(const String& name)
 {
 	for (int i = 0; i < this->productsInCart.Get_Length(); i++)
 	{
@@ -28,9 +28,9 @@ bool Cart::Delete_Product_From_Cart_By_Name(String name)
 	return false;
 }
 
-int Cart::Buy_The_Products()
+double Cart::Buy_The_Products()
 {
-	int totalBill = this->Total_Bill();
+	double totalBill = this->Total_Bill();
 
 	std::cout << "You paid: " << totalBill;
 
@@ -64,7 +64,7 @@ void Cart::Show_The_Bill()
 	std::cout << "Total bill: " << this->Total_Bill();
 }
 
-bool Cart::Any_Product_By_This_Name(String name)
+bool Cart::Any_Product_By_This_Name(const String& name)
 {
 	int length = this->productsInCart.Get_Length();
 

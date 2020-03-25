@@ -2,7 +2,7 @@
 Shop::Shop() {
 }
 
-Shop::Shop(const String name)
+Shop::Shop(const String& name)
 {
 	this->name = name;
 }
@@ -17,7 +17,7 @@ Shop::Shop(const Shop& obj)
 Shop::~Shop() {
 }
 
-bool Shop::Set_Name(const String name)
+bool Shop::Set_Name(const String& name)
 {
 	//TODO VALIDATION
 
@@ -41,7 +41,7 @@ String Shop::Get_Name()
 	return this->name;
 }
 
-Category* Shop::Get_Category_By_Name(const String name)
+Category* Shop::Get_Category_By_Name(const String& name)
 {
 	for (int i = 0; i < this->categories.Get_Length(); i++)
 	{
@@ -53,7 +53,7 @@ Category* Shop::Get_Category_By_Name(const String name)
 	return &Category();
 }
 
-Product Shop::Get_Product_By_Name(const String name)
+Product Shop::Get_Product_By_Name(const String& name)
 {
 	for (int i = 0; i < categories.Get_Length(); i++)
 	{
@@ -75,7 +75,7 @@ const List<Category> Shop::Get_All_Categories()
 	return this->categories;
 }
 
-bool Shop::Add_Product_To_Category(const String categoryName, const Product product)
+bool Shop::Add_Product_To_Category(const String& categoryName, const Product& product)
 {
 	//TODO validation
 
@@ -96,12 +96,12 @@ double Shop::Buy_All_Products_From_Cart()
 	return this->cart.Buy_The_Products();
 }
 
-bool Shop::Add_Product_To_Cart(ProductCart product)
+bool Shop::Add_Product_To_Cart(const ProductCart& product)
 {
 	return this->cart.Add_Product_To_Cart(product);
 }
 
-bool Shop::Delete_Product_From_Cart_By_Name(String name)
+bool Shop::Delete_Product_From_Cart_By_Name(const String& name)
 {
 	return this->cart.Delete_Product_From_Cart_By_Name(name);
 }
@@ -111,7 +111,7 @@ void Shop::List_Products_From_Cart()
 	this->cart.Show_The_Bill();
 }
 
-bool Shop::Delete_Product_From_Shop_By_Name(String productName)
+bool Shop::Delete_Product_From_Shop_By_Name(const String& productName)
 {
 
 	for (int i = 0; i < categories.Get_Length(); i++)
@@ -130,7 +130,7 @@ bool Shop::Delete_Product_From_Shop_By_Name(String productName)
 	return false;
 }
 
-bool Shop::Delete_Category_From_Shop_By_Name(String categoryName)
+bool Shop::Delete_Category_From_Shop_By_Name(const String& categoryName)
 {
 	for (int i = 0; i < categories.Get_Length(); i++)
 	{
@@ -145,16 +145,16 @@ bool Shop::Delete_Category_From_Shop_By_Name(String categoryName)
 	return false;
 }
 
-bool Shop::Delete_Product_From_Cart_By_Index(int index)
+bool Shop::Delete_Product_From_Cart_By_Index(const int& index)
 {
 	return this->cart.Delete_Product_From_Cart_By_Index(index);
 }
 
-bool Shop::Any_Category_By_This_Name(String categoryName)
+bool Shop::Any_Category_By_This_Name(const String& categoryName)
 {
 	for (int i = 0; i < this->categories.Get_Length(); i++)
 	{
-		if (categoryName == this->categories.Get_Element(i).Get_Name()) {
+		if (this->categories.Get_Element(i).Get_Name() == categoryName) {
 			return true;
 		}
 	}
@@ -162,7 +162,7 @@ bool Shop::Any_Category_By_This_Name(String categoryName)
 	return false;
 }
 
-bool Shop::Any_Product_By_This_Name(String productName)
+bool Shop::Any_Product_By_This_Name(const String& productName)
 {
 	for (int i = 0; i < this->categories.Get_Length(); i++)
 	{
@@ -173,7 +173,7 @@ bool Shop::Any_Product_By_This_Name(String productName)
 	return false;
 }
 
-bool Shop::Any_Product_In_Cart_By_This_Name(String productName)
+bool Shop::Any_Product_In_Cart_By_This_Name(const String& productName)
 {
 	return this->Any_Product_In_Cart_By_This_Name(productName);
 }

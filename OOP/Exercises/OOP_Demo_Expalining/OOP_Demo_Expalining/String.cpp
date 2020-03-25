@@ -113,26 +113,6 @@ bool String::operator!=(const String& obj)
 	return !isEqual;
 }
 
-bool String::operator<(const char* sym)
-{
-	return stringToInt(this->text) < stringToInt(sym);
-}
-
-bool String::operator<(const String& obj)
-{
-	return stringToInt(this->text) < stringToInt(obj.text);
-}
-
-bool String::operator>(const char* sym)
-{
-	return stringToInt(this->text) > stringToInt(sym);
-}
-
-bool String::operator>(const String& obj)
-{
-	return stringToInt(this->text) > stringToInt(obj.text);
-}
-
 String& String::operator=(const String& obj)
 {
 	if (this != &obj) {
@@ -164,7 +144,7 @@ String String::operator+(const String& obj)
 	return result;
 }
 
-String String::operator+(const char& symbol)
+String String::operator+(const char symbol)
 {
 	String result;
 
@@ -196,23 +176,11 @@ std::istream& operator>>(std::istream& is, String& obj)
 	char c;
 	while (std::cin.get(c) && c != '\n') {
 		String temp = (obj + c);
-	
+
 		obj = temp;
 	}
 
 	return is;
-}
-
-int stringToInt(const char* text)
-{
-	int sum = 0;
-
-	for (int i = 0; i < getStrLenth(text); i++)
-	{
-		sum += text[i];
-	}
-
-	return sum;
 }
 
 int getStrLenth(const char* text)

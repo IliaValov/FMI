@@ -18,25 +18,25 @@ ProductCart::ProductCart(const ProductCart& obj)
 	this->discountInPercentige = obj.discountInPercentige;
 }
 
-ProductCart::ProductCart(Product& obj)
+ProductCart::ProductCart(const Product& obj)
 {
-	this->name = obj.Get_Name();
-	this->description = obj.Get_Description();
-	this->brand = obj.Get_Brand();
-	this->price = obj.Get_Price();
-	this->quantity = obj.Get_Quantity();
-	this->discountInPercentige = obj.Get_DiscountInPercentige();
+	this->name = obj.name;
+	this->description = obj.description;
+	this->brand = obj.brand;
+	this->price = obj.price;
+	this->quantity = obj.quantity;
+	this->discountInPercentige = obj.discountInPercentige;
 }
 
-ProductCart::ProductCart(Product product, const String categoryName)
+ProductCart::ProductCart(const Product& obj, const String& categoryName)
 {
-	this->name = product.Get_Name();
-	this->description = product.Get_Description();
-	this->brand = product.Get_Brand();
+	this->name = obj.name;
+	this->description = obj.description;
+	this->brand = obj.brand;
+	this->price = obj.price;
+	this->quantity = obj.quantity;
+	this->discountInPercentige = obj.discountInPercentige;
 	this->categoryName = categoryName;
-	this->price = product.Get_Price();
-	this->quantity = product.Get_Quantity();
-	this->discountInPercentige = product.Get_DiscountInPercentige();
 }
 
 ProductCart::~ProductCart()
@@ -48,7 +48,7 @@ String ProductCart::Get_Category_Name()
 	return this->categoryName;
 }
 
-bool ProductCart::Set_Category_Name(const String categoryName)
+bool ProductCart::Set_Category_Name(const String& categoryName)
 {
 	//TODO VALIDATION
 
@@ -117,14 +117,14 @@ ProductCart ProductCart::operator=(const ProductCart& obj)
 	return *this;
 }
 
-ProductCart ProductCart::operator=(Product& obj)
+ProductCart ProductCart::operator=(const Product& obj)
 {
-	this->name = obj.Get_Name();
-	this->description = obj.Get_Description();
-	this->brand = obj.Get_Brand();
-	this->price = obj.Get_Price();
-	this->quantity = obj.Get_Quantity();
-	this->discountInPercentige = obj.Get_DiscountInPercentige();
+	this->name = obj.name;
+	this->description = obj.description;
+	this->brand = obj.brand;
+	this->price = obj.price;
+	this->quantity = obj.quantity;
+	this->discountInPercentige = obj.discountInPercentige;
 
 	return *this;
 }

@@ -1,6 +1,7 @@
 #include <iostream> 
 #include "List.h"
 #include "String.h"
+
 #include "Shop.h"
 #include "Category.h"
 using namespace std;
@@ -128,8 +129,10 @@ void Administration_Panel_Add_Product_To_Category(Shop* shop) {
 
 		cout << "Type the name of one of the categories from above: ";
 
-		cin.ignore();
 		cin >> categoryName;
+
+		cin.clear();
+		cin.sync();
 
 		if (shop->Any_Category_By_This_Name(categoryName))
 			break;

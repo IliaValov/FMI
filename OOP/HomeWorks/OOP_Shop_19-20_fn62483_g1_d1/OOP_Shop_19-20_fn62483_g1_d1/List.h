@@ -11,32 +11,33 @@ private:
 
 	void Resize_Array();
 
-	void Shift_Array_To_Right(int index);
-	void Shift_Array_To_Left(int index);
+	void Shift_Array_To_Right(const int& index);
+	void Shift_Array_To_Left(const int& index);
 
 	bool Need_Resize();
 
 
 public:
 	List();
-	List(const T elements[], const int size);
+	List(const T elements[], const int& size);
 	List(const List& list);
+	~List();
 
 	int Get_Length();
 
 	int Get_Size();
 
-	T Get_Element(int index);
+	T Get_Element(const int& index);
 
-	bool Add_Element(T element);
-	bool Add_ElementOnIndex(T element, int index);
+	bool Add_Element(const T& element);
+	bool Add_ElementOnIndex(const T& element,const int& index);
 
-	bool Delete_Element(int index);
+	bool Delete_Element(const int& index);
 
 	bool Delete_All();
 
 	List<T> operator =(const List<T>& obj);
-	T operator[](int);
+	T operator[](const int&);
 };
 
 template<typename T>
@@ -46,7 +47,7 @@ List<T>::List()
 }
 
 template<typename T>
-List<T>::List(const T elements[], const int size)
+List<T>::List(const T elements[], const int& size)
 {
 	this->elements = new T[size];
 
@@ -74,6 +75,12 @@ inline List<T>::List(const List& list)
 }
 
 template<typename T>
+inline List<T>::~List()
+{
+	delete[] this->elements;
+}
+
+template<typename T>
 void List<T>::Resize_Array() {
 	this->size = (this->size + 1) * 2;
 	int size = this->size;
@@ -94,7 +101,7 @@ void List<T>::Resize_Array() {
 }
 
 template<typename T>
-void List<T>::Shift_Array_To_Right(int index)
+void List<T>::Shift_Array_To_Right(const int& index)
 {
 	for (int i = this->length - 1; i >= index; i--)
 	{
@@ -104,7 +111,7 @@ void List<T>::Shift_Array_To_Right(int index)
 }
 
 template<typename T>
-void List<T>::Shift_Array_To_Left(int index)
+void List<T>::Shift_Array_To_Left(const int& index)
 {
 	for (int i = index + 1; i < this->length; i++)
 	{
@@ -137,7 +144,7 @@ int List<T>::Get_Size()
 }
 
 template<typename T>
-T List<T>::Get_Element(int index)
+T List<T>::Get_Element(const int& index)
 {
 	if (this->length <= index) {
 		return T();
@@ -147,7 +154,7 @@ T List<T>::Get_Element(int index)
 }
 
 template<typename T>
-bool List<T>::Add_Element(T element)
+bool List<T>::Add_Element(const T& element)
 {
 	if (this->Need_Resize())
 		this->Resize_Array();
@@ -159,7 +166,7 @@ bool List<T>::Add_Element(T element)
 }
 
 template<typename T>
-bool List<T>::Add_ElementOnIndex(T element, int index)
+bool List<T>::Add_ElementOnIndex(const T& element,const int& index)
 {
 	if (index >= this->length) {
 		return false;
@@ -174,7 +181,7 @@ bool List<T>::Add_ElementOnIndex(T element, int index)
 }
 
 template<typename T>
-bool List<T>::Delete_Element(int index)
+bool List<T>::Delete_Element(const int& index)
 {
 	if (index >= this->length)
 		return false;
@@ -216,7 +223,7 @@ inline List<T> List<T>::operator=(const List<T>& obj)
 }
 
 template<typename T>
-inline T List<T>::operator[](int index)
+inline T List<T>::operator[](const int& index)
 {
 	if (index >= size)
 		return T();

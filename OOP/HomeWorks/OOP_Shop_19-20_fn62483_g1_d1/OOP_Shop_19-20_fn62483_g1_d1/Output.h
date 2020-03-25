@@ -7,7 +7,7 @@ public:
 	bool WriteOnConsole();
 	bool WriteLineOnConsole();
 
-	bool WriteOnFile(String path, String fileName);
-	bool WriteLineOnFile(String path, String fileName);
+	bool WriteOnFile(const String& path, const String& fileName);
+	bool WriteLineOnFile(const String& path, const String& fileName);
 };
 

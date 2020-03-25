@@ -6,7 +6,7 @@ Product::Product() {
 	this->quantity = 0;
 }
 
-Product::Product(String name, String description, String brand, double price, int quantity, double discountInPercentige)
+Product::Product(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige)
 {
 	this->name = name;
 	this->description = description;
@@ -65,7 +65,7 @@ String Product::Get_Description()
 	return this->description;
 }
 
-bool Product::Set_Price(double price)
+bool Product::Set_Price(const double& price)
 {
 	if (price < 0) {
 		return false;
@@ -85,7 +85,7 @@ double Product::Get_Price()
 	return this->price;
 }
 
-bool Product::Set_Quantity(int quantity)
+bool Product::Set_Quantity(const int& quantity)
 {
 	if (quantity < 0) {
 		return false;
@@ -101,7 +101,7 @@ int Product::Get_Quantity()
 	return this->quantity;
 }
 
-bool Product::Set_DiscountInPercentige(double discount)
+bool Product::Set_DiscountInPercentige(const double& discount)
 {
 	if (discount >= 100 || discount < 0) {
 		return false;
@@ -119,12 +119,12 @@ double Product::Get_DiscountInPercentige()
 
 void Product::Print_Product()
 {
-	std::cout << "	-name: " << this->name << "\r\n"; 
-	std::cout << "	-brand: " << this->brand << "\r\n"; 
-	std::cout << "	-description: " << this->description << "\r\n"; 
-	std::cout << "	-price: " << this->price<< "\r\n"; 
-	std::cout << "	-quantity: " << this->quantity<< "\r\n"; 
-	std::cout << "	-discount: " << this->discountInPercentige<< "%\r\n"; 
+	std::cout << "	-name: " << this->name << "\r\n";
+	std::cout << "	-brand: " << this->brand << "\r\n";
+	std::cout << "	-description: " << this->description << "\r\n";
+	std::cout << "	-price: " << this->price << "\r\n";
+	std::cout << "	-quantity: " << this->quantity << "\r\n";
+	std::cout << "	-discount: " << this->discountInPercentige << "%\r\n";
 }
 
 void Product::Print_Product_Name()
