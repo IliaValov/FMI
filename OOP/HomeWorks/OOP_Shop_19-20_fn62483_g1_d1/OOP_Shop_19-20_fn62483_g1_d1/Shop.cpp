@@ -1,4 +1,15 @@
 #include "Shop.h"
+const bool Shop::DecreaseProductQuantity(int productId, int quantity)
+{
+	for (int i = 0; i < this->categories.GetLength(); i++)
+	{
+		if (this->categories[i].DecreaseProductQuantity(productId, quantity))
+			return true;
+	}
+
+	return false;
+}
+
 Shop::Shop() {
 }
 
@@ -7,17 +18,10 @@ Shop::Shop(const String& name)
 	this->name = name;
 }
 
-Shop::Shop(const Shop& obj)
-{
-	this->name = obj.name;
-
-	this->categories = obj.categories;
-}
-
 Shop::~Shop() {
 }
 
-bool Shop::Set_Name(const String& name)
+const bool Shop::SetName(const String& name)
 {
 	//TODO VALIDATION
 
@@ -26,42 +30,28 @@ bool Shop::Set_Name(const String& name)
 	return true;
 }
 
-bool Shop::Add_Category(Category category)
+const bool Shop::AddCategory(Category category)
 {
-	if (this->Any_Category_By_This_Name(category.Get_Name()))
+	if (this->AnyCategoryByThisName(category.GetName()) || this->currentUser.AnyRoleByName(this->ADMIN_ROLE))
 		return false;
 
-	this->categories.Add_Element(category);
-
-	return true;
+	return this->categories.AddElement(category);
 }
 
-String Shop::Get_Name()
+const String Shop::GetName()const
 {
 	return this->name;
 }
 
-Category* Shop::Get_Category_By_Name(const String& name)
+const Product Shop::GetProductByName(const String& name)const
 {
-	for (int i = 0; i < this->categories.Get_Length(); i++)
+	for (int i = 0; i < categories.GetLength(); i++)
 	{
-		if (this->categories[i].Get_Name() == name) {
-			return &this->categories[i];
-		}
-	}
-
-	return &Category();
-}
-
-Product Shop::Get_Product_By_Name(const String& name)
-{
-	for (int i = 0; i < categories.Get_Length(); i++)
-	{
-		Category currentCategory = categories.Get_Element(i);
-		for (int j = 0; j < categories[i].Get_Products_Length(); j++)
+		Category currentCategory = categories.GetElement(i);
+		for (int j = 0; j < categories[i].GetProductsLength(); j++)
 		{
-			Product currentProduct = currentCategory.Get_Product_By_Index(j);
-			if (currentProduct.Get_Name() == name) {
+			Product currentProduct = currentCategory.GetProductByIndex(j);
+			if (currentProduct.GetName() == name) {
 				return currentProduct;
 			}
 		}
@@ -70,58 +60,94 @@ Product Shop::Get_Product_By_Name(const String& name)
 	return Product();
 }
 
-const List<Category> Shop::Get_All_Categories()
-{
-	return this->categories;
-}
-
-bool Shop::Add_Product_To_Category(const String& categoryName, const Product& product)
+const bool Shop::AddProductToCategory(const String& categoryName, const Product& product)
 {
 	//TODO validation
-
-	Category* category = this->Get_Category_By_Name(categoryName);
-
-	category->Add_Product(product);
-
-	return true;
-}
-
-double Shop::Get_Bill_From_Cart()
-{
-	return this->cart.Total_Bill();
-}
-
-double Shop::Buy_All_Products_From_Cart()
-{
-	return this->cart.Buy_The_Products();
-}
-
-bool Shop::Add_Product_To_Cart(const ProductCart& product)
-{
-	return this->cart.Add_Product_To_Cart(product);
-}
-
-bool Shop::Delete_Product_From_Cart_By_Name(const String& name)
-{
-	return this->cart.Delete_Product_From_Cart_By_Name(name);
-}
-
-void Shop::List_Products_From_Cart()
-{
-	this->cart.Show_The_Bill();
-}
-
-bool Shop::Delete_Product_From_Shop_By_Name(const String& productName)
-{
-
-	for (int i = 0; i < categories.Get_Length(); i++)
-	{
-		Category currentCategory = categories.Get_Element(i);
-		for (int j = 0; j < categories[i].Get_Products_Length(); j++)
+	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE)) {
+		for (int i = 0; i < this->categories.GetLength(); i++)
 		{
-			Product currentProduct = currentCategory.Get_Product_By_Index(j);
-			if (currentProduct.Get_Name() == productName) {
-				currentCategory.Delete_Product_By_Index(j);
+			if (this->categories[i].GetName() == categoryName)
+				return this->categories[i].AddProduct(product);
+		}
+	}
+
+	return false;
+}
+
+const double Shop::GetUserBillFromCart()const
+{
+	return this->currentUser.GetUserBill();
+}
+
+const double Shop::BuyCurrentUserProducts()
+{
+	//TODO decrease products quantity
+	return this->currentUser.BuyAllUserProductsFromCart();
+}
+
+const bool Shop::RegisterUser(const User& user)
+{
+	return this->users.AddElement(user);
+}
+
+const bool Shop::LoginUser(const String& username, const String& password)
+{
+	for (int i = 0; i < this->users.GetLength(); i++)
+	{
+		if (this->users[i].IsMatch(username, password))
+		{
+			this->currentUser = users[i];
+			return true;
+		}
+	}
+
+	return false;
+}
+
+const bool Shop::AddProductToUserCart(const Product& product)
+{
+	return this->currentUser.AddProductToCart(product);
+}
+
+const bool Shop::DeleteProductFromUserCartByName(const String& name)
+{
+	return this->currentUser.DeleteProductFromCartByName(name);
+}
+
+void Shop::ListProductsFromUserCart()const
+{
+	this->currentUser.ShowUserBill();
+}
+
+const bool Shop::DeleteProductFromShopByName(const String& productName)
+{
+	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE)) {
+		for (int i = 0; i < categories.GetLength(); i++)
+		{
+			Category currentCategory = categories.GetElement(i);
+			for (int j = 0; j < categories[i].GetProductsLength(); j++)
+			{
+				Product currentProduct = currentCategory.GetProductByIndex(j);
+				if (currentProduct.GetName() == productName) {
+					currentCategory.DeleteProductByIndex(j);
+					return true;
+				}
+			}
+		}
+
+	}
+	return false;
+}
+
+const bool Shop::DeleteCategoryFromShopByName(const String& categoryName)
+{
+	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE)) {
+		for (int i = 0; i < categories.GetLength(); i++)
+		{
+			Category currentCategory = categories.GetElement(i);
+
+			if (currentCategory.GetName() == categoryName) {
+				this->categories.DeleteElement(i);
 				return true;
 			}
 		}
@@ -130,14 +156,19 @@ bool Shop::Delete_Product_From_Shop_By_Name(const String& productName)
 	return false;
 }
 
-bool Shop::Delete_Category_From_Shop_By_Name(const String& categoryName)
+const bool Shop::DeleteProductFromCartByIndex(const int& index)
 {
-	for (int i = 0; i < categories.Get_Length(); i++)
+	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE))
+		return this->currentUser.DeleteProductFromCartByIndex(index);
+
+	return false;
+}
+
+const bool Shop::AnyCategoryByThisName(const String& categoryName)const
+{
+	for (int i = 0; i < this->categories.GetLength(); i++)
 	{
-		Category currentCategory = categories.Get_Element(i);
-		
-		if (currentCategory.Get_Name() == categoryName) {
-			this->categories.Delete_Element(i);
+		if (this->categories.GetElement(i).GetName() == categoryName) {
 			return true;
 		}
 	}
@@ -145,61 +176,44 @@ bool Shop::Delete_Category_From_Shop_By_Name(const String& categoryName)
 	return false;
 }
 
-bool Shop::Delete_Product_From_Cart_By_Index(const int& index)
+const bool Shop::AnyProductByThisName(const String& productName)const
 {
-	return this->cart.Delete_Product_From_Cart_By_Index(index);
-}
-
-bool Shop::Any_Category_By_This_Name(const String& categoryName)
-{
-	for (int i = 0; i < this->categories.Get_Length(); i++)
+	for (int i = 0; i < this->categories.GetLength(); i++)
 	{
-		if (this->categories.Get_Element(i).Get_Name() == categoryName) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool Shop::Any_Product_By_This_Name(const String& productName)
-{
-	for (int i = 0; i < this->categories.Get_Length(); i++)
-	{
-		if (this->categories[i].Any_Product_By_Name(productName))
+		if (this->categories[i].AnyProductByName(productName))
 			return true;
 	}
 
 	return false;
 }
 
-bool Shop::Any_Product_In_Cart_By_This_Name(const String& productName)
+const bool Shop::AnyProductInCartByThisName(const String& productName)const
 {
-	return this->Any_Product_In_Cart_By_This_Name(productName);
+	return this->AnyProductInCartByThisName(productName);
 }
 
-void Shop::Print_All_Categories_Names()
+void Shop::PrintAllCategoriesNames()
 {
 	std::cout << "Categories names: ";
-	for (int i = 0; i < this->categories.Get_Length(); i++)
+	for (int i = 0; i < this->categories.GetLength(); i++)
 	{
-		this->categories[i].Print_Category();
+		this->categories[i].PrintCategory();
 	}
 }
 
-void Shop::Print_All_Categories_Products()
+void Shop::PrintAllCategoriesProducts()
 {
-	for (int i = 0; i < this->categories.Get_Length(); i++)
+	for (int i = 0; i < this->categories.GetLength(); i++)
 	{
-		this->categories[i].Print_Category_Products();
+		this->categories[i].PrintCategoryProducts();
 	}
 }
 
-void Shop::Print_All_Categories_Products_Names()
+void Shop::PrintAllCategoriesProductsNames()
 {
-	for (int i = 0; i < this->categories.Get_Length(); i++)
+	for (int i = 0; i < this->categories.GetLength(); i++)
 	{
-		this->categories[i].Print_Category_Products_Names();
+		this->categories[i].PrintCategoryProductsNames();
 	}
 }
 

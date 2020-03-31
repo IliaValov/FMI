@@ -1,6 +1,13 @@
 #include "Product.h"
 
+
+int Product::IncreaseIdCounter()
+{
+	return this->counterId++;
+}
+
 Product::Product() {
+	this->id = this->IncreaseIdCounter();
 	this->price = 0;
 	this->discountInPercentige = 0;
 	this->quantity = 0;
@@ -8,6 +15,7 @@ Product::Product() {
 
 Product::Product(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige)
 {
+	this->id = this->IncreaseIdCounter();
 	this->name = name;
 	this->description = description;
 	this->brand = brand;
@@ -18,6 +26,7 @@ Product::Product(const String& name, const String& description, const String& br
 
 Product::Product(const Product& obj)
 {
+	this->id = obj.id;
 	this->name = obj.name;
 	this->description = obj.description;
 	this->brand = obj.brand;
@@ -29,43 +38,48 @@ Product::Product(const Product& obj)
 Product::~Product() {
 }
 
-bool Product::Set_Name(const String& name)
+const int Product::GetId()const
+{
+	return this->id;
+}
+
+const bool Product::SetName(const String& name)
 {
 	this->name = name;
 
 	return true;
 }
 
-String Product::Get_Name()
+String Product::GetName() const
 {
 	return this->name;
 }
 
-bool Product::Set_Brand(const String& brand)
+const bool Product::SetBrand(const String& brand)
 {
 	this->brand = brand;
 
 	return true;
 }
 
-String Product::Get_Brand()
+String Product::GetBrand() const
 {
 	return this->brand;
 }
 
-bool Product::Set_Description(const String& description)
+const bool Product::SetDescription(const String& description)
 {
 	this->description = description;
 
 	return true;
 }
 
-String Product::Get_Description()
+String Product::GetDescription() const
 {
 	return this->description;
 }
 
-bool Product::Set_Price(const double& price)
+const bool Product::SetPrice(const double& price)
 {
 	if (price < 0) {
 		return false;
@@ -76,7 +90,7 @@ bool Product::Set_Price(const double& price)
 	return true;
 }
 
-double Product::Get_Price()
+const double Product::GetPrice() const
 {
 	if (this->discountInPercentige > 0) {
 		return price - (price * (this->discountInPercentige / 100));
@@ -85,9 +99,9 @@ double Product::Get_Price()
 	return this->price;
 }
 
-bool Product::Set_Quantity(const int& quantity)
+const bool Product::DecreaseQuantity(const int& quantity)
 {
-	if (quantity < 0) {
+	if (quantity < 0 || quantity > this->quantity) {
 		return false;
 	}
 
@@ -96,12 +110,12 @@ bool Product::Set_Quantity(const int& quantity)
 	return true;
 }
 
-int Product::Get_Quantity()
+const int Product::GetQuantity()const
 {
 	return this->quantity;
 }
 
-bool Product::Set_DiscountInPercentige(const double& discount)
+const bool Product::SetDiscountInPercentige(const double& discount)
 {
 	if (discount >= 100 || discount < 0) {
 		return false;
@@ -112,12 +126,12 @@ bool Product::Set_DiscountInPercentige(const double& discount)
 	return true;
 }
 
-double Product::Get_DiscountInPercentige()
+const double Product::GetDiscountInPercentige()const
 {
 	return this->discountInPercentige;
 }
 
-void Product::Print_Product()
+void Product::PrintProduct() const
 {
 	std::cout << "	-name: " << this->name << "\r\n";
 	std::cout << "	-brand: " << this->brand << "\r\n";
@@ -127,15 +141,15 @@ void Product::Print_Product()
 	std::cout << "	-discount: " << this->discountInPercentige << "%\r\n";
 }
 
-void Product::Print_Product_Name()
+void Product::PrintProductName() const
 {
 	std::cout << "	-name: " << this->name << "\r\n";
 }
 
-
-Product Product::operator=(const Product& obj)
+Product& Product::operator=(const Product& obj)
 {
 	if (this != &obj) {
+		this->id = obj.id;
 		this->name = obj.name;
 		this->description = obj.description;
 		this->brand = obj.brand;
@@ -147,7 +161,7 @@ Product Product::operator=(const Product& obj)
 	return *this;
 }
 
-bool Product::operator==(const Product& obj)
+const bool Product::operator==(const Product& obj) const
 {
 	if (this->name != obj.name) {
 		return false;

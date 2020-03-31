@@ -2,7 +2,7 @@
 
 #include "String.h"
 
-class Òangerine
+class Tangerine
 {
 private:
 	String color;
@@ -10,10 +10,10 @@ private:
 	String taste;
 
 public:
-	Òangerine();
-	Òangerine(String color, String size, String taste);
-	Òangerine(Òangerine& obj);
-	~Òangerine();
+	Tangerine();
+	Tangerine(String color, String size, String taste);
+	Tangerine(Tangerine& obj);
+	~Tangerine();
 
 	String Get_Color();
 	void Set_Color(String color);

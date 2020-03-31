@@ -1,26 +1,25 @@
 #include "Cart.h"
-
-bool Cart::Add_Product_To_Cart(const ProductCart& product)
+const bool Cart::AddProductToCart(const ProductCart& product)
 {
 	//TODO ADD VALIDATION
 
-	return this->productsInCart.Add_Element(product);
+	return this->productsInCart.AddElement(product);
 
 }
 
-bool Cart::Delete_Product_From_Cart_By_Index(const int& index)
+const bool Cart::DeleteProductFromCartByIndex(const int& index)
 {
-	return this->productsInCart.Delete_Element(index);
+	return this->productsInCart.DeleteElement(index);
 
 }
 
-bool Cart::Delete_Product_From_Cart_By_Name(const String& name)
+const bool Cart::DeleteProductFromCartByName(const String& name)
 {
-	for (int i = 0; i < this->productsInCart.Get_Length(); i++)
+	for (int i = 0; i < this->productsInCart.GetLength(); i++)
 	{
 		ProductCart productCat = this->productsInCart[i];
-		if (productCat.Get_Product_Name() == name) {
-			this->productsInCart.Delete_Element(i);
+		if (productCat.GetProductName() == name) {
+			this->productsInCart.DeleteElement(i);
 			return true;
 		}
 	}
@@ -28,49 +27,49 @@ bool Cart::Delete_Product_From_Cart_By_Name(const String& name)
 	return false;
 }
 
-double Cart::Buy_The_Products()
+const double Cart::BuyTheProducts()
 {
-	double totalBill = this->Total_Bill();
+	double totalBill = this->TotalBill();
 
 	std::cout << "You paid: " << totalBill;
 
-	this->productsInCart.Delete_All();
+	this->productsInCart.DeleteAll();
 
 	return totalBill;
 }
 
-double Cart::Total_Bill()
+const double Cart::TotalBill() const
 {
 	double totalBill = 0;
 
-	for (int i = 0; i < this->productsInCart.Get_Length(); i++)
+	for (int i = 0; i < this->productsInCart.GetLength(); i++)
 	{
 		ProductCart currentProduct = this->productsInCart[i];
 
-		totalBill += currentProduct.Get_Price() * currentProduct.Get_Quantity();
+		totalBill += currentProduct.GetPrice() * currentProduct.GetQuantity();
 	}
 
 	return totalBill;
 }
 
-void Cart::Show_The_Bill()
+void Cart::ShowTheBill() const
 {
 	std::cout << "name | brand | category | price | quantity | total cost";
-	for (int i = 0; i < this->productsInCart.Get_Length(); i++)
+	for (int i = 0; i < this->productsInCart.GetLength(); i++)
 	{
-		this->productsInCart[i].Print_Product_Name();
+		this->productsInCart[i].PrintProductName();
 	}
 
-	std::cout << "Total bill: " << this->Total_Bill();
+	std::cout << "Total bill: " << this->TotalBill();
 }
 
-bool Cart::Any_Product_By_This_Name(const String& name)
+const bool Cart::AnyProductByThisName(const String& name) const
 {
-	int length = this->productsInCart.Get_Length();
+	int length = this->productsInCart.GetLength();
 
 	for (int i = 0; i < length; i++)
 	{
-		if (this->productsInCart[i].Get_Product_Name() == name)
+		if (this->productsInCart[i].GetProductName() == name)
 		{
 			return true;
 		}

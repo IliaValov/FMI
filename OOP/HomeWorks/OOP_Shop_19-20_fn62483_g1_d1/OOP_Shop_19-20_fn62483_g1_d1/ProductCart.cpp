@@ -2,27 +2,16 @@
 
 ProductCart::ProductCart()
 {
+	this->id = 0;
 	this->price = 0;
 	this->quantity = 0;
 	this->discountInPercentige = 0;
 }
 
-ProductCart::ProductCart(const ProductCart& obj)
-{
-	this->name = obj.name;
-	this->description = obj.description;
-	this->brand = obj.brand;
-	this->categoryName = obj.categoryName;
-	this->price = obj.price;
-	this->quantity = obj.quantity;
-	this->discountInPercentige = obj.discountInPercentige;
-}
-
 ProductCart::ProductCart(const Product& obj)
 {
+	this->id = obj.id;
 	this->name = obj.name;
-	this->description = obj.description;
-	this->brand = obj.brand;
 	this->price = obj.price;
 	this->quantity = obj.quantity;
 	this->discountInPercentige = obj.discountInPercentige;
@@ -30,9 +19,8 @@ ProductCart::ProductCart(const Product& obj)
 
 ProductCart::ProductCart(const Product& obj, const String& categoryName)
 {
+	this->id = obj.id;
 	this->name = obj.name;
-	this->description = obj.description;
-	this->brand = obj.brand;
 	this->price = obj.price;
 	this->quantity = obj.quantity;
 	this->discountInPercentige = obj.discountInPercentige;
@@ -43,12 +31,12 @@ ProductCart::~ProductCart()
 {
 }
 
-String ProductCart::Get_Category_Name()
+const String ProductCart::GetCategoryName() const
 {
 	return this->categoryName;
 }
 
-bool ProductCart::Set_Category_Name(const String& categoryName)
+const bool ProductCart::SetCategoryName(const String& categoryName)
 {
 	//TODO VALIDATION
 
@@ -57,71 +45,44 @@ bool ProductCart::Set_Category_Name(const String& categoryName)
 	return true;
 }
 
-String ProductCart::Get_Product_Name()
+const String ProductCart::GetProductName()const
 {
 	return this->name;
 }
 
-String ProductCart::Get_Description()
-{
-	return this->description;
-}
-
-String ProductCart::Get_Brand()
-{
-	return this->brand;
-}
-
-double ProductCart::Get_Price()
+const double ProductCart::GetPrice()const
 {
 	return this->price;
 }
 
-double ProductCart::Get_DiscountInPercentige()
+const double ProductCart::GetDiscountInPercentige()const
 {
 	return this->discountInPercentige;
 }
 
-int ProductCart::Get_Quantity()
+const int ProductCart::GetQuantity()const
 {
 	return this->quantity;
 }
 
-void ProductCart::Print_Product()
+void ProductCart::PrintProduct()
 {
 	std::cout << this->name;
 }
 
-void ProductCart::Print_Product_Name()
+void ProductCart::PrintProductName()
 {
 	std::cout << this->name
-		<< " " << this->brand
 		<< " " << this->categoryName
 		<< " " << this->price
 		<< " " << this->quantity
 		<< " " << this->price * this->quantity;
 }
 
-ProductCart ProductCart::operator=(const ProductCart& obj)
+ProductCart& ProductCart::operator=(const Product& obj)
 {
-	if (this != &obj) {
-		this->name = obj.name;
-		this->description = obj.description;
-		this->brand = obj.brand;
-		this->categoryName = obj.categoryName;
-		this->price = obj.price;
-		this->quantity = obj.quantity;
-		this->discountInPercentige = obj.discountInPercentige;
-	}
-
-	return *this;
-}
-
-ProductCart ProductCart::operator=(const Product& obj)
-{
+	this->id = obj.id;
 	this->name = obj.name;
-	this->description = obj.description;
-	this->brand = obj.brand;
 	this->price = obj.price;
 	this->quantity = obj.quantity;
 	this->discountInPercentige = obj.discountInPercentige;

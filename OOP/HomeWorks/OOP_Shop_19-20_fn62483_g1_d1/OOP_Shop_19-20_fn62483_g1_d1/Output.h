@@ -4,10 +4,10 @@
 class Output
 {
 public:
-	bool WriteOnConsole();
-	bool WriteLineOnConsole();
+	const bool WriteOnConsole();
+	const bool WriteLineOnConsole();
 
-	bool WriteOnFile(const String& path, const String& fileName);
-	bool WriteLineOnFile(const String& path, const String& fileName);
+	const bool WriteOnFile(const String& path, const String& fileName);
+	const bool WriteLineOnFile(const String& path, const String& fileName);
 };
 

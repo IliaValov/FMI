@@ -18,25 +18,25 @@ private:
 
 public:
 	List();
-	List(const T* elements, const int& size);
+	List(const T elements[], const int& size);
 	List(const List& list);
 	~List();
 
-	const int GetLength() const;
+	int GetLength();
 
-	const int GetCapacity() const;
+	int GetCapacity();
 
-	T GetElement(const int& index) const;
+	T GetElement(const int& index);
 
-	const bool AddElement(const T& element);
-	const bool AddElementOnIndex(const T& element, const int& index);
+	bool AddElement(const T& element);
+	bool AddElementOnIndex(const T& element, const int& index);
 
-	const bool DeleteElement(const int& index);
+	bool DeleteElement(const int& index);
 
-	const bool DeleteAll();
+	bool DeleteAll();
 
 	List<T> operator =(const List<T>& obj);
-	T operator[](const int&) const;
+	T operator[](const int&);
 };
 
 template<typename T>
@@ -46,7 +46,7 @@ List<T>::List() : capacity(1), size(0)
 }
 
 template<typename T>
-List<T>::List(const T* elements, const int& size)
+List<T>::List(const T elements[], const int& size)
 {
 	this->elements = new T[size];
 
@@ -130,19 +130,19 @@ bool List<T>::NeedResize()
 }
 
 template<typename T>
-const int List<T>::GetLength() const
+int List<T>::GetLength()
 {
 	return this->size;
 }
 
 template<typename T>
-const int List<T>::GetCapacity()const
+int List<T>::GetCapacity()
 {
 	return this->capacity;
 }
 
 template<typename T>
-T List<T>::GetElement(const int& index)const
+T List<T>::GetElement(const int& index)
 {
 	if (this->size <= index) {
 		return T();
@@ -152,7 +152,7 @@ T List<T>::GetElement(const int& index)const
 }
 
 template<typename T>
-const bool List<T>::AddElement(const T& element)
+bool List<T>::AddElement(const T& element)
 {
 	if (this->NeedResize())
 		this->ResizeArray();
@@ -164,7 +164,7 @@ const bool List<T>::AddElement(const T& element)
 }
 
 template<typename T>
-const bool List<T>::AddElementOnIndex(const T& element, const int& index)
+bool List<T>::AddElementOnIndex(const T& element, const int& index)
 {
 	if (index >= this->size) {
 		return false;
@@ -179,7 +179,7 @@ const bool List<T>::AddElementOnIndex(const T& element, const int& index)
 }
 
 template<typename T>
-const bool List<T>::DeleteElement(const int& index)
+bool List<T>::DeleteElement(const int& index)
 {
 	if (index >= this->size)
 		return false;
@@ -191,7 +191,7 @@ const bool List<T>::DeleteElement(const int& index)
 }
 
 template<typename T>
-inline const bool List<T>::DeleteAll()
+inline bool List<T>::DeleteAll()
 {
 	delete[] this->elements;
 
@@ -221,7 +221,7 @@ inline List<T> List<T>::operator=(const List<T>& obj)
 }
 
 template<typename T>
-inline T List<T>::operator[](const int& index) const
+inline T List<T>::operator[](const int& index)
 {
 	if (index >= capacity)
 		return T();

@@ -3,57 +3,62 @@
 #include "List.h"
 #include "String.h"
 #include "Cart.h"
+#include "User.h"
 
 class Shop
 {
 private:
 	String name;
 
-	Cart cart;
+	List<User> users;
 
+	//This field in next patch will be moved in class storage
 	List<Category> categories;
+
+	User currentUser;
+
+	const String ADMIN_ROLE = "Admin";
+
+	const bool DecreaseProductQuantity(int productId, int quantity);
 
 public:
 	Shop();
 	Shop(const String& name);
-	Shop(const Shop& obj);
 	~Shop();
 
-	String Get_Name();
-	bool Set_Name(const String& name);
+	const String GetName() const;
+	const bool SetName(const String& name);
 
 	//TODO Const for category
-	bool Add_Category(Category category);
+	const bool AddCategory(Category category);
 
-	Category* Get_Category_By_Name(const String& name);
-	Product Get_Product_By_Name(const String& name);
+	const bool DeleteCategoryFromShopByName(const String& categoryName);
 
+	const Product GetProductByName(const String& name) const;
 
-	const List<Category> Get_All_Categories();
+	const bool AddProductToCategory(const String& categoryName, const Product& product);
+	const bool DeleteProductFromShopByName(const String& productName);
 
-	bool Add_Product_To_Category(const String& categoryName, const Product& product);
+	const double GetUserBillFromCart() const;
+	const double BuyCurrentUserProducts();
 
-	double Get_Bill_From_Cart();
-	double Buy_All_Products_From_Cart();
+	const bool RegisterUser(const User& user);
 
-	bool Add_Product_To_Cart(const ProductCart& product);
-	bool Delete_Product_From_Cart_By_Name(const String& name);
+	const bool LoginUser(const String& username, const String& password);
 
-	void List_Products_From_Cart();
+	const bool AddProductToUserCart(const Product& product);
+	const bool DeleteProductFromUserCartByName(const String& name);
 
+	void ListProductsFromUserCart() const;
 
+	const bool DeleteProductFromCartByIndex(const int& index);
 
-	bool Delete_Product_From_Shop_By_Name(const String& productName);
-	bool Delete_Category_From_Shop_By_Name(const String& categoryName);
+	const bool AnyCategoryByThisName(const String& categoryName) const;
+	const bool AnyProductByThisName(const String& productName) const;
+	const bool AnyProductInCartByThisName(const String& productName) const;
 
-	bool Delete_Product_From_Cart_By_Index(const int& index);
-
-	bool Any_Category_By_This_Name(const String& categoryName);
-	bool Any_Product_By_This_Name(const String& productName);
-	bool Any_Product_In_Cart_By_This_Name(const String& productName);
-
-	void Print_All_Categories_Names();
-	void Print_All_Categories_Products();
-	void Print_All_Categories_Products_Names();
+	void PrintAllCategoriesNames();
+	void PrintAllCategoriesProducts();
+	void PrintAllCategoriesProductsNames();
 };
 

@@ -1,21 +1,21 @@
 #include "Output.h"
 
-bool Output::WriteOnConsole()
+const bool Output::WriteOnConsole()
 {
 	return false;
 }
 
-bool Output::WriteLineOnConsole()
+const bool Output::WriteLineOnConsole()
 {
 	return false;
 }
 
-bool Output::WriteOnFile(const String& path, const String& fileName)
+const bool Output::WriteOnFile(const String& path, const String& fileName)
 {
 	return false;
 }
 
-bool Output::WriteLineOnFile(const String& path, const String& fileName)
+const bool Output::WriteLineOnFile(const String& path, const String& fileName)
 {
 	return false;
 }

@@ -9,19 +9,19 @@ private:
 	List<ProductCart> productsInCart;
 
 public:
-	bool Add_Product_To_Cart(const ProductCart& product);
+	const bool AddProductToCart(const ProductCart& product);
 	
-	bool Delete_Product_From_Cart_By_Index(const int& index);
+	const bool DeleteProductFromCartByIndex(const int& index);
 
-	bool Delete_Product_From_Cart_By_Name(const String& name);
+	const bool DeleteProductFromCartByName(const String& name);
 
-	double Buy_The_Products();
+	const double BuyTheProducts();
 
-	double Total_Bill();
+	const double TotalBill() const;
 
-	void Show_The_Bill();
+	void ShowTheBill() const;
 
-	bool Any_Product_By_This_Name(const String& name);
+	const bool AnyProductByThisName(const String& name) const;
 
 };
 

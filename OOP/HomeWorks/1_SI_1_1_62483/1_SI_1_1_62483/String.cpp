@@ -6,7 +6,7 @@ String::String()
 	this->text[0] = '\0';
 }
 
-String::String(const String& str)
+String::String(String const& str)
 {
 	this->text = Concat(str.text, nullptr);
 }
@@ -21,7 +21,7 @@ String::~String()
 	delete[] this->text;
 }
 
-const int String::GetLength()const
+int String::GetLength()
 {
 	int length = 0;
 	while (this->text[length]) {
@@ -31,7 +31,7 @@ const int String::GetLength()const
 	return length;
 }
 
-const char* String::GetString()const
+char* String::GetString()
 {
 	return this->text;
 }
@@ -70,26 +70,26 @@ void String::Append(const String& obj)
 	delete[] previousText;
 }
 
-const bool String::operator==(const char* symbols)const
+bool String::operator==(const char* obj)
 {
 	int currentStringLength = this->GetLength();
-	int objLength = GetStrLenth(symbols);
+	int objLength = GetStrLenth(obj);
 
 	if (objLength != currentStringLength)
 		return false;
 
 	for (int i = 0; i < objLength; i++)
 	{
-		if (this->text[i] != symbols[i])
+		if (this->text[i] != obj[i])
 			return false;
 	}
 
 	return true;
 }
 
-const bool String::operator==(const String& obj)const
+bool String::operator==(const String& obj)
 {
-	int currentStringLength = GetStrLenth(this->text);
+	int currentStringLength = this->GetLength();
 	int objLength = GetStrLenth(obj.text);
 
 	if (objLength != currentStringLength)
@@ -104,7 +104,7 @@ const bool String::operator==(const String& obj)const
 	return true;
 }
 
-const bool String::operator!=(const char* obj)const
+bool String::operator!=(const char* obj)
 {
 	int currentStringLength = this->GetLength();
 	int objLength = GetStrLenth(obj);
@@ -125,7 +125,7 @@ const bool String::operator!=(const char* obj)const
 	return isEqual;
 }
 
-const bool String::operator!=(const String& obj)const
+bool String::operator!=(const String& obj)
 {
 
 	int currentStringLength = this->GetLength();
@@ -147,22 +147,22 @@ const bool String::operator!=(const String& obj)const
 	return !isEqual;
 }
 
-const bool String::operator<(const char* sym)const
+bool String::operator<(const char* sym)
 {
 	return StringToInt(this->text) < StringToInt(sym);
 }
 
-const bool String::operator<(const String& obj)const
+bool String::operator<(const String& obj)
 {
 	return StringToInt(this->text) < StringToInt(obj.text);
 }
 
-const bool String::operator>(const char* sym)const
+bool String::operator>(const char* sym)
 {
 	return StringToInt(this->text) > StringToInt(sym);
 }
 
-const bool String::operator>(const String& obj)const
+bool String::operator>(const String& obj)
 {
 	return StringToInt(this->text) > StringToInt(obj.text);
 }
@@ -189,7 +189,7 @@ String& String::operator=(const char* obj)
 	return *this;
 }
 
-String& String::operator+(const String& obj)
+String String::operator+(const String& obj)
 {
 	String result;
 
@@ -198,7 +198,7 @@ String& String::operator+(const String& obj)
 	return result;
 }
 
-String& String::operator+(const char& symbol)
+String String::operator+(const char& symbol)
 {
 	String result;
 
@@ -209,7 +209,7 @@ String& String::operator+(const char& symbol)
 	return result;
 }
 
-String& String::operator+(const char* obj)
+String String::operator+(const char* obj)
 {
 	String result;
 
@@ -237,7 +237,7 @@ std::istream& operator>>(std::istream& is, String& obj)
 	return is;
 }
 
-const int StringToInt(const char* text)
+int StringToInt(const char* text)
 {
 	int sum = 0;
 
@@ -249,7 +249,7 @@ const int StringToInt(const char* text)
 	return sum;
 }
 
-const int GetStrLenth(const char* text)
+int GetStrLenth(const char* text)
 {
 	int length = 0;
 

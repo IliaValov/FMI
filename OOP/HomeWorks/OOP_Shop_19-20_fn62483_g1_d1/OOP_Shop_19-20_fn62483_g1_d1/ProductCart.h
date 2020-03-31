@@ -7,11 +7,9 @@ class ProductCart
 private:
 	friend class Product;
 
+	int id;
+
 	String name;
-
-	String description;
-
-	String brand;
 
 	String categoryName;
 
@@ -23,35 +21,31 @@ private:
 public:
 	ProductCart();
 
-	ProductCart(const ProductCart& obj);
-
 	ProductCart(const Product& obj);
 
 	ProductCart(const Product& product, const String& categoryName);
 
 	~ProductCart();
 
-	String Get_Category_Name();
-	bool Set_Category_Name(const String& categoryName);
+	const String GetCategoryName()const;
+	const bool SetCategoryName(const String& categoryName);
 
-	String Get_Product_Name();
+	const String GetProductName()const;
 
-	String Get_Description();
+	const String GetDescription()const;
 
-	String Get_Brand();
+	const String GetBrand()const;
 
-	double Get_Price();
+	const double GetPrice()const;
 
-	double Get_DiscountInPercentige();
+	const double GetDiscountInPercentige()const;
 
-	int Get_Quantity();
+	const int GetQuantity() const;
 
-	void Print_Product();
-	void Print_Product_Name();
-
-	ProductCart operator =(const ProductCart& obj);
+	void PrintProduct();
+	void PrintProductName();
 
 	//TODO make it with const ??
-	ProductCart operator =(const Product& obj);
+	ProductCart& operator =(const Product& obj);
 };
 

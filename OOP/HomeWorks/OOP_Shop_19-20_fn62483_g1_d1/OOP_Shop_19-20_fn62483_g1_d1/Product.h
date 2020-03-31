@@ -6,6 +6,12 @@ class Product
 {
 private:
 	friend class ProductCart;
+	friend class Chocolate;
+	friend class Monitor;
+
+	static int counterId;
+
+	int id;
 
 	String name;
 
@@ -19,34 +25,37 @@ private:
 
 	double discountInPercentige;
 
+	int IncreaseIdCounter();
 public:
 	Product();
 	Product(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige);
 	Product(const Product& obj);
 	~Product();
 
-	bool Set_Name(const String& name);
-	String Get_Name();
+	virtual const int GetId() const;
 
-	bool Set_Brand(const String& brand);
-	String Get_Brand();
+	virtual const bool SetName(const String& name);
+	virtual String GetName() const;
 
-	bool Set_Description(const String& description);
-	String Get_Description();
+	virtual const bool SetBrand(const String& brand);
+	virtual String GetBrand() const;
 
-	bool Set_Price(const double& price);
-	double Get_Price();
+	virtual const bool SetDescription(const String& description);
+	virtual String GetDescription() const;
 
-	bool Set_Quantity(const int& quantity);
-	int Get_Quantity();
+	virtual const bool SetPrice(const double& price);
+	virtual const double GetPrice() const;
 
-	bool Set_DiscountInPercentige(const double& discount);
-	double Get_DiscountInPercentige();
+	virtual const bool DecreaseQuantity(const int& quantity);
+	virtual const int GetQuantity()const;
 
-	void Print_Product();
-	void Print_Product_Name();
+	virtual const bool SetDiscountInPercentige(const double& discount);
+	virtual const double GetDiscountInPercentige() const;
 
-	Product operator =(const Product& obj);
-	bool operator ==(const Product& obj);
+	virtual void PrintProduct() const;
+	virtual void PrintProductName() const;
+
+	virtual Product& operator =(const Product& obj);
+	virtual  const bool operator ==(const Product& obj) const;
 };
 

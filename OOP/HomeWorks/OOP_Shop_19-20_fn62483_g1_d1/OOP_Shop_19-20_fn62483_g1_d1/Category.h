@@ -9,34 +9,33 @@ private:
 
 	List<Product> products;
 
+
 public:
 	Category();
-	Category(const Category& obj);
 	Category(const String& name);
 	~Category();
 
-	String Get_Name();
-	void Set_Name(const String& name);
+	const String GetName() const;
+	const bool SetName(const String& name);
 	
-	int Get_Length();
-	int Get_Products_Length();
+	const int GetProductsLength();
 
-	bool Add_Product(const Product& product);
+	const bool AddProduct(const Product& product);
 
-	Product Get_Product_By_Index(const int& index);
-	Product Get_Product_By_Name(const String& name);
+	const Product GetProductByIndex(const int& index);
+	const Product GetProductByName(const String& name);
 
-	const List<Product> Get_All_Products();
+	const List<Product> GetAllProducts();
 
-	bool Any_Product_By_Name(const String& name);
+	const bool AnyProductByName(const String& name);
 
-	bool Delete_Product_By_Index(const int& index);
+	const bool DeleteProductByIndex(const int& index);
 
-	void Print_Category();
-	void Print_Category_Products();
-	void Print_Category_Products_Names();
+	const bool DecreaseProductQuantity(int productId, int quantity);
 
-	Category operator =(const Category& obj);
+	void PrintCategory();
+	void PrintCategoryProducts();
+	void PrintCategoryProductsNames();
 };
 
 

@@ -4,22 +4,29 @@
 
 #include "Shop.h"
 #include "Category.h"
+
+#include "User.h"
+
 using namespace std;
 
+void AdministrationPanel(Shop* shop);
+void AdministrationPanelAddCategory(Shop* shop);
+void AdministrationPanelAddProductToCategory(Shop* shop);
+void AdministrationPanelDeleteProductByName(Shop* shop);
+void AdministrationPanelDeleteCategoryByName(Shop* shop);
 
-void Administration_Panel(Shop* shop);
-void Administration_Panel_Add_Category(Shop* shop);
-void Administration_Panel_Add_Product_To_Category(Shop* shop);
-void Administration_Panel_Delete_Product_By_Name(Shop* shop);
-void Administration_Panel_Delete_Category_By_Name(Shop* shop);
+void UserPanel(Shop* shop);
+void UserPanelAddProductToCart(Shop* shop);
+void UserPanelDeleteProductFromCart(Shop* shop);
+void UserPanelListTheProductsFromTheCart(Shop* shop);
+void UserPanelBuyEverything(Shop* shop);
 
-void User_Panel(Shop* shop);
-void User_Panel_Add_Product_To_Cart(Shop* shop);
-void User_Panel_Delete_Product_From_Cart(Shop* shop);
-void User_Panel_List_The_Products_From_The_Cart(Shop* shop);
-void User_Panel_Buy_Everything(Shop* shop);
+int Product::counterId = 0;
+
 
 int main() {
+
+	//TODO this is not working properly and will be moved in class maybe in next patch :D
 	Shop shop;
 	String shopName;
 
@@ -27,7 +34,7 @@ int main() {
 
 	cin >> shopName;
 
-	shop.Set_Name(shopName);
+	shop.SetName(shopName);
 
 	char command = '\0';
 
@@ -41,10 +48,10 @@ int main() {
 
 		switch (command) {
 		case 'A':
-			Administration_Panel(&shop);
+			AdministrationPanel(&shop);
 			break;
 		case 'U':
-			User_Panel(&shop);
+			UserPanel(&shop);
 			break;
 		case'E':
 			return 0;
@@ -56,7 +63,7 @@ int main() {
 	return 0;
 }
 
-void Administration_Panel(Shop* shop) {
+void AdministrationPanel(Shop* shop) {
 	system("cls");
 	char command = '\0';
 	while (true) {
@@ -73,16 +80,16 @@ void Administration_Panel(Shop* shop) {
 
 		switch (command) {
 		case 'P':
-			Administration_Panel_Add_Product_To_Category(shop);
+			AdministrationPanelAddProductToCategory(shop);
 			break;
 		case'C':
-			Administration_Panel_Add_Category(shop);
+			AdministrationPanelAddCategory(shop);
 			break;
 		case'F':
-			Administration_Panel_Delete_Category_By_Name(shop);
+			AdministrationPanelDeleteCategoryByName(shop);
 			break;
 		case'G':
-			Administration_Panel_Delete_Product_By_Name(shop);
+			AdministrationPanelDeleteProductByName(shop);
 			break;
 		case'E':
 			return;
@@ -93,7 +100,7 @@ void Administration_Panel(Shop* shop) {
 	}
 }
 
-void Administration_Panel_Add_Category(Shop* shop) {
+void AdministrationPanelAddCategory(Shop* shop) {
 	Category category;
 	String name;
 
@@ -102,16 +109,16 @@ void Administration_Panel_Add_Category(Shop* shop) {
 	cin.ignore();
 	cin >> name;
 
-	category.Set_Name(name);
+	category.SetName(name);
 
-	shop->Add_Category(category);
+	shop->AddCategory(category);
 
 	cout << "Category " << name << " is added\r\n";
 
 	system("pause");
 }
 
-void Administration_Panel_Add_Product_To_Category(Shop* shop) {
+void AdministrationPanelAddProductToCategory(Shop* shop) {
 	String categoryName;
 
 	String productName;
@@ -125,7 +132,7 @@ void Administration_Panel_Add_Product_To_Category(Shop* shop) {
 		system("cls");
 		cout << "Creating product: \r\n";
 
-		shop->Print_All_Categories_Names();
+		shop->PrintAllCategoriesNames();
 
 		cout << "Type the name of one of the categories from above: ";
 
@@ -134,7 +141,7 @@ void Administration_Panel_Add_Product_To_Category(Shop* shop) {
 		cin.clear();
 		cin.sync();
 
-		if (shop->Any_Category_By_This_Name(categoryName))
+		if (shop->AnyCategoryByThisName(categoryName))
 			break;
 
 		categoryName = "";
@@ -164,23 +171,23 @@ void Administration_Panel_Add_Product_To_Category(Shop* shop) {
 
 	Product product(productName, productBrand, productDescription, price, quantity, discountInPercentiges);
 
-	shop->Add_Product_To_Category(categoryName, product);
+	shop->AddProductToCategory(categoryName, product);
 }
 
-void Administration_Panel_Delete_Product_By_Name(Shop* shop) {
+void AdministrationPanelDeleteProductByName(Shop* shop) {
 
 	String productName;
 
 	while (true) {
 		system("cls");
-		shop->Print_All_Categories_Products_Names();
+		shop->PrintAllCategoriesProductsNames();
 
 		cout << "Choose one of the products from above to be deleted: ";
 
 		cin.ignore();
 		cin >> productName;
 
-		if (shop->Any_Product_By_This_Name(productName))
+		if (shop->AnyProductByThisName(productName))
 			break;
 
 		productName = "";
@@ -189,26 +196,26 @@ void Administration_Panel_Delete_Product_By_Name(Shop* shop) {
 		system("pause");
 	}
 
-	shop->Delete_Product_From_Shop_By_Name(productName);
+	shop->DeleteProductFromShopByName(productName);
 	cout << "Deleted Product";
 	system("pause");
 }
 
 
-void Administration_Panel_Delete_Category_By_Name(Shop* shop) {
+void AdministrationPanelDeleteCategoryByName(Shop* shop) {
 
 	String categoryName;
 
 	while (true) {
 		system("cls");
-		shop->Print_All_Categories_Names();
+		shop->PrintAllCategoriesNames();
 
 		cout << "Choose one of the products from above to be deleted: ";
 
 		cin.ignore();
 		cin >> categoryName;
 
-		if (shop->Any_Category_By_This_Name(categoryName))
+		if (shop->AnyCategoryByThisName(categoryName))
 			break;
 
 		categoryName = "";
@@ -216,12 +223,12 @@ void Administration_Panel_Delete_Category_By_Name(Shop* shop) {
 		system("pause");
 	}
 
-	shop->Delete_Category_From_Shop_By_Name(categoryName);
+	shop->DeleteCategoryFromShopByName(categoryName);
 	cout << "Deleted category";
 	system("pause");
 }
 
-void User_Panel(Shop* shop) {
+void UserPanel(Shop* shop) {
 	system("cls");
 	while (true) {
 		char command = '\0';
@@ -238,16 +245,16 @@ void User_Panel(Shop* shop) {
 
 			switch (command) {
 			case 'P':
-				User_Panel_Add_Product_To_Cart(shop);
+				UserPanelAddProductToCart(shop);
 				break;
 			case'D':
-				User_Panel_Delete_Product_From_Cart(shop);
+				UserPanelDeleteProductFromCart(shop);
 				break;
 			case'L':
-				User_Panel_List_The_Products_From_The_Cart(shop);
+				UserPanelListTheProductsFromTheCart(shop);
 				break;
 			case'B':
-				User_Panel_Buy_Everything(shop);
+				UserPanelBuyEverything(shop);
 				break;
 			case'E':
 				return;
@@ -259,45 +266,43 @@ void User_Panel(Shop* shop) {
 	}
 }
 
-void User_Panel_Add_Product_To_Cart(Shop* shop) {
+void UserPanelAddProductToCart(Shop* shop) {
 	String productName;
 
 	while (true) {
-		shop->Print_All_Categories_Products();
+		shop->PrintAllCategoriesProducts();
 		cout << "Type the name of the product you want: ";
 
 		cin.ignore();
 		cin >> productName;
 
-		if (shop->Any_Product_By_This_Name(productName))
+		if (shop->AnyProductByThisName(productName))
 			break;
 
 		productName = "";
 		cout << "Invalid name!";
 	}
 
-	Product chosedProduct = shop->Get_Product_By_Name(productName);
+	Product chosedProduct = shop->GetProductByName(productName);
 
-	ProductCart productToBeAdded = chosedProduct;
-
-	shop->Add_Product_To_Cart(productToBeAdded);
+	shop->AddProductToUserCart(chosedProduct);
 	cout << "Added product to cart";
 	system("pause");
 }
 
-void User_Panel_Delete_Product_From_Cart(Shop* shop) {
+void UserPanelDeleteProductFromCart(Shop* shop) {
 	String productName;
 
 	while (true) {
 		system("cls");
-		shop->Print_All_Categories_Names();
+		shop->PrintAllCategoriesNames();
 
 		cout << "Choose one of the products from above to be deleted: ";
 
 		cin.ignore();
 		cin >> productName;
 
-		if (shop->Any_Product_In_Cart_By_This_Name(productName))
+		if (shop->AnyProductInCartByThisName(productName))
 			break;
 
 		productName = "";
@@ -305,19 +310,19 @@ void User_Panel_Delete_Product_From_Cart(Shop* shop) {
 		system("pause");
 	}
 
-	shop->Delete_Product_From_Cart_By_Name(productName);
+	shop->DeleteProductFromUserCartByName(productName);
 	cout << "Product is deleted";
 	system("pause");
 }
 
-void User_Panel_List_The_Products_From_The_Cart(Shop* shop) {
+void UserPanelListTheProductsFromTheCart(Shop* shop) {
 	system("cls");
-	shop->List_Products_From_Cart();
+	shop->ListProductsFromUserCart();
 	system("pause");
 }
 
-void User_Panel_Buy_Everything(Shop* shop) {
-	shop->Buy_All_Products_From_Cart();
+void UserPanelBuyEverything(Shop* shop) {
+	shop->BuyCurrentUserProducts();
 	system("cls");
 	system("pause");
 }

@@ -4,12 +4,6 @@ Category::Category()
 {
 }
 
-Category::Category(const Category& obj)
-{
-	this->name = obj.name;
-	this->products = obj.products;
-}
-
 Category::Category(const String& name)
 {
 	this->name = name;
@@ -19,53 +13,50 @@ Category::~Category()
 {
 }
 
-void Category::Set_Name(const String& name)
+const bool Category::SetName(const String& name)
 {
 	this->name = name;
-}
-
-int Category::Get_Length()
-{
-	return this->products.Get_Length();
-}
-
-int Category::Get_Products_Length()
-{
-	return this->products.Get_Length();
-}
-
-String Category::Get_Name()
-{
-	return this->name;
-}
-
-bool Category::Add_Product(const Product& product)
-{
-	Product temp = product;
-	if (this->Any_Product_By_Name(temp.Get_Name()))
-		return false;
-
-	this->products.Add_Element(temp);
 
 	return true;
 }
 
-Product Category::Get_Product_By_Index(const int& index)
+const int Category::GetProductsLength()
 {
-	if (index >= this->products.Get_Length()) {
+	return this->products.GetLength();
+}
+
+const String Category::GetName() const
+{
+	return this->name;
+}
+
+const bool Category::AddProduct(const Product& product)
+{
+	Product temp = product;
+	if (this->AnyProductByName(temp.GetName()))
+		return false;
+
+	this->products.AddElement(temp);
+
+	return true;
+}
+
+const Product Category::GetProductByIndex(const int& index)
+{
+	if (index >= this->products.GetLength()) {
 		return Product();
 	}
 
 	return this->products[index];
 }
 
-Product Category::Get_Product_By_Name(const String& name)
+const Product Category::GetProductByName(const String& name)
 {
-	int length = this->products.Get_Length();
+	int length = this->products.GetLength();
 
 	for (int i = 0; i < length; i++)
 	{
-		if (this->products[i].Get_Name() == name)
+		if ((this->products[i].GetName()) == name)
 		{
 			return this->products[i];
 		}
@@ -74,18 +65,18 @@ Product Category::Get_Product_By_Name(const String& name)
 	return Product();
 }
 
-const List<Product> Category::Get_All_Products()
+const List<Product> Category::GetAllProducts()
 {
 	return this->products;
 }
 
-bool Category::Any_Product_By_Name(const String& name)
+const bool Category::AnyProductByName(const String& name)
 {
-	int length = this->products.Get_Length();
+	int length = this->products.GetLength();
 
 	for (int i = 0; i < length; i++)
 	{
-		if (this->products[i].Get_Name() == name)
+		if (this->products[i].GetName() == name)
 		{
 			return true;
 		}
@@ -94,41 +85,45 @@ bool Category::Any_Product_By_Name(const String& name)
 	return false;
 }
 
-bool Category::Delete_Product_By_Index(const int& index)
+const bool Category::DeleteProductByIndex(const int& index)
 {
-	return this->products.Delete_Element(index);
+	return this->products.DeleteElement(index);
 }
 
-void Category::Print_Category()
+const bool Category::DecreaseProductQuantity(int productId, int quantity)
+{
+	for (int i = 0; i < this->products.GetLength(); i++)
+	{
+		if (this->products[i].GetId() == productId) {
+			this->products[i].DecreaseQuantity(quantity);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Category::PrintCategory()
 {
 	std::cout << "	-" << this->name << "\r\n";
 }
 
-void Category::Print_Category_Products()
+void Category::PrintCategoryProducts()
 {
 	std::cout << "Category: " << this->name << "\r\n";
-	for (int i = 0; i < this->products.Get_Length(); i++)
+	for (int i = 0; i < this->products.GetLength(); i++)
 	{
-		this->products[i].Print_Product();
+		this->products[i].PrintProduct();
 	}
 }
 
-void Category::Print_Category_Products_Names()
+void Category::PrintCategoryProductsNames()
 {
 	std::cout << "Category: " << this->name << "\r\n";
-	for (int i = 0; i < this->products.Get_Length(); i++)
+	for (int i = 0; i < this->products.GetLength(); i++)
 	{
-		this->products[i].Print_Product_Name();
+		this->products[i].PrintProductName();
 	}
 }
 
-Category Category::operator=(const Category& obj)
-{
-	if (this != &obj) {
-		this->name = obj.name;
-		this->products = obj.products;
-	}
-
-	return *this;
-}
 
