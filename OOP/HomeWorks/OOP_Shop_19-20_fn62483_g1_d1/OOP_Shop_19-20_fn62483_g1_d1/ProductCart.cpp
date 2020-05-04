@@ -31,6 +31,11 @@ ProductCart::~ProductCart()
 {
 }
 
+const int ProductCart::GetId() const
+{
+	return this->id;
+}
+
 const String ProductCart::GetCategoryName() const
 {
 	return this->categoryName;

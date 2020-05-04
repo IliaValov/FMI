@@ -1,14 +1,4 @@
 #include "Shop.h"
-const bool Shop::DecreaseProductQuantity(int productId, int quantity)
-{
-	for (int i = 0; i < this->categories.GetLength(); i++)
-	{
-		if (this->categories[i].DecreaseProductQuantity(productId, quantity))
-			return true;
-	}
-
-	return false;
-}
 
 Shop::Shop() {
 }
@@ -30,45 +20,47 @@ const bool Shop::SetName(const String& name)
 	return true;
 }
 
-const bool Shop::AddCategory(Category category)
-{
-	if (this->AnyCategoryByThisName(category.GetName()) || this->currentUser.AnyRoleByName(this->ADMIN_ROLE))
-		return false;
-
-	return this->categories.AddElement(category);
-}
-
 const String Shop::GetName()const
 {
 	return this->name;
 }
 
-const Product Shop::GetProductByName(const String& name)const
+const bool Shop::AddCategory(const Category category)
 {
-	for (int i = 0; i < categories.GetLength(); i++)
-	{
-		Category currentCategory = categories.GetElement(i);
-		for (int j = 0; j < categories[i].GetProductsLength(); j++)
-		{
-			Product currentProduct = currentCategory.GetProductByIndex(j);
-			if (currentProduct.GetName() == name) {
-				return currentProduct;
-			}
-		}
+	if (this->AnyCategoryByThisName(category.GetName()) || this->currentUser.AnyRoleByName(ADMIN_ROLE))
+		return false;
+
+	return this->storage.AddCategory(category);
+}
+
+const bool Shop::DeleteCategoryFromShopByName(const String& categoryName)
+{
+	if (this->currentUser.AnyRoleByName(ADMIN_ROLE)) {
+		return this->storage.DeleteCategoryByName(categoryName);
 	}
 
-	return Product();
+	return false;
+}
+
+const Product Shop::GetProductByName(const String& name)const
+{
+	return this->storage.GetProductByName(name);
 }
 
 const bool Shop::AddProductToCategory(const String& categoryName, const Product& product)
 {
 	//TODO validation
-	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE)) {
-		for (int i = 0; i < this->categories.GetLength(); i++)
-		{
-			if (this->categories[i].GetName() == categoryName)
-				return this->categories[i].AddProduct(product);
-		}
+	if (this->currentUser.AnyRoleByName(ADMIN_ROLE)) {
+		return this->storage.AddProductToCategory(categoryName, product);
+	}
+
+	return false;
+}
+
+const bool Shop::DeleteProductFromShopByName(const String& productName)
+{
+	if (this->currentUser.AnyRoleByName(ADMIN_ROLE)) {
+		this->storage.DeleteProductByName(productName);
 	}
 
 	return false;
@@ -82,6 +74,14 @@ const double Shop::GetUserBillFromCart()const
 const double Shop::BuyCurrentUserProducts()
 {
 	//TODO decrease products quantity
+	const List<ProductCart> products = this->currentUser.GetUserProducts();
+
+	for (int i = 0; i < products.GetLength(); i++)
+	{
+		ProductCart currentProduct = products[i];
+		this->storage.DecreaseProductQuantity(currentProduct.GetQuantity(), currentProduct.GetCategoryName(), currentProduct.GetId());
+	}
+
 	return this->currentUser.BuyAllUserProductsFromCart();
 }
 
@@ -119,46 +119,9 @@ void Shop::ListProductsFromUserCart()const
 	this->currentUser.ShowUserBill();
 }
 
-const bool Shop::DeleteProductFromShopByName(const String& productName)
-{
-	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE)) {
-		for (int i = 0; i < categories.GetLength(); i++)
-		{
-			Category currentCategory = categories.GetElement(i);
-			for (int j = 0; j < categories[i].GetProductsLength(); j++)
-			{
-				Product currentProduct = currentCategory.GetProductByIndex(j);
-				if (currentProduct.GetName() == productName) {
-					currentCategory.DeleteProductByIndex(j);
-					return true;
-				}
-			}
-		}
-
-	}
-	return false;
-}
-
-const bool Shop::DeleteCategoryFromShopByName(const String& categoryName)
-{
-	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE)) {
-		for (int i = 0; i < categories.GetLength(); i++)
-		{
-			Category currentCategory = categories.GetElement(i);
-
-			if (currentCategory.GetName() == categoryName) {
-				this->categories.DeleteElement(i);
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
 const bool Shop::DeleteProductFromCartByIndex(const int& index)
 {
-	if (this->currentUser.AnyRoleByName(this->ADMIN_ROLE))
+	if (this->currentUser.AnyRoleByName(ADMIN_ROLE))
 		return this->currentUser.DeleteProductFromCartByIndex(index);
 
 	return false;
@@ -166,25 +129,12 @@ const bool Shop::DeleteProductFromCartByIndex(const int& index)
 
 const bool Shop::AnyCategoryByThisName(const String& categoryName)const
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
-	{
-		if (this->categories.GetElement(i).GetName() == categoryName) {
-			return true;
-		}
-	}
-
-	return false;
+	return this->storage.AnyCategoryByThisName(categoryName);
 }
 
 const bool Shop::AnyProductByThisName(const String& productName)const
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
-	{
-		if (this->categories[i].AnyProductByName(productName))
-			return true;
-	}
-
-	return false;
+	return this->storage.AnyProductByThisName(productName);
 }
 
 const bool Shop::AnyProductInCartByThisName(const String& productName)const
@@ -194,27 +144,17 @@ const bool Shop::AnyProductInCartByThisName(const String& productName)const
 
 void Shop::PrintAllCategoriesNames()
 {
-	std::cout << "Categories names: ";
-	for (int i = 0; i < this->categories.GetLength(); i++)
-	{
-		this->categories[i].PrintCategory();
-	}
+	this->storage.PrintAllCategoriesNames();
 }
 
 void Shop::PrintAllCategoriesProducts()
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
-	{
-		this->categories[i].PrintCategoryProducts();
-	}
+	this->storage.PrintAllCategoriesProducts();
 }
 
 void Shop::PrintAllCategoriesProductsNames()
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
-	{
-		this->categories[i].PrintCategoryProductsNames();
-	}
+	this->storage.PrintAllCategoriesProductsNames();
 }
 
 

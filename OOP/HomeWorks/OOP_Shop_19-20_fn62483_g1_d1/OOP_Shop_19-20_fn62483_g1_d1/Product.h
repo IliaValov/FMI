@@ -35,17 +35,18 @@ public:
 	virtual const int GetId() const;
 
 	virtual const bool SetName(const String& name);
-	virtual String GetName() const;
+	virtual const String GetName() const;
 
 	virtual const bool SetBrand(const String& brand);
-	virtual String GetBrand() const;
+	virtual const String GetBrand() const;
 
 	virtual const bool SetDescription(const String& description);
-	virtual String GetDescription() const;
+	virtual const String GetDescription() const;
 
 	virtual const bool SetPrice(const double& price);
 	virtual const double GetPrice() const;
 
+	virtual const bool IncreaseQuantity(const int& quantity);
 	virtual const bool DecreaseQuantity(const int& quantity);
 	virtual const int GetQuantity()const;
 

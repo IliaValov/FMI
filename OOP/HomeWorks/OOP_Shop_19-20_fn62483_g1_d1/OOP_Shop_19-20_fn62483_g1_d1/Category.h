@@ -9,7 +9,6 @@ private:
 
 	List<Product> products;
 
-
 public:
 	Category();
 	Category(const String& name);
@@ -22,6 +21,7 @@ public:
 
 	const bool AddProduct(const Product& product);
 
+	const int GetProductIndexById(const int& id);
 	const Product GetProductByIndex(const int& index);
 	const Product GetProductByName(const String& name);
 
@@ -31,7 +31,11 @@ public:
 
 	const bool DeleteProductByIndex(const int& index);
 
-	const bool DecreaseProductQuantity(int productId, int quantity);
+	const bool IncreaseProductQuantityById(const int& productId, const int& quantity);
+	const bool IncreaseProductQuantityByIndex(const int& index, const int& quantity);
+
+	const bool DecreaseProductQuantityById(const int& productId,const int& quantity);
+	const bool DecreaseProductQuantityByIndex(const int& index, const int& quantity);
 
 	void PrintCategory();
 	void PrintCategoryProducts();

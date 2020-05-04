@@ -45,7 +45,6 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const String& obj);
 
-	//TODO Const for obj
 	friend std::istream& operator>>(std::istream& is, String& obj);
 };
 

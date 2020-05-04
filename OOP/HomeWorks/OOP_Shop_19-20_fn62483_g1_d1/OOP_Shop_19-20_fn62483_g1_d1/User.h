@@ -20,6 +20,8 @@ public:
 
 	const String& GetUsername() const;
 
+	const List<ProductCart> GetUserProducts() const;
+
 	const bool RegisterUser(const String& userName, const String& password);
 
 	const bool AddProductToCart(const Product& product);

@@ -1,6 +1,6 @@
 #pragma once
 #include "Product.h"
-class Chocolate : Product
+class Chocolate : virtual public Product
 {
 private:
 	int daysToExpire;

@@ -9,6 +9,8 @@ private:
 	List<ProductCart> productsInCart;
 
 public:
+	const List<ProductCart> GetProducts() const;
+
 	const bool AddProductToCart(const ProductCart& product);
 	
 	const bool DeleteProductFromCartByIndex(const int& index);

@@ -1,6 +1,6 @@
 #pragma once
 #include "Product.h"
-class Monitor : Product
+class Monitor : virtual public Product
 {
 private:
 	int heightPx;

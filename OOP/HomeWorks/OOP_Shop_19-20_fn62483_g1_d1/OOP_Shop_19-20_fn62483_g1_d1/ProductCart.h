@@ -27,14 +27,12 @@ public:
 
 	~ProductCart();
 
+	const int GetId() const;
+
 	const String GetCategoryName()const;
 	const bool SetCategoryName(const String& categoryName);
 
 	const String GetProductName()const;
-
-	const String GetDescription()const;
-
-	const String GetBrand()const;
 
 	const double GetPrice()const;
 
@@ -45,7 +43,6 @@ public:
 	void PrintProduct();
 	void PrintProductName();
 
-	//TODO make it with const ??
 	ProductCart& operator =(const Product& obj);
 };
 

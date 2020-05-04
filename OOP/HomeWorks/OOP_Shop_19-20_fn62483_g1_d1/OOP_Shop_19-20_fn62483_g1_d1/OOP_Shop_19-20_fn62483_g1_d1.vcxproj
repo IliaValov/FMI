@@ -149,6 +149,7 @@
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StartUp.cpp" />
+    <ClCompile Include="Storage.cpp" />
     <ClCompile Include="String.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="Cart.h" />
     <ClInclude Include="Category.h" />
     <ClInclude Include="Chocolate.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Monitor.h" />
@@ -163,6 +165,7 @@
     <ClInclude Include="Product.h" />
     <ClInclude Include="ProductCart.h" />
     <ClInclude Include="Shop.h" />
+    <ClInclude Include="Storage.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>

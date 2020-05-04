@@ -41,6 +41,18 @@ const bool Category::AddProduct(const Product& product)
 	return true;
 }
 
+const int Category::GetProductIndexById(const int& id)
+{
+	for (int i = 0; i < this->products.GetLength(); i++)
+	{
+		Product currentProduct = this->products[i];
+		if (currentProduct.GetId() == id)
+			return i;
+	}
+
+	return -1;
+}
+
 const Product Category::GetProductByIndex(const int& index)
 {
 	if (index >= this->products.GetLength()) {
@@ -90,7 +102,24 @@ const bool Category::DeleteProductByIndex(const int& index)
 	return this->products.DeleteElement(index);
 }
 
-const bool Category::DecreaseProductQuantity(int productId, int quantity)
+const bool Category::IncreaseProductQuantityById(const int& productId, const int& quantity)
+{
+	for (int i = 0; i < this->products.GetLength(); i++)
+	{
+		if (this->products[i].GetId() == productId) {
+			return this->products[i].IncreaseQuantity(quantity);
+		}
+	}
+
+	return false;
+}
+
+const bool Category::IncreaseProductQuantityByIndex(const int& index, const int& quantity)
+{
+	return this->products[index].IncreaseQuantity(quantity);
+}
+
+const bool Category::DecreaseProductQuantityById(const int& productId, const int& quantity)
 {
 	for (int i = 0; i < this->products.GetLength(); i++)
 	{
@@ -101,6 +130,11 @@ const bool Category::DecreaseProductQuantity(int productId, int quantity)
 	}
 
 	return false;
+}
+
+const bool Category::DecreaseProductQuantityByIndex(const int& index, const int& quantity)
+{
+	return this->products[index].DecreaseQuantity(quantity);
 }
 
 void Category::PrintCategory()

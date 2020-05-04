@@ -1,4 +1,9 @@
 #include "Cart.h"
+const List<ProductCart> Cart::GetProducts() const
+{
+	return productsInCart;
+}
+
 const bool Cart::AddProductToCart(const ProductCart& product)
 {
 	//TODO ADD VALIDATION

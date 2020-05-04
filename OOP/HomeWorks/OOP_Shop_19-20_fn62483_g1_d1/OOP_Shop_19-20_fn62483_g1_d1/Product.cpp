@@ -50,7 +50,7 @@ const bool Product::SetName(const String& name)
 	return true;
 }
 
-String Product::GetName() const
+const String Product::GetName() const
 {
 	return this->name;
 }
@@ -62,7 +62,7 @@ const bool Product::SetBrand(const String& brand)
 	return true;
 }
 
-String Product::GetBrand() const
+const  String Product::GetBrand() const
 {
 	return this->brand;
 }
@@ -74,7 +74,7 @@ const bool Product::SetDescription(const String& description)
 	return true;
 }
 
-String Product::GetDescription() const
+const String Product::GetDescription() const
 {
 	return this->description;
 }
@@ -99,13 +99,24 @@ const double Product::GetPrice() const
 	return this->price;
 }
 
+const bool Product::IncreaseQuantity(const int& quantity)
+{
+	if (quantity < 0) {
+		return false;
+	}
+
+	this->quantity += quantity;
+
+	return true;
+}
+
 const bool Product::DecreaseQuantity(const int& quantity)
 {
 	if (quantity < 0 || quantity > this->quantity) {
 		return false;
 	}
 
-	this->quantity = quantity;
+	this->quantity -= quantity;
 
 	return true;
 }

@@ -21,6 +21,11 @@ const String& User::GetUsername() const
 	return this->username;
 }
 
+const List<ProductCart> User::GetUserProducts() const
+{
+	return this->cart.GetProducts();
+}
+
 const bool User::RegisterUser(const String& username, const String& password)
 {
 	this->username = username;

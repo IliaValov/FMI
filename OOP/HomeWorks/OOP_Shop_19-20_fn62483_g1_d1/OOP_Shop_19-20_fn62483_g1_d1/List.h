@@ -40,9 +40,9 @@ public:
 };
 
 template<typename T>
-List<T>::List() : capacity(1), size(0)
+inline List<T>::List() : capacity(1), size(0), elements(new T[1])
 {
-	this->elements = new T[1];
+
 }
 
 template<typename T>
@@ -122,7 +122,7 @@ void List<T>::ShiftArrayToLeft(const int& index)
 template<typename T>
 bool List<T>::NeedResize()
 {
-	if (this->capacity == this->size) {
+	if (this->size == this->capacity) {
 		return true;
 	}
 
