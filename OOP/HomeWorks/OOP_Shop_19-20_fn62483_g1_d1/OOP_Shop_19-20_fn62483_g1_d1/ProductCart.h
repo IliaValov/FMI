@@ -1,5 +1,7 @@
 #pragma once
-#include "String.h"
+#include<iostream>
+#include<string>
+
 #include "Product.h"
 
 class ProductCart
@@ -9,9 +11,9 @@ private:
 
 	int id;
 
-	String name;
+	std::string name;
 
-	String categoryName;
+	std::string categoryName;
 
 	double price;
 
@@ -23,16 +25,16 @@ public:
 
 	ProductCart(const Product& obj);
 
-	ProductCart(const Product& product, const String& categoryName);
+	ProductCart(const Product& product, const std::string& categoryName);
 
 	~ProductCart();
 
 	const int GetId() const;
 
-	const String GetCategoryName()const;
-	const bool SetCategoryName(const String& categoryName);
+	const std::string GetCategoryName()const;
+	const bool SetCategoryName(const std::string& categoryName);
 
-	const String GetProductName()const;
+	const std::string GetProductName()const;
 
 	const double GetPrice()const;
 
@@ -41,7 +43,7 @@ public:
 	const int GetQuantity() const;
 
 	void PrintProduct();
-	void PrintProductName();
+	void PrintProductName() const;
 
 	ProductCart& operator =(const Product& obj);
 };

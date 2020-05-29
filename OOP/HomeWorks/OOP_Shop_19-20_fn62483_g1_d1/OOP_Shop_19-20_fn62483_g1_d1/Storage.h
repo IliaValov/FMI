@@ -1,31 +1,33 @@
 #pragma once
+#include<iostream>
+#include<vector>
+#include<string>
+
 #include "Category.h"
-#include "String.h"
-#include "List.h"
 
 class Storage
 {
 private:
-	List<Category> categories;
-
+	std::vector<Category> categories;
+	
 	const int& FindProductIndexByIdAndCategoryIndex(const int& id, const int& categoryIndex);
 
-	const int& FindCategoryIndexByName(const String& categoryName);
+	const int& FindCategoryIndexByName(const std::string& categoryName);
 public:
 
 	const bool AddCategory(const Category& category);
-	const bool DeleteCategoryByName(const String& categoryName);
+	const bool DeleteCategoryByName(const std::string& categoryName);
 
-	const Product GetProductByName(const String& name) const;
+	const Product GetProductByName(const std::string& name) const ;
 
-	const bool AddProductToCategory(const String& categoryName, const Product& product);
-	const bool DeleteProductByName(const String& productName);
+	const bool AddProductToCategory(const std::string& categoryName, const Product& product);
+	const bool DeleteProductByName(const std::string& productName);
 
-	const bool IncreaseProductQuantity(const int& productQuantityBy, const String& categoryName, const int& productId);
-	const bool DecreaseProductQuantity(const int& decreaseQuantityBy, const String& categoryName, const int& productId);
+	const bool IncreaseProductQuantity(const int& productQuantityBy, const std::string& categoryName, const int& productId);
+	const bool DecreaseProductQuantity(const int& decreaseQuantityBy, const std::string& categoryName, const int& productId);
 
-	const bool AnyCategoryByThisName(const String& categoryName) const;
-	const bool AnyProductByThisName(const String& productName) const;
+	const bool AnyCategoryByThisName(const std::string& categoryName) const;
+	const bool AnyProductByThisName(const std::string& productName) const;
 
 	void PrintAllCategoriesNames();
 	void PrintAllCategoriesProducts();

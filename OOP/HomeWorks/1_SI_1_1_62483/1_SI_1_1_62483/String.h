@@ -12,9 +12,9 @@ public:
 	String(const char* str);
 	~String();
 
-	int GetLength();
+	const int GetLength() const;
 
-	char* GetString();
+	const char* GetString() const;
 
 	void Print();
 
@@ -22,24 +22,26 @@ public:
 	void Append(const char* symbols);
 	void Append(const String& obj);
 
-	bool operator ==(const char* sym);
-	bool operator ==(const String& obj);
+	const bool operator ==(const char* sym) const;
+	//bool operator ==(const char* sym) const;
+	const bool operator ==(const String& obj) const;
+	//bool operator ==(const String& obj) const;
 
-	bool operator !=(const char* sym);
-	bool operator !=(const String& obj);
+	const bool operator !=(const char* sym) const;
+	const bool operator !=(const String& obj) const;
 
-	bool operator < (const char* sym);
-	bool operator < (const String& obj);
+	const bool operator < (const char* sym)const;
+	const bool operator < (const String& obj)const;
 
-	bool operator >(const char* sym);
-	bool operator >(const String& obj);
+	const bool operator >(const char* sym)const;
+	const bool operator >(const String& obj)const;
 
 	String& operator =(const char* obj);
 	String& operator =(const String& obj);
 
-	String operator +(const char& symbol);
-	String operator +(const char* symbols);
-	String operator +(const String& obj);
+	String& operator +(const char& symbol);
+	String& operator +(const char* symbols);
+	String& operator +(const String& obj);
 
 	friend std::ostream& operator<<(std::ostream& os, const String& obj);
 
@@ -47,6 +49,7 @@ public:
 	friend std::istream& operator>>(std::istream& is, String& obj);
 };
 
-int StringToInt(const char* text);
-int GetStrLenth(const char* text);
+const int StringToInt(const char* text);
+const int GetStrLenth(const char* text);
 char* Concat(const char* text1, const char* text2);
+const int GetLowest(int, int);

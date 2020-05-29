@@ -48,7 +48,7 @@ void Rectangle::SetSides(const Point& point1, const Point& point2)
 	this->height = this->CalculateHeightBetweenTwoPoints(point1, point2);
 }
 
-double Rectangle::GetArea()
+const double Rectangle::GetArea() const
 {
 	return this->width * this->height;
 }

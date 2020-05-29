@@ -1,5 +1,5 @@
 #include "Cart.h"
-const List<ProductCart> Cart::GetProducts() const
+const std::vector<ProductCart> Cart::GetProducts() const
 {
 	return productsInCart;
 }
@@ -8,23 +8,28 @@ const bool Cart::AddProductToCart(const ProductCart& product)
 {
 	//TODO ADD VALIDATION
 
-	return this->productsInCart.AddElement(product);
+	this->productsInCart.push_back(product);
+
+	return true;
 
 }
 
 const bool Cart::DeleteProductFromCartByIndex(const int& index)
 {
-	return this->productsInCart.DeleteElement(index);
+
+	this->productsInCart.erase(this->productsInCart.begin() + index);
+
+	return true;
 
 }
 
-const bool Cart::DeleteProductFromCartByName(const String& name)
+const bool Cart::DeleteProductFromCartByName(const std::string& name)
 {
-	for (int i = 0; i < this->productsInCart.GetLength(); i++)
+	for (int i = 0; i < this->productsInCart.size(); i++)
 	{
 		ProductCart productCat = this->productsInCart[i];
 		if (productCat.GetProductName() == name) {
-			this->productsInCart.DeleteElement(i);
+			this->productsInCart.erase(this->productsInCart.begin() + i);
 			return true;
 		}
 	}
@@ -38,7 +43,7 @@ const double Cart::BuyTheProducts()
 
 	std::cout << "You paid: " << totalBill;
 
-	this->productsInCart.DeleteAll();
+	this->productsInCart.clear();
 
 	return totalBill;
 }
@@ -47,7 +52,7 @@ const double Cart::TotalBill() const
 {
 	double totalBill = 0;
 
-	for (int i = 0; i < this->productsInCart.GetLength(); i++)
+	for (int i = 0; i < this->productsInCart.size(); i++)
 	{
 		ProductCart currentProduct = this->productsInCart[i];
 
@@ -60,7 +65,7 @@ const double Cart::TotalBill() const
 void Cart::ShowTheBill() const
 {
 	std::cout << "name | brand | category | price | quantity | total cost";
-	for (int i = 0; i < this->productsInCart.GetLength(); i++)
+	for (int i = 0; i < this->productsInCart.size(); i++)
 	{
 		this->productsInCart[i].PrintProductName();
 	}
@@ -68,9 +73,9 @@ void Cart::ShowTheBill() const
 	std::cout << "Total bill: " << this->TotalBill();
 }
 
-const bool Cart::AnyProductByThisName(const String& name) const
+const bool Cart::AnyProductByThisName(const std::string& name) const
 {
-	int length = this->productsInCart.GetLength();
+	int length = this->productsInCart.size();
 
 	for (int i = 0; i < length; i++)
 	{

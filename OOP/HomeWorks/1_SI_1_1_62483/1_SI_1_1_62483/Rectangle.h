@@ -10,6 +10,7 @@ private:
 
 	double CalculateWidthBetweenTwoPoints(const Point& point1, const Point& point2);
 	double CalculateHeightBetweenTwoPoints(const Point& point1, const Point& point2);
+
 public:
 	Rectangle();
 	Rectangle(const Point& point1, const Point& point2);
@@ -18,6 +19,6 @@ public:
 
 	void SetSides(const Point& point1, const Point& point2);
 
-	double GetArea();
+	const double GetArea() const;
 };
 

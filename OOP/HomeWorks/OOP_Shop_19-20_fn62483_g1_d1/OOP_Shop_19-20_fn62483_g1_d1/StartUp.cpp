@@ -28,7 +28,8 @@ int main() {
 
 	//TODO this is not working properly and will be moved in class maybe in next patch :D
 	Shop shop;
-	String shopName;
+
+	std::string shopName;
 
 	cout << "Enter name for the shop \r\n";
 
@@ -102,7 +103,7 @@ void AdministrationPanel(Shop* shop) {
 
 void AdministrationPanelAddCategory(Shop* shop) {
 	Category category;
-	String name;
+	std::string name;
 
 	cout << "Enter name for the category: \r\n";
 
@@ -119,11 +120,11 @@ void AdministrationPanelAddCategory(Shop* shop) {
 }
 
 void AdministrationPanelAddProductToCategory(Shop* shop) {
-	String categoryName;
+	std::string categoryName;
 
-	String productName;
-	String productBrand;
-	String productDescription;
+	std::string productName;
+	std::string productBrand;
+	std::string productDescription;
 
 	double price = 0;
 	int quantity = 0;
@@ -176,7 +177,7 @@ void AdministrationPanelAddProductToCategory(Shop* shop) {
 
 void AdministrationPanelDeleteProductByName(Shop* shop) {
 
-	String productName;
+	std::string productName;
 
 	while (true) {
 		system("cls");
@@ -204,7 +205,7 @@ void AdministrationPanelDeleteProductByName(Shop* shop) {
 
 void AdministrationPanelDeleteCategoryByName(Shop* shop) {
 
-	String categoryName;
+	std::string categoryName;
 
 	while (true) {
 		system("cls");
@@ -267,7 +268,7 @@ void UserPanel(Shop* shop) {
 }
 
 void UserPanelAddProductToCart(Shop* shop) {
-	String productName;
+	std::string productName;
 
 	while (true) {
 		shop->PrintAllCategoriesProducts();
@@ -291,7 +292,7 @@ void UserPanelAddProductToCart(Shop* shop) {
 }
 
 void UserPanelDeleteProductFromCart(Shop* shop) {
-	String productName;
+	std::string productName;
 
 	while (true) {
 		system("cls");

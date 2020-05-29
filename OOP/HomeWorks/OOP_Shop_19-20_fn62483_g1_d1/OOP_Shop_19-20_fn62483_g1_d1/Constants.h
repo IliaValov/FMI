@@ -1,4 +1,5 @@
 #pragma once
-#include "String.h"
+#include<iostream>
+#include<string>
 
-const String ADMIN_ROLE = "Admin";
+const std::string ADMIN_ROLE = "Admin";

@@ -6,7 +6,7 @@ String::String()
 	this->text[0] = '\0';
 }
 
-String::String(String const& str)
+String::String(const String& str)
 {
 	this->text = Concat(str.text, nullptr);
 }
@@ -21,7 +21,7 @@ String::~String()
 	delete[] this->text;
 }
 
-int String::GetLength()
+const int String::GetLength()const
 {
 	int length = 0;
 	while (this->text[length]) {
@@ -31,7 +31,7 @@ int String::GetLength()
 	return length;
 }
 
-char* String::GetString()
+const char* String::GetString()const
 {
 	return this->text;
 }
@@ -70,26 +70,26 @@ void String::Append(const String& obj)
 	delete[] previousText;
 }
 
-bool String::operator==(const char* obj)
+const bool String::operator==(const char* symbols)const
 {
 	int currentStringLength = this->GetLength();
-	int objLength = GetStrLenth(obj);
+	int objLength = GetStrLenth(symbols);
 
 	if (objLength != currentStringLength)
 		return false;
 
 	for (int i = 0; i < objLength; i++)
 	{
-		if (this->text[i] != obj[i])
+		if (this->text[i] != symbols[i])
 			return false;
 	}
 
 	return true;
 }
 
-bool String::operator==(const String& obj)
+const bool String::operator==(const String& obj)const
 {
-	int currentStringLength = this->GetLength();
+	int currentStringLength = GetStrLenth(this->text);
 	int objLength = GetStrLenth(obj.text);
 
 	if (objLength != currentStringLength)
@@ -104,7 +104,7 @@ bool String::operator==(const String& obj)
 	return true;
 }
 
-bool String::operator!=(const char* obj)
+const bool String::operator!=(const char* obj)const
 {
 	int currentStringLength = this->GetLength();
 	int objLength = GetStrLenth(obj);
@@ -125,7 +125,7 @@ bool String::operator!=(const char* obj)
 	return isEqual;
 }
 
-bool String::operator!=(const String& obj)
+const bool String::operator!=(const String& obj)const
 {
 
 	int currentStringLength = this->GetLength();
@@ -147,24 +147,101 @@ bool String::operator!=(const String& obj)
 	return !isEqual;
 }
 
-bool String::operator<(const char* sym)
+const bool String::operator<(const char* text)const
 {
-	return StringToInt(this->text) < StringToInt(sym);
+	int firstTextLength = this->GetLength();
+	int secondTextLength = GetStrLenth(text);
+
+	for (int i = 0; i < GetLowest(firstTextLength, secondTextLength); i++)
+	{
+		char firstTextcurrentSymbol = this->text[i];
+		char secondTextcurrentSymbol = text[i];
+
+		if (firstTextcurrentSymbol < secondTextcurrentSymbol)
+			return true;
+		else if (firstTextcurrentSymbol > secondTextcurrentSymbol)
+			return false;
+	}
+
+	if (firstTextLength < secondTextLength || firstTextLength != secondTextLength) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
-bool String::operator<(const String& obj)
+const bool String::operator<(const String& obj)const
 {
-	return StringToInt(this->text) < StringToInt(obj.text);
+	int firstTextLength = this->GetLength();
+	int secondTextLength = GetStrLenth(obj.text);
+
+	for (int i = 0; i < GetLowest(firstTextLength, secondTextLength); i++)
+	{
+		char firstTextcurrentSymbol = this->text[i];
+		char secondTextcurrentSymbol = obj.text[i];
+
+		if (firstTextcurrentSymbol < secondTextcurrentSymbol)
+			return true;
+		else if (firstTextcurrentSymbol > secondTextcurrentSymbol)
+			return false;
+	}
+
+	if (firstTextLength < secondTextLength || firstTextLength != secondTextLength) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
-bool String::operator>(const char* sym)
+const bool String::operator>(const char* text)const
 {
-	return StringToInt(this->text) > StringToInt(sym);
+	int firstTextLength = this->GetLength();
+	int secondTextLength = GetStrLenth(text);
+
+	for (int i = 0; i < GetLowest(firstTextLength, secondTextLength); i++)
+	{
+		char firstTextcurrentSymbol = this->text[i];
+		char secondTextcurrentSymbol = text[i];
+
+		if (firstTextcurrentSymbol < secondTextcurrentSymbol)
+			return false;
+		else if (firstTextcurrentSymbol > secondTextcurrentSymbol)
+			return true;
+	}
+
+	if (firstTextLength < secondTextLength || firstTextLength == secondTextLength) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }
 
-bool String::operator>(const String& obj)
+const bool String::operator>(const String& obj)const
 {
-	return StringToInt(this->text) > StringToInt(obj.text);
+	int firstTextLength = this->GetLength();
+	int secondTextLength = GetStrLenth(obj.text);
+
+	for (int i = 0; i < GetLowest(firstTextLength, secondTextLength); i++)
+	{
+		char firstTextcurrentSymbol = this->text[i];
+		char secondTextcurrentSymbol = obj.text[i];
+
+		if (firstTextcurrentSymbol < secondTextcurrentSymbol)
+			return false;
+		else if (firstTextcurrentSymbol > secondTextcurrentSymbol)
+			return true;
+	}
+
+
+	if (firstTextLength < secondTextLength || firstTextLength == secondTextLength) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }
 
 String& String::operator=(const String& obj)
@@ -189,7 +266,7 @@ String& String::operator=(const char* obj)
 	return *this;
 }
 
-String String::operator+(const String& obj)
+String& String::operator+(const String& obj)
 {
 	String result;
 
@@ -198,7 +275,7 @@ String String::operator+(const String& obj)
 	return result;
 }
 
-String String::operator+(const char& symbol)
+String& String::operator+(const char& symbol)
 {
 	String result;
 
@@ -209,7 +286,7 @@ String String::operator+(const char& symbol)
 	return result;
 }
 
-String String::operator+(const char* obj)
+String& String::operator+(const char* obj)
 {
 	String result;
 
@@ -237,7 +314,7 @@ std::istream& operator>>(std::istream& is, String& obj)
 	return is;
 }
 
-int StringToInt(const char* text)
+const int StringToInt(const char* text)
 {
 	int sum = 0;
 
@@ -249,7 +326,7 @@ int StringToInt(const char* text)
 	return sum;
 }
 
-int GetStrLenth(const char* text)
+const int GetStrLenth(const char* text)
 {
 	int length = 0;
 
@@ -292,4 +369,13 @@ char* Concat(const char* text1, const char* text2)
 	newText[newTextLength] = '\0';
 
 	return newText;
+}
+
+const int GetLowest(int a, int b)
+{
+	if (a > b)
+		return a;
+
+	return b;
+
 }

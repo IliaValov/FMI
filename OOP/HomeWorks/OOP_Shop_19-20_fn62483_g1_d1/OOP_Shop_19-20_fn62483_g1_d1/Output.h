@@ -1,5 +1,6 @@
 #pragma once
-#include "String.h"
+#include<iostream>
+#include<string>
 
 class Output
 {
@@ -7,7 +8,7 @@ public:
 	const bool WriteOnConsole();
 	const bool WriteLineOnConsole();
 
-	const bool WriteOnFile(const String& path, const String& fileName);
-	const bool WriteLineOnFile(const String& path, const String& fileName);
+	const bool WriteOnFile(const  std::string& path, const  std::string& fileName);
+	const bool WriteLineOnFile(const  std::string& path, const  std::string& fileName);
 };
 

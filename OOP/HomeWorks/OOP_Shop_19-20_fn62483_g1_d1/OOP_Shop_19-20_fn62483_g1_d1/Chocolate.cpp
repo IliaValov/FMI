@@ -5,7 +5,7 @@ Chocolate::Chocolate():Product()
 	this->daysToExpire = 0;
 }
 
-Chocolate::Chocolate(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige, const int& daysToExpire)
+Chocolate::Chocolate(const  std::string& name, const  std::string& description, const  std::string& brand, const double& price, const int& quantity, const double& discountInPercentige, const int& daysToExpire)
 	: Product(name, description, brand, price, quantity, discountInPercentige)
 {
 	this->daysToExpire = daysToExpire;

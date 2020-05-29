@@ -13,7 +13,7 @@ Product::Product() {
 	this->quantity = 0;
 }
 
-Product::Product(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige)
+Product::Product(const std::string& name, const std::string& description, const std::string& brand, const double& price, const int& quantity, const double& discountInPercentige)
 {
 	this->id = this->IncreaseIdCounter();
 	this->name = name;
@@ -43,38 +43,38 @@ const int Product::GetId()const
 	return this->id;
 }
 
-const bool Product::SetName(const String& name)
+const bool Product::SetName(const std::string& name)
 {
 	this->name = name;
 
 	return true;
 }
 
-const String Product::GetName() const
+const std::string Product::GetName() const
 {
 	return this->name;
 }
 
-const bool Product::SetBrand(const String& brand)
+const bool Product::SetBrand(const std::string& brand)
 {
 	this->brand = brand;
 
 	return true;
 }
 
-const  String Product::GetBrand() const
+const  std::string Product::GetBrand() const
 {
 	return this->brand;
 }
 
-const bool Product::SetDescription(const String& description)
+const bool Product::SetDescription(const std::string& description)
 {
 	this->description = description;
 
 	return true;
 }
 
-const String Product::GetDescription() const
+const std::string Product::GetDescription() const
 {
 	return this->description;
 }

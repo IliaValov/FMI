@@ -15,6 +15,6 @@ public:
 
 	void CreateAndAddRectangle(const Point point1, const Point point2);
 
-	int GetIndexByBiggestRectangleArea();
+	const int GetIndexByBiggestRectangleArea() const;
 };
 

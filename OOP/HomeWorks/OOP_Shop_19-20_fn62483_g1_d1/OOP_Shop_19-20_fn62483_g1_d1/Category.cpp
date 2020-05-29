@@ -4,7 +4,7 @@ Category::Category()
 {
 }
 
-Category::Category(const String& name)
+Category::Category(const std::string& name)
 {
 	this->name = name;
 }
@@ -13,19 +13,19 @@ Category::~Category()
 {
 }
 
-const bool Category::SetName(const String& name)
+const bool Category::SetName(const std::string& name)
 {
 	this->name = name;
 
 	return true;
 }
 
-const int Category::GetProductsLength()
+const int Category::GetProductsLength() const
 {
-	return this->products.GetLength();
+	return this->products.size();
 }
 
-const String Category::GetName() const
+const std::string Category::GetName() const
 {
 	return this->name;
 }
@@ -36,16 +36,16 @@ const bool Category::AddProduct(const Product& product)
 	if (this->AnyProductByName(temp.GetName()))
 		return false;
 
-	this->products.AddElement(temp);
+	this->products.push_back(&temp);
 
 	return true;
 }
 
 const int Category::GetProductIndexById(const int& id)
 {
-	for (int i = 0; i < this->products.GetLength(); i++)
+	for (int i = 0; i < this->products.size(); i++)
 	{
-		Product currentProduct = this->products[i];
+		Product currentProduct = *this->products[i];
 		if (currentProduct.GetId() == id)
 			return i;
 	}
@@ -55,40 +55,40 @@ const int Category::GetProductIndexById(const int& id)
 
 const Product Category::GetProductByIndex(const int& index)
 {
-	if (index >= this->products.GetLength()) {
+	if (index >= this->products.size()) {
 		return Product();
 	}
 
-	return this->products[index];
+	return *this->products[index];
 }
 
-const Product Category::GetProductByName(const String& name)
+const Product Category::GetProductByName(const std::string& name)
 {
-	int length = this->products.GetLength();
+	int length = this->products.size();
 
 	for (int i = 0; i < length; i++)
 	{
-		if ((this->products[i].GetName()) == name)
+		if (((*this->products[i]).GetName()) == name)
 		{
-			return this->products[i];
+			return *this->products[i];
 		}
 	}
 
 	return Product();
 }
 
-const List<Product> Category::GetAllProducts()
+const std::vector<Product*> Category::GetAllProducts()
 {
 	return this->products;
 }
 
-const bool Category::AnyProductByName(const String& name)
+const bool Category::AnyProductByName(const std::string& name) const
 {
-	int length = this->products.GetLength();
+	int length = this->products.size();
 
 	for (int i = 0; i < length; i++)
 	{
-		if (this->products[i].GetName() == name)
+		if ((*this->products[i]).GetName() == name)
 		{
 			return true;
 		}
@@ -99,15 +99,17 @@ const bool Category::AnyProductByName(const String& name)
 
 const bool Category::DeleteProductByIndex(const int& index)
 {
-	return this->products.DeleteElement(index);
+	this->products.erase(this->products.begin() + index);
+
+	return true;
 }
 
 const bool Category::IncreaseProductQuantityById(const int& productId, const int& quantity)
 {
-	for (int i = 0; i < this->products.GetLength(); i++)
+	for (int i = 0; i < this->products.size(); i++)
 	{
-		if (this->products[i].GetId() == productId) {
-			return this->products[i].IncreaseQuantity(quantity);
+		if ((*this->products[i]).GetId() == productId) {
+			return (*this->products[i]).IncreaseQuantity(quantity);
 		}
 	}
 
@@ -116,15 +118,15 @@ const bool Category::IncreaseProductQuantityById(const int& productId, const int
 
 const bool Category::IncreaseProductQuantityByIndex(const int& index, const int& quantity)
 {
-	return this->products[index].IncreaseQuantity(quantity);
+	return (*this->products[index]).IncreaseQuantity(quantity);
 }
 
 const bool Category::DecreaseProductQuantityById(const int& productId, const int& quantity)
 {
-	for (int i = 0; i < this->products.GetLength(); i++)
+	for (int i = 0; i < this->products.size(); i++)
 	{
-		if (this->products[i].GetId() == productId) {
-			this->products[i].DecreaseQuantity(quantity);
+		if ((*this->products[i]).GetId() == productId) {
+			(*this->products[i]).DecreaseQuantity(quantity);
 			return true;
 		}
 	}
@@ -134,7 +136,7 @@ const bool Category::DecreaseProductQuantityById(const int& productId, const int
 
 const bool Category::DecreaseProductQuantityByIndex(const int& index, const int& quantity)
 {
-	return this->products[index].DecreaseQuantity(quantity);
+	return (*this->products[index]).DecreaseQuantity(quantity);
 }
 
 void Category::PrintCategory()
@@ -145,18 +147,18 @@ void Category::PrintCategory()
 void Category::PrintCategoryProducts()
 {
 	std::cout << "Category: " << this->name << "\r\n";
-	for (int i = 0; i < this->products.GetLength(); i++)
+	for (int i = 0; i < this->products.size(); i++)
 	{
-		this->products[i].PrintProduct();
+		(*this->products[i]).PrintProduct();
 	}
 }
 
 void Category::PrintCategoryProductsNames()
 {
 	std::cout << "Category: " << this->name << "\r\n";
-	for (int i = 0; i < this->products.GetLength(); i++)
+	for (int i = 0; i < this->products.size(); i++)
 	{
-		this->products[i].PrintProductName();
+		(*this->products[i]).PrintProductName();
 	}
 }
 

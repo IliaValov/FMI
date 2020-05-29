@@ -6,7 +6,7 @@ User::User()
 	this->password = "";
 }
 
-User::User(const String& username, const String& password)
+User::User(const std::string& username, const std::string& password)
 {
 	this->username = username;
 	this->password = password;
@@ -16,17 +16,17 @@ User::~User()
 {
 }
 
-const String& User::GetUsername() const
+const std::string& User::GetUsername() const
 {
 	return this->username;
 }
 
-const List<ProductCart> User::GetUserProducts() const
+const std::vector<ProductCart> User::GetUserProducts() const
 {
 	return this->cart.GetProducts();
 }
 
-const bool User::RegisterUser(const String& username, const String& password)
+const bool User::RegisterUser(const std::string& username, const std::string& password)
 {
 	this->username = username;
 	this->password = password;
@@ -39,7 +39,7 @@ const bool User::AddProductToCart(const Product& product)
 	return this->cart.AddProductToCart(product);
 }
 
-const bool User::DeleteProductFromCartByName(const String& name)
+const bool User::DeleteProductFromCartByName(const std::string& name)
 {
 	return this->cart.DeleteProductFromCartByName(name);
 }
@@ -49,9 +49,9 @@ const bool User::DeleteProductFromCartByIndex(const int& index)
 	return this->cart.DeleteProductFromCartByIndex(index);
 }
 
-const bool User::AnyRoleByName(const String& name) const
+const bool User::AnyRoleByName(const std::string& name) const
 {
-	for (int i = 0; i < this->roles.GetLength(); i++)
+	for (int i = 0; i < this->roles.size(); i++)
 	{
 		if (this->roles[i] == name) {
 			return true;
@@ -68,10 +68,16 @@ const double User::GetUserBill() const
 
 const double User::BuyAllUserProductsFromCart()
 {
-	return this->cart.BuyTheProducts();
+	if (this->account.Substract(this->cart.TotalBill()))
+	{
+
+		return this->cart.BuyTheProducts();
+	}
+
+	return -1;
 }
 
-const bool User::IsMatch(const String& username, const String& password) const
+const bool User::IsMatch(const std::string& username, const std::string& password) const
 {
 	if (this->username == username && this->password == password)
 		return true;

@@ -1,21 +1,23 @@
 #pragma once
-#include <iostream>
-#include "List.h"
+#include<iostream>
+#include<vector>
+#include<string>
+
 #include "ProductCart.h"
 
 class Cart
 {
 private:
-	List<ProductCart> productsInCart;
+	std::vector<ProductCart> productsInCart;
 
 public:
-	const List<ProductCart> GetProducts() const;
+	const std::vector<ProductCart> GetProducts() const;
 
 	const bool AddProductToCart(const ProductCart& product);
 	
 	const bool DeleteProductFromCartByIndex(const int& index);
 
-	const bool DeleteProductFromCartByName(const String& name);
+	const bool DeleteProductFromCartByName(const std::string& name);
 
 	const double BuyTheProducts();
 
@@ -23,7 +25,7 @@ public:
 
 	void ShowTheBill() const;
 
-	const bool AnyProductByThisName(const String& name) const;
+	const bool AnyProductByThisName(const std::string& name) const;
 
 };
 

@@ -30,9 +30,6 @@
     <ClCompile Include="Rectangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="List.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

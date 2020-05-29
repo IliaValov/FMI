@@ -1,5 +1,8 @@
 #pragma once
-#include "String.h"
+
+#include<iostream>
+#include<string>
+
 #include "ProductCart.h"
 
 class Product
@@ -13,11 +16,11 @@ private:
 
 	int id;
 
-	String name;
+	std::string name;
 
-	String description;
+	std::string description;
 
-	String brand;
+	std::string brand;
 
 	double price;
 
@@ -26,22 +29,23 @@ private:
 	double discountInPercentige;
 
 	int IncreaseIdCounter();
+
 public:
 	Product();
-	Product(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige);
+	Product(const std::string& name, const std::string& description, const std::string& brand, const double& price, const int& quantity, const double& discountInPercentige);
 	Product(const Product& obj);
 	~Product();
 
 	virtual const int GetId() const;
 
-	virtual const bool SetName(const String& name);
-	virtual const String GetName() const;
+	virtual const bool SetName(const std::string& name);
+	virtual const std::string GetName() const;
 
-	virtual const bool SetBrand(const String& brand);
-	virtual const String GetBrand() const;
+	virtual const bool SetBrand(const std::string& brand);
+	virtual const std::string GetBrand() const;
 
-	virtual const bool SetDescription(const String& description);
-	virtual const String GetDescription() const;
+	virtual const bool SetDescription(const std::string& description);
+	virtual const std::string GetDescription() const;
 
 	virtual const bool SetPrice(const double& price);
 	virtual const double GetPrice() const;

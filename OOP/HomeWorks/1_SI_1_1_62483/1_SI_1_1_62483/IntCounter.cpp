@@ -1,5 +1,10 @@
 #include "IntCounter.h"
 
+//This is default values you can't used them
+IntCounter::IntCounter() : number(nullptr), references(nullptr)
+{
+}
+
 IntCounter::IntCounter(const int* num)
 {
 	this->references = new int(1);
@@ -23,12 +28,12 @@ IntCounter::~IntCounter()
 	}
 }
 
-int IntCounter::GetCount()
+const int IntCounter::GetCount()const
 {
 	return *this->references;
 }
 
-int IntCounter::GetNumber()
+const int IntCounter::GetNumber()const
 {
 	return *this->number;
 }
@@ -36,6 +41,7 @@ int IntCounter::GetNumber()
 IntCounter IntCounter::operator=(const IntCounter& obj)
 {
 	if (this != &obj) {
+		*this->references = *this->references - 1;
 
 		this->number = obj.number;
 		this->references = obj.references;

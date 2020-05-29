@@ -2,13 +2,19 @@
 #include "IntCounter.h"
 #include "SVG.h"
 #include "String.h"
+#include <stdio.h> 
 
 int main() {
 
-	String temp("Hello world");
-	temp.Print();
-	temp.Append('!');
-	temp.Print();
+	String a = "aaa";
+	String b = "aa";
+
+	if (a < b) {
+		std::cout << "True";
+	}
+	else {
+		std::cout << "False";
+	}
 
 	/*int* some_number = new int(5);
 	
@@ -45,5 +51,6 @@ int main() {
 
 	std::cout << svg.GetIndexByBiggestRectangleArea();
 	*/
+
 	return 0;
 }

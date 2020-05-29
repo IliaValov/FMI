@@ -20,7 +20,7 @@ void SVG::CreateAndAddRectangle(const Point point1, const Point point2)
 	this->rectangles.AddElement(rectangle);
 }
 
-int SVG::GetIndexByBiggestRectangleArea()
+const int SVG::GetIndexByBiggestRectangleArea() const
 {
 	int indexWithTheBiggestRectangleArea = -1;
 	double previousArea = -1;

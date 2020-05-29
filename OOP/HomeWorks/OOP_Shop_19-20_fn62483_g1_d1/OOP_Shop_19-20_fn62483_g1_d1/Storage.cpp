@@ -5,9 +5,9 @@ const int& Storage::FindProductIndexByIdAndCategoryIndex(const int& id, const in
 	return this->categories[categoryIndex].GetProductIndexById(id);
 }
 
-const int& Storage::FindCategoryIndexByName(const String& categoryName)
+const int& Storage::FindCategoryIndexByName(const std::string& categoryName)
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
+	for (int i = 0; i < this->categories.size(); i++)
 	{
 		if (this->categories[i].GetName() == categoryName)
 			return i;
@@ -21,17 +21,20 @@ const bool Storage::AddCategory(const Category& category)
 	if (this->AnyCategoryByThisName(category.GetName()))
 		return false;
 
-	return this->categories.AddElement(category);
+	this->categories.push_back(category);
+
+	return true;
 }
-const bool Storage::DeleteCategoryByName(const String& categoryName)
+
+const bool Storage::DeleteCategoryByName(const std::string& categoryName)
 {
 
-	for (int i = 0; i < categories.GetLength(); i++)
+	for (int i = 0; i < categories.size(); i++)
 	{
-		Category currentCategory = categories.GetElement(i);
+		Category currentCategory = categories[i];
 
 		if (currentCategory.GetName() == categoryName) {
-			this->categories.DeleteElement(i);
+			this->categories.erase(this->categories.begin() + i);
 			return true;
 		}
 	}
@@ -39,11 +42,11 @@ const bool Storage::DeleteCategoryByName(const String& categoryName)
 	return false;
 }
 
-const Product Storage::GetProductByName(const String& name) const
+const Product Storage::GetProductByName(const std::string& name) const
 {
-	for (int i = 0; i < categories.GetLength(); i++)
+	for (int i = 0; i < categories.size(); i++)
 	{
-		Category currentCategory = categories.GetElement(i);
+		Category currentCategory = categories[i];
 		for (int j = 0; j < categories[i].GetProductsLength(); j++)
 		{
 			Product currentProduct = currentCategory.GetProductByIndex(j);
@@ -56,10 +59,10 @@ const Product Storage::GetProductByName(const String& name) const
 	return Product();
 }
 
-const bool Storage::AddProductToCategory(const String& categoryName, const Product& product)
+const bool Storage::AddProductToCategory(const std::string& categoryName, const Product& product)
 {
 
-	for (int i = 0; i < this->categories.GetLength(); i++)
+	for (int i = 0; i < this->categories.size(); i++)
 	{
 		if (this->categories[i].GetName() == categoryName)
 			return this->categories[i].AddProduct(product);
@@ -67,12 +70,13 @@ const bool Storage::AddProductToCategory(const String& categoryName, const Produ
 
 	return false;
 }
-const bool Storage::DeleteProductByName(const String& productName)
+
+const bool Storage::DeleteProductByName(const std::string& productName)
 {
 
-	for (int i = 0; i < categories.GetLength(); i++)
+	for (int i = 0; i < categories.size(); i++)
 	{
-		Category currentCategory = categories.GetElement(i);
+		Category currentCategory = categories[i];
 		for (int j = 0; j < categories[i].GetProductsLength(); j++)
 		{
 			Product currentProduct = currentCategory.GetProductByIndex(j);
@@ -86,33 +90,35 @@ const bool Storage::DeleteProductByName(const String& productName)
 	return false;
 }
 
-const bool Storage::IncreaseProductQuantity(const int& productQuantityBy, const String& categoryName, const int& productId)
+const bool Storage::IncreaseProductQuantity(const int& productQuantityBy, const std::string& categoryName, const int& productId)
 {
 	const int categoryIndex = this->FindCategoryIndexByName(categoryName);
 
 	return this->categories[categoryIndex].DecreaseProductQuantityById(productId, productQuantityBy);
 }
-const bool Storage::DecreaseProductQuantity(const int& decreaseQuantityBy, const String& categoryName, const int& productId)
+
+const bool Storage::DecreaseProductQuantity(const int& decreaseQuantityBy, const std::string& categoryName, const int& productId)
 {
 	const int categoryIndex = this->FindCategoryIndexByName(categoryName);
 
 	return this->categories[categoryIndex].DecreaseProductQuantityById(productId, decreaseQuantityBy);
 }
 
-const bool Storage::AnyCategoryByThisName(const String& categoryName) const
+const bool Storage::AnyCategoryByThisName(const std::string& categoryName) const
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
+	for (int i = 0; i < this->categories.size(); i++)
 	{
-		if (this->categories.GetElement(i).GetName() == categoryName) {
+		if (this->categories[i].GetName() == categoryName) {
 			return true;
 		}
 	}
 
 	return false;
 }
-const bool Storage::AnyProductByThisName(const String& productName) const
+
+const bool Storage::AnyProductByThisName(const std::string& productName) const
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
+	for (int i = 0; i < this->categories.size(); i++)
 	{
 		if (this->categories[i].AnyProductByName(productName))
 			return true;
@@ -124,7 +130,7 @@ const bool Storage::AnyProductByThisName(const String& productName) const
 void Storage::PrintAllCategoriesNames()
 {
 	std::cout << "Categories names: ";
-	for (int i = 0; i < this->categories.GetLength(); i++)
+	for (int i = 0; i < this->categories.size(); i++)
 	{
 		this->categories[i].PrintCategory();
 	}
@@ -132,7 +138,7 @@ void Storage::PrintAllCategoriesNames()
 
 void Storage::PrintAllCategoriesProducts()
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
+	for (int i = 0; i < this->categories.size(); i++)
 	{
 		this->categories[i].PrintCategoryProducts();
 	}
@@ -140,7 +146,7 @@ void Storage::PrintAllCategoriesProducts()
 
 void Storage::PrintAllCategoriesProductsNames()
 {
-	for (int i = 0; i < this->categories.GetLength(); i++)
+	for (int i = 0; i < this->categories.size(); i++)
 	{
 		this->categories[i].PrintCategoryProductsNames();
 	}

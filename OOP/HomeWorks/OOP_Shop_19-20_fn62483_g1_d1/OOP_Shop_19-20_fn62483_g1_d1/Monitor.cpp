@@ -6,7 +6,7 @@ Monitor::Monitor() : Product()
 	this->heightPx = 0;
 }
 
-Monitor::Monitor(const String& name, const String& description, const String& brand, const double& price, const int& quantity, const double& discountInPercentige, const int& widthPx, const int& heightPx) :
+Monitor::Monitor(const  std::string& name, const  std::string& description, const  std::string& brand, const double& price, const int& quantity, const double& discountInPercentige, const int& widthPx, const int& heightPx) :
 	Product(name, description, brand, price, quantity, discountInPercentige)
 {
 	this->widthPx = widthPx;

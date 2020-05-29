@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IntCounter.cpp" />
-    <ClCompile Include="List.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="StartUp.cpp" />

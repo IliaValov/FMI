@@ -1,21 +1,24 @@
 #include <iostream>
-#include "Тangerine.h"
 
 int main() {
-	Tangerine tangerine;
+	char* a = nullptr;
 
-	
+	delete[] a;
 
-	//Вариант 1
-	Tangerine tangerine1("Orange", "Medium", "Sweet");
+	//Tangerine tangerine;
 
-	Tangerine coppy(tangerine1.Get_Color(), tangerine1.Get_Size(), tangerine1.Get_Taste());
-		
-	//Вариант 2
-	coppy.Set_Color(tangerine1.Get_Color());
-	coppy.Set_Size(tangerine1.Get_Size());
-	coppy.Set_Taste(tangerine1.Get_Taste());
+	//
 
-	//Вариант 3 с coppy constructor
-	Tangerine coppy2(tangerine1);
+	////Вариант 1
+	//Tangerine tangerine1("Orange", "Medium", "Sweet");
+
+	//Tangerine coppy(tangerine1.Get_Color(), tangerine1.Get_Size(), tangerine1.Get_Taste());
+	//	
+	////Вариант 2
+	//coppy.Set_Color(tangerine1.Get_Color());
+	//coppy.Set_Size(tangerine1.Get_Size());
+	//coppy.Set_Taste(tangerine1.Get_Taste());
+
+	////Вариант 3 с coppy constructor
+	//Tangerine coppy2(tangerine1);
 }

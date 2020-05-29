@@ -17,7 +17,7 @@ ProductCart::ProductCart(const Product& obj)
 	this->discountInPercentige = obj.discountInPercentige;
 }
 
-ProductCart::ProductCart(const Product& obj, const String& categoryName)
+ProductCart::ProductCart(const Product& obj, const std::string& categoryName)
 {
 	this->id = obj.id;
 	this->name = obj.name;
@@ -36,12 +36,12 @@ const int ProductCart::GetId() const
 	return this->id;
 }
 
-const String ProductCart::GetCategoryName() const
+const std::string ProductCart::GetCategoryName() const
 {
 	return this->categoryName;
 }
 
-const bool ProductCart::SetCategoryName(const String& categoryName)
+const bool ProductCart::SetCategoryName(const std::string& categoryName)
 {
 	//TODO VALIDATION
 
@@ -50,7 +50,7 @@ const bool ProductCart::SetCategoryName(const String& categoryName)
 	return true;
 }
 
-const String ProductCart::GetProductName()const
+const std::string ProductCart::GetProductName()const
 {
 	return this->name;
 }
@@ -75,7 +75,7 @@ void ProductCart::PrintProduct()
 	std::cout << this->name;
 }
 
-void ProductCart::PrintProductName()
+void ProductCart::PrintProductName() const
 {
 	std::cout << this->name
 		<< " " << this->categoryName
