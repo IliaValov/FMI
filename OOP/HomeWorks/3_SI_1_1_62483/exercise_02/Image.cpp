@@ -1,6 +1,6 @@
 #include "Image.h"
 
-Image::Image(const String& fileName, const ImageExtension& imageExtension, const Date& date, const double& megabytes, const String& nameOfDevice, const Resolution& resolution)
+Image::Image(const std::string& fileName, const ImageExtension& imageExtension, const Date& date, const double& megabytes, const std::string& nameOfDevice, const Resolution& resolution)
 	: nameOfDevice(nameOfDevice), resolution(resolution), File(fileName, "", date, megabytes)
 {
 	if (imageExtension == ImageExtension::JPG) {
@@ -14,12 +14,12 @@ Image::Image(const String& fileName, const ImageExtension& imageExtension, const
 	}
 }
 
-const String& Image::GetNameOfDevice() const
+const std::string& Image::GetNameOfDevice() const
 {
 	return this->nameOfDevice;
 }
 
-void Image::SetNameOfDevice(const String& nameOfDevice)
+void Image::SetNameOfDevice(const std::string& nameOfDevice)
 {
 	this->nameOfDevice = nameOfDevice;
 }

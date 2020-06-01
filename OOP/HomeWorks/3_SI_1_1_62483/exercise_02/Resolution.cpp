@@ -8,7 +8,7 @@ Resolution::Resolution(const int& width, const int& height) : width(width), heig
 {
 }
 
-const String& Resolution::GetResolution()
+const std::string& Resolution::GetResolution()
 {
 	return this->width + "/" + this->height;
 }

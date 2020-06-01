@@ -11,15 +11,15 @@ enum class ImageExtension {
 class Image : public File
 {
 private:
-	String nameOfDevice;
+	std::string nameOfDevice;
 	Resolution resolution;
 
 public:
 
-	Image(const String& fileName, const ImageExtension& imageExtension, const Date& date, const double& megabytes, const String& nameOfDevice, const Resolution& resolution);
+	Image(const std::string& fileName, const ImageExtension& imageExtension, const Date& date, const double& megabytes, const std::string& nameOfDevice, const Resolution& resolution);
 
-	const String& GetNameOfDevice() const;
-	void SetNameOfDevice(const String& nameOfDevice);
+	const std::string& GetNameOfDevice() const;
+	void SetNameOfDevice(const std::string& nameOfDevice);
 
 	const Resolution GetResolution() const;
 	void SetResolution(const Resolution& resolution);

@@ -4,27 +4,27 @@ File::File(): name(""), extension(""), date(), megabytes(-1)
 {
 }
 
-File::File(const String& name, const String& extension, const Date& date, const double& megabytes) : name(name), extension(extension), date(date), megabytes(megabytes)
+File::File(const std::string& name, const std::string& extension, const Date& date, const double& megabytes) : name(name), extension(extension), date(date), megabytes(megabytes)
 {
 }
 
 
-const String& File::GetName()const
+const std::string& File::GetName()const
 {
 	return this->name;
 }
 
-void File::SetName(const String& name)
+void File::SetName(const std::string& name)
 {
 	this->name = name;
 }
 
-const String& File::GetExtension() const
+const std::string& File::GetExtension() const
 {
 	return this->extension;
 }
 
-void File::SetExtension(const String& extension)
+void File::SetExtension(const std::string& extension)
 {
 	this->extension = extension;
 }

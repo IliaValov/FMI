@@ -12,19 +12,20 @@ class MusicFile : public File
 {
 private:
 	
-	String author;
-	String songName;
+	std::string author;
+	std::string songName;
 	Date dateOfSongCreation;
 
+	void setFileName();
 public:
 
-	MusicFile(const String& fileName, const MusicExtension& extension, const Date& date,const double& megabytes,const String& author, const String& songName, const Date& dateOfSongCreation);
+	MusicFile(const std::string& fileName, const MusicExtension& extension, const Date& date,const double& megabytes,const std::string& author, const std::string& songName, const Date& dateOfSongCreation);
 
-	const String& GetAuthor() const;
-	void SetAuthor(const String& author);
+	const std::string& GetAuthor() const;
+	void SetAuthor(const std::string& author);
 
-	const String& GetSongName() const;
-	void SetSongName(const String& songName);
+	const std::string& GetSongName() const;
+	void SetSongName(const std::string& songName);
 
 	const Date& GetDateOfTheSong() const;
 	void SetDateOfTheSong(const Date& date);

@@ -199,6 +199,14 @@ String& String::operator+(const String& obj)
 	return result;
 }
 
+char String::operator[](const int& index) const
+{
+	if (index > this->GetLength())
+		return '\0';
+
+	return this->text[index];
+}
+
 String& String::operator+(const char& symbol)
 {
 	String result;
@@ -238,16 +246,25 @@ std::istream& operator>>(std::istream& is, String& obj)
 	return is;
 }
 
-const List<String> Split(String text, const char& splitBy)
+const std::vector<std::string> Split(std::string text, const char& splitBy)
 {
-	List<String> result;
+	std::vector<std::string> result;
 
-	String temp;
+	std::string temp;
 
-	for (int i = 0; i < text.GetLength(); i++)
+	for (int i = 0; i < text.size(); i++)
 	{
-		temp.Append(text[i])
+		if (text[i] == splitBy) {
+			result.push_back(temp);
+			temp = "";
+
+			continue;
+		}
+
+		temp += text[i];
 	}
+
+	return result;
 }
 
 const int StringToInt(const char* text)
@@ -280,7 +297,8 @@ char* Concat(const char* text1, const char* text2)
 		return nullptr;
 
 	int text1Length = GetStrLenth(text1);
-	int text2Length = GetStrLenth(text2);
+
+	int text2Length = text2 != nullptr ? GetStrLenth(text2) : 0;
 
 	int newTextLength = text1Length + text2Length;
 

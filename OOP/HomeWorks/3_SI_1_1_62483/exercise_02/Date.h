@@ -5,18 +5,19 @@
 class Date
 {
 private:
-	String hour;
-	String minute;
+	std::string hour;
+	std::string minute;
 	
-	String day;
-	String month;
-	String year;
+	std::string day;
+	std::string month;
+	std::string year;
+
 public:
 	Date();
-	Date(const String& hour, const String& minute, const String& day, const String& month, const String& year);
+	Date(const std::string& hour, const std::string& minute, const std::string& day, const std::string& month, const std::string& year);
 
-	const String& GetDate();
-	void SetDate(const String& hour, const String& minute, const String& day, const String& month, const String& year);
+	const std::string& GetDate();
+	void SetDate(const std::string& hour, const std::string& minute, const std::string& day, const std::string& month, const std::string& year);
 
 };
 

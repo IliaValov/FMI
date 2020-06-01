@@ -5,27 +5,35 @@ class File
 {
 private:
 
-	String name;
-	String extension;
+	std::string name;
+	std::string extension;
 
 	Date date;
 	double megabytes;
 
+protected:
+	
+	virtual void SetName(const std::string& name);
+	
+	virtual  const std::string& GetExtension() const;
+	
+	virtual void SetDate(const Date& date);
+	
+	virtual void SetMegabytes();
+
 public:
+
 	File();
-	File(const String& name, const String& extension, const Date& date, const double& megabytes);
+	File(const std::string& name, const std::string& extension, const Date& date, const double& megabytes);
 
-	virtual const String& GetName() const;
-	virtual void SetName(const String& name);
+	virtual const std::string& GetName() const;
 
-	virtual  const String& GetExtension() const;
-	virtual void SetExtension(const String& extension);
+	virtual void SetExtension(const std::string& extension);
 
 	virtual const Date& GetDate()const;
-	virtual void SetDate(const Date& date);
 
 	virtual const double& GetMegabytes()const;
-	virtual void SetMegabytes();
+
 
 };
 

@@ -10,7 +10,7 @@ public:
 	Resolution();
 	Resolution(const int& width, const int& heigth);
 
-	const String& GetResolution();
+	const std::string& GetResolution();
 	void SetResolution(const int& width, const int& height);
 };
 
