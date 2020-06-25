@@ -24,8 +24,6 @@ public:
 	void Print() override;
 };
 
-
-
 template<class T>
 inline void JSONObject<T>::set_key(const String& key)
 {

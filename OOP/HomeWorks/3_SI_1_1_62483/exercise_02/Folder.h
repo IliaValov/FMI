@@ -52,10 +52,10 @@ public:
 	const bool AddFileToFolder(const File& fileName, const std::string& path);
 	const bool AddFolderToFolder(const std::string& folderName, const Date& date, const std::string& path);
 
-	const File& GetFileFromFolder(const std::string& fileName, const std::string& path);
+	const File& GetFileFromFolder(const std::string& fileName, const std::string& path) const;
 
-	const bool& AnyFileByName(const std::string& fileName);
-	const bool& AnyFolderByName(const std::string& folderName);
+	const bool& AnyFileByName(const std::string& fileName) const;
+	const bool& AnyFolderByName(const std::string& folderName) const;
 
 };
 

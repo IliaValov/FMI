@@ -2,11 +2,11 @@
 
 void MusicFile::setFileName()
 {
-	this->SetName(this->author + " - " + this->songName);
+	this->SetName(this->songName + " - " + this->songName);
 }
 
-MusicFile::MusicFile(const std::string& fileName, const MusicExtension& extension, const Date& date, const double& megabytes, const std::string& author, const std::string& songName, const Date& dateOfSongCreation)
-	: author(author), songName(songName), dateOfSongCreation(dateOfSongCreation), File(fileName, "", date, megabytes)
+MusicFile::MusicFile(const std::string& fileName, const MusicExtension& extension, const Date& date, const double& megabytes, const std::string& performerName, const std::string& songName, const Date& dateOfSongCreation)
+	: songName(songName), performerName(performerName), dateOfSongCreation(dateOfSongCreation), File(fileName, "", date, megabytes)
 {
 	if (extension == MusicExtension::MP3) {
 		this->SetExtension(".mp3");
@@ -21,14 +21,14 @@ MusicFile::MusicFile(const std::string& fileName, const MusicExtension& extensio
 	this->setFileName();
 }
 
-const std::string& MusicFile::GetAuthor()const
+const std::string& MusicFile::GetPerformerName()const
 {
-	return this->author;
+	return this->performerName;
 }
 
-void MusicFile::SetAuthor(const std::string& author)
+void MusicFile::SetPerformerName(const std::string& performerName)
 {
-	this->author = author;
+	this->performerName = performerName;
 
 	this->setFileName();
 }

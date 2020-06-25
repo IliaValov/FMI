@@ -204,7 +204,7 @@ const bool Folder::AddFolderToFolder(const std::string& folderName, const Date& 
 	return false;
 }
 
-const File& Folder::GetFileFromFolder(const std::string& fileName, const std::string& path)
+const File& Folder::GetFileFromFolder(const std::string& fileName, const std::string& path) const
 {
 	std::vector<std::string> results = Split(path, '/');
 
@@ -231,7 +231,7 @@ const File& Folder::GetFileFromFolder(const std::string& fileName, const std::st
 	return File();
 }
 
-const bool& Folder::AnyFileByName(const std::string& fileName)
+const bool& Folder::AnyFileByName(const std::string& fileName) const
 {
 	if (this->FindFileIndex(fileName) == -1) {
 		return false;
@@ -240,7 +240,7 @@ const bool& Folder::AnyFileByName(const std::string& fileName)
 	return true;
 }
 
-const bool& Folder::AnyFolderByName(const std::string& folderName)
+const bool& Folder::AnyFolderByName(const std::string& folderName) const
 {
 	if (this->FindFolderIndex(folderName) == -1) {
 		return false;
